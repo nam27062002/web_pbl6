@@ -1,8 +1,13 @@
 import { BoxInput } from "../components/Input/BoxInput"
+import HeaderLogin from "../components/header/HeaderLogin"
 
 export const Login = () => {
     return(
-        <BoxInput/>
+        <div>
+            <HeaderLogin/>
+            <BoxInput/>
+        </div>
+
     )
 }
   
