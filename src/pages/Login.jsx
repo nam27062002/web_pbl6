@@ -1,12 +1,15 @@
 import HeaderLogin from "../components/header/HeaderLogin"
 import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
+
 export const Login = () => {
     
     const [isEmailFocused, setIsEmailFocused] = useState(false);
     const [isPasswordFocused, setIsPasswordFocused] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    
     const handleEmailFocus = () => {
         setIsEmailFocused(true);
         setIsPasswordFocused(false);
@@ -24,16 +27,41 @@ export const Login = () => {
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
+        setError('');
     };
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
+        setError('');
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (email === '') {
+            setError('Email is required');
+            return;
+        }
+        if (password === '') {
+            setError('Password is required');
+            return;
+        }
+        if (!validateEmail(email)) {
+            setError('Invalid email address');
+            return;
+        }
+        const checkbox = document.querySelector('.checkbox-input');
+        if (!checkbox.checked) {
+            setError('Please accept the Terms & Conditions');
+            return;
+        }
+
         console.log('Email:', email);
         console.log('Password:', password);
+    };
+
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     };
 
     return(
@@ -47,7 +75,7 @@ export const Login = () => {
                     <form className="form-login" onSubmit={handleSubmit}>
                         <div className="form_title_1">Welcome back, Yash</div>
                         <div className="form_title_2">Welcome back!Please enter your details</div>
-                        <div className="box_input" style={{ borderBottom: `1px solid ${isEmailFocused ? 'green' : 'rgb(169, 156, 156)'}` }}>
+                        <div className="box_input" style={{ borderBottom: `2px solid ${isEmailFocused ? 'green' : 'rgb(169, 156, 156)'}` }}>
                             <input
                                 className="input"
                                 placeholder="Email"
@@ -56,7 +84,7 @@ export const Login = () => {
                                 onChange={handleEmailChange}
                                 value={email}/>
                         </div>
-                        <div className="box_input" style={{ borderBottom: `1px solid ${isPasswordFocused ? 'green' : 'rgb(169, 156, 156)'}` }}>
+                        <div className="box_input" style={{ borderBottom: `2px solid ${isPasswordFocused ? 'green' : 'rgb(169, 156, 156)'}` }}>
                                 <input
                                     className="input"
                                     placeholder="Password"
@@ -66,20 +94,20 @@ export const Login = () => {
                                     onChange={handlePasswordChange}
                                     value={password}/>
                         </div>
-                        <div>error</div>
-                        <div>
-                            <label>
-                                <input
+                        <div className="error-text">{error}</div>
+                        <div className="box">
+                            <label className="checkbox-label">
+                                <input className="checkbox-input"
                                 type="checkbox"
                                 />
-                                Checkbox Label
+                                Terms & Conditions
                             </label>
-                            <a>Forgot Password</a>
+                            <a className="forgot_pw_text" href="#">Forgot Password</a>
                         </div>
-                        <button>Login</button>
-                        <div>
+                        <button className="login-btn">Log In</button>
+                        <div className="no-account-text">
                             You don't have an account? 
-                            <a>
+                            <a className="sign-up">
                                 Sign up for free    
                             </a>
                         </div>
