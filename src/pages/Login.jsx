@@ -35,7 +35,7 @@ export const Login = () => {
         setError('');
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         if (email === '') {
             setError('Email is required');
@@ -57,6 +57,32 @@ export const Login = () => {
 
         console.log('Email:', email);
         console.log('Password:', password);
+
+        try {
+            const response = await fetch('http://ridewizard.pro:9000/api/v1/users/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: password,
+                    type: 'email',
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Login failed');
+            }
+
+            const data = await response.json();
+
+            console.log('API response:', data);
+            alert("LOGIN SUCCESSFULLY");
+        } catch (error) {
+            console.error('Error calling API:', error.message);
+            setError('Failed to log in. Please try again.');
+        }
     };
 
     const validateEmail = (email) => {
