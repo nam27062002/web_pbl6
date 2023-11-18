@@ -3,16 +3,18 @@
     height: 10vh;
     display: flex;
     align-items: center;
-  }
+}
   
-  .header_login .logo_png {
-    width: 2vw;
-  }
-  
-  .header_login .logo_text {
-    margin-left: 10px;
-    font-weight: bold;
-    font-size: 2vw;
-    color: rgb(15, 2, 199);
-  }
-  
+.header_login .logo_png {
+  width: 2vw;
+}
+
+.header_login .logo_text {
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 2vw;
+  background: linear-gradient(to bottom, #56b3f5, #5487e6);
+  -webkit-background-clip: text; 
+  color: transparent;
+  transition: background 0.5s ease; 
+}

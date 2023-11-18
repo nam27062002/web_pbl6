@@ -1,9 +1,9 @@
 import HeaderLogin from "../components/header/HeaderLogin"
 import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
-
+import { useHistory, Link } from 'react-router-dom';
 export const Login = () => {
-    
+    const history = useHistory();
     const [isEmailFocused, setIsEmailFocused] = useState(false);
     const [isPasswordFocused, setIsPasswordFocused] = useState(false);
     const [email, setEmail] = useState('');
@@ -78,11 +78,12 @@ export const Login = () => {
             const data = await response.json();
 
             console.log('API response:', data);
-            alert("LOGIN SUCCESSFULLY");
+            history.push('/home');
         } catch (error) {
             console.error('Error calling API:', error.message);
             setError('Failed to log in. Please try again.');
         }
+        
     };
 
     const validateEmail = (email) => {
@@ -133,9 +134,9 @@ export const Login = () => {
                         <button className="login-btn">Log In</button>
                         <div className="no-account-text">
                             You don't have an account? 
-                            <a className="sign-up">
-                                Sign up for free    
-                            </a>
+                            <Link to="/register" className="sign-up">
+                                Sign up for free
+                            </Link>
                         </div>
                     </form>
                 </div>
