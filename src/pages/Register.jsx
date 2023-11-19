@@ -1,12 +1,293 @@
 import HeaderLogin from "../components/header/HeaderLogin"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import '../styles/Pages/Register.css';
+import axios from 'axios';
 export const Register = () => {
+    const [countdown, setCountdown] = useState(60);
+    const [token, setToken] = useState('null');
+    const [provinces, setProvinces] = useState([]);
+    const [selectedProvince, setSelectedProvince] = useState(''); 
+    const [selectedGender, setSelectedGender] = useState('');
+    const [inputValue, setInputValue] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [gender, setGender] = useState('');
+    const [dob, setDob] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [otp, setOtp] = useState('');
+    const [contentType, setContentType] = useState('personalInfo');
+    const history = useHistory();
     
-    return(
-        <div>
-            <HeaderLogin/>
-        </div>
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch('https://provinces.open-api.vn/api/?depth=3');
+  
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+  
+          const data = await response.json();
+          let provinceNames = data.map(province => province.name);
+          provinceNames = provinceNames.map(name => name.replace('Tỉnh ', '').replace('Thành phố ', '')); 
+          provinceNames.sort((a, b) => a.localeCompare(b));
+          setProvinces(provinceNames);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchData();
+    }, []);
+    
+    const handleChange = (event) => {
+      setSelectedProvince(event.target.value);
+    };
+    
 
-    )}
+    const handleInputChange = (e) => {
+      const value = e.target.value;
+      if (!isNaN(value)) {
+        setInputValue(value);
+      }
+    };
+
+    const handleClickBackButton = () => {
+    
+        history.push('/');
+    };
+    const handleClickBackButton1 = () => {
+    
+        setContentType('personalInfo');
+    };
+
+    const handleClicContinueButton = () =>{
+        if (!firstName || !lastName || !gender || !dob || !email || !password) {
+            setError('Vui lòng nhập đầy đủ thông tin.');
+            return;
+        }
+        const birthDate = new Date(dob);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+
+        if (age < 18) {
+        setError('Bạn phải đủ 18 tuổi trở lên để đăng ký.');
+        return;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+        setError('Vui lòng nhập email hợp lệ.');
+        return;
+        }
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(.{8,})$/;
+        if (!passwordRegex.test(password)) {
+            setError('Mật khẩu phải có ít nhất 8 kí tự, 1 chữ cái in hoa và 1 kí tự đặc biệt.');
+            return;
+        }
+
+        setError('');
+        setContentType('verify');
+    }
+    
+    const handleClicContinueButton1 = async () =>{
+        try {
+            const response = await fetch('http://ridewizard.pro:9000/api/v1/users/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fullName: firstName + lastName, 
+                    email: email,
+                    phNo: inputValue,
+                    password: password
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                setError(errorData.message);
+                throw new Error('Signup failed');
+            }
+
+            const data = await response.json();
+            requestOTP(data.data.accessToken);
+            setToken(data.data.accessToken);
+            setContentType('confirmOTP');
+            let timer;
+            if (countdown > 0) {
+                timer = setInterval(() => {
+                  setCountdown((prevCountdown) => prevCountdown - 1);
+                }, 1000);
+              }
+          
+              return () => {
+                clearInterval(timer);
+              };
+        } catch (error) {
+            console.error('Error calling API:', error.message);
+        }
+       
+    }
+    const handleGenderChange = (event) => {
+        setGender(event.target.value);
+    };
+    
+    const requestOTP = async (token) => {
+        try {
+          const response = await axios.get('http://ridewizard.pro:9000/api/v1/auth/otp/phone', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          console.log(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    };
+
+    const handleInputChange2 = (e) => {
+        const inputText = e.target.value.replace(/\D/g, '');
+        if (inputText.length <= 4) {
+            if (inputText.length == 4){
+                console.log(token);
+            }
+            setOtp(inputText);
+        }
+      };
+    
+
+    const renderContent = () => {
+        if (contentType === 'verify') {
+          return (
+            <div className="content_left">
+                <div className="C_T_1">ĐĂNG KÝ</div>
+                <div className="C_T_2">HÃY BẮT ĐẦU KIẾM THU NHẬP TỪ HÔM NAY</div>
+                <div className="C_T_3">Không cần đến văn phòng hay nói chuyện với nhân viên. Sau khi điền đơn, bạn sẽ nhận được tên đăng nhập và mật khẩu để đăng nhập vào ứng dụng. Và đã có thể bắt đầu kiếm tiền!</div>
+                <select class="selection_province" id="provinceSelect" onchange="handleChange()">
+                    {provinces.map((province) => (
+                        <option key={province} value={province}>
+                        {province}
+                        </option>
+                    ))}
+                </select>
+                <input
+                className="input_phonenumber"
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="Số điện thoại"
+                />
+                <div className="error">{error}</div>
+                <div className="form_button">
+                    <button className="back-btn" onClick={handleClickBackButton1}>QUAY LẠI</button>
+                    <button className="signup-btn" onClick={handleClicContinueButton1}>TIẾP THEO</button> 
+                </div>
+            </div>
+          );
+        }
+        if (contentType === 'personalInfo'){
+            return (
+                <div className="content_left">
+                      <div>THÔNG TIN CÁ NHÂN</div>
+                      <input
+                          className="input_phonenumber"
+                          type="text"
+                          placeholder="Họ"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                      />
+                      <input
+                          className="input_phonenumber"
+                          type="text"
+                          placeholder="Tên"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                      />
+                      <select className="selection_gender" onChange={handleGenderChange} value={gender}>
+                          <option value="" disabled hidden>Giới tính</option>
+                          <option value="male">Nam</option>
+                          <option value="female">Nữ</option>
+                      </select>
+                      <input
+                          className="input_phonenumber"
+                          type="date"
+                          placeholder="Ngày sinh"
+                          value={dob}
+                          onChange={(e) => setDob(e.target.value)}
+                      />
+                      <input
+                          className="input_phonenumber"
+                          type="text"
+                          placeholder="Email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <input
+                          className="input_phonenumber"
+                          type="password"
+                          placeholder="Password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <div className="error">{error}</div>
+                      <div className="form_button">
+                          <button className="back-btn" onClick={handleClickBackButton}>QUAY LẠI</button>
+                          <button className="signup-btn" onClick={handleClicContinueButton}>TIẾP THEO</button>
+                      </div>
+                </div>
+              );
+        }
+        if (contentType === 'confirmOTP'){
+            return (
+                <div className="content_left1">
+                    <div className="back">
+                        <div className="arrow_left">&lt;</div>
+                        <div className="text_btn">QUAY LẠI</div>
+                    </div>
+                    <div className="A1">Tin nhắn chứa mã đã được gửi đến số điện thoại</div>
+                    <div className="A2">+84 {inputValue.slice(1, 4)} {inputValue.slice(4, 7)} {inputValue.slice(7)}</div>
+                    <input
+                    className="input_phonenumber"
+                    id="input_otp"
+                    type="text"
+                    placeholder="OTP"
+                    value={otp}
+                    onChange={handleInputChange2}
+                    />
+                    
+
+                    <div className="countdown">
+                        {countdown > 0 ? (
+                            `Bạn có thể yêu cầu gửi lại mã sau 0:${countdown < 10 ? `0${countdown}` : countdown}`
+                        ) : (
+                            'Yêu cầu gửi lại mã'
+                        )}
+                    </div>
+                </div>
+            )
+        }
+
+    };
+
+    return (
+      <div>
+            <HeaderLogin/>
+            <div className="content">
+                {renderContent()}
+                <div className="content_right">
+                    <img className="background" src="https://sea.taxseepro.com/i/background-1024.jpg" alt="background"/>
+                </div>
+
+
+            </div>
+        
+        
+        
+      </div>
+    );
+}

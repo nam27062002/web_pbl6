@@ -2,6 +2,7 @@ import HeaderLogin from "../components/header/HeaderLogin"
 import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+
 export const Login = () => {
     const history = useHistory();
     const [isEmailFocused, setIsEmailFocused] = useState(false);
@@ -9,7 +10,7 @@ export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    
+
     const handleEmailFocus = () => {
         setIsEmailFocused(true);
         setIsPasswordFocused(false);
@@ -72,6 +73,8 @@ export const Login = () => {
             });
 
             if (!response.ok) {
+                const errorData = await response.json();
+                setError(errorData.message);
                 throw new Error('Login failed');
             }
 
@@ -81,7 +84,7 @@ export const Login = () => {
             history.push('/home');
         } catch (error) {
             console.error('Error calling API:', error.message);
-            setError('Failed to log in. Please try again.');
+           
         }
         
     };
@@ -91,6 +94,7 @@ export const Login = () => {
         return emailRegex.test(email);
     };
 
+    
     return(
         <div>
             <HeaderLogin/>
