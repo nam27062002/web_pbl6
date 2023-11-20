@@ -20,7 +20,16 @@ export const Register = () => {
     const [otp, setOtp] = useState('');
     const [contentType, setContentType] = useState('personalInfo');
     const history = useHistory();
-    
+    const [selectedType, setSelectedType] = useState(null);
+    const [models, setModels] = useState([]);
+    const [years, setYears] = useState([]);
+    const [colors, setColors] = useState([]);
+    const [selectedModel, setSelectedModel] = useState(null);
+    const [selectedYear, setSelectedYear] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [licensePlate, setLicensePlate] = useState('');
+    const [selectedModelId, setSelectedModelId] = useState(null);
+    const [selectedColorId, setSelectedColorId] = useState(null);
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -42,11 +51,41 @@ export const Register = () => {
   
       fetchData();
     }, []);
+    useEffect(() => {
+        const currentYear = new Date().getFullYear();
+        const years = Array.from({length: currentYear - 1999}, (_, i) => currentYear - i);
+        setYears(years);
+    }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const modelsResponse = await axios.get('http://ridewizard.pro:9000/api/v1/vehicle/models');
+            const colorsResponse = await axios.get('http://ridewizard.pro:9000/api/v1/vehicle/colors');
     
+            setModels(modelsResponse.data.data.models);
+            setColors(colorsResponse.data.data.colors);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+    
+        fetchData();
+      }, []);
+    const handleTypeChange = (e) => {
+        setSelectedType(e.target.value);
+    };
     const handleChange = (event) => {
       setSelectedProvince(event.target.value);
     };
+    const handleModelChange = (e) => {
+        const selectedModel = models.find((model) => model.model === e.target.value);
+        setSelectedModelId(selectedModel ? selectedModel.id : null);
+    };
     
+    const handleColorChange = (e) => {
+    const selectedColor = colors.find((color) => color.color === e.target.value);
+    setSelectedColorId(selectedColor ? selectedColor.id : null);
+    };
 
     const handleInputChange = (e) => {
       const value = e.target.value;
@@ -62,6 +101,10 @@ export const Register = () => {
     const handleClickBackButton1 = () => {
     
         setContentType('personalInfo');
+    };
+    const handleClickBackButton2 = () => {
+    
+        setContentType('confirmOTP');
     };
 
     const handleClicContinueButton = () =>{
@@ -132,6 +175,38 @@ export const Register = () => {
         }
        
     }
+
+    const handleClickContinueButton = async () => {
+        if (!selectedModelId || !selectedColorId || !licensePlate) {
+          setError('Vui lòng nhập đầy đủ thông tin');
+        } else {
+          setError('');
+          const driverID = '1'; 
+          try {
+            const response = await axios.post(
+              'http://ridewizard.pro:9000/api/v1/drivers/vehicle',
+              {
+                driverID,
+                modelId: selectedModelId,
+                MfgYear: '2017',
+                colorId: selectedColorId,
+                licensePlate,
+                active: '',
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+    
+            console.log('API Response:', response.data);
+          } catch (error) {
+            console.error('Error calling API:', error);
+          }
+        }
+      };
+    
     const handleGenderChange = (event) => {
         setGender(event.target.value);
     };
@@ -150,16 +225,33 @@ export const Register = () => {
         }
     };
 
+    const verifyOTP = async (token, otp) => {
+        try {
+          const response = await axios.post('http://ridewizard.pro:9000/api/v1/auth/otp/phone/verify', {
+            otp: otp,
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          console.log(response.data);
+          setContentType("vehicleInformation");
+        } catch (error) {
+            setError("Mã OTP không chính xác");
+            console.error('Error verifying OTP:', error);
+        }
+      
+    };
+
     const handleInputChange2 = (e) => {
         const inputText = e.target.value.replace(/\D/g, '');
-        if (inputText.length <= 4) {
-            if (inputText.length == 4){
-                console.log(token);
+        if (inputText.length <= 6) {
+            if (inputText.length == 6){
+                verifyOTP(token,inputText);
             }
             setOtp(inputText);
         }
-      };
-    
+    };
 
     const renderContent = () => {
         if (contentType === 'verify') {
@@ -245,7 +337,7 @@ export const Register = () => {
         if (contentType === 'confirmOTP'){
             return (
                 <div className="content_left1">
-                    <div className="back">
+                    <div className="back" onClick={() => {setContentType("verify")}}>
                         <div className="arrow_left">&lt;</div>
                         <div className="text_btn">QUAY LẠI</div>
                     </div>
@@ -259,7 +351,7 @@ export const Register = () => {
                     value={otp}
                     onChange={handleInputChange2}
                     />
-                    
+                    <div className="error">{error}</div>
 
                     <div className="countdown">
                         {countdown > 0 ? (
@@ -271,6 +363,60 @@ export const Register = () => {
                 </div>
             )
         }
+        if (contentType === 'vehicleInformation'){
+            return (
+                <div className="content_left">
+                    <div>THÔNG TIN PHƯƠNG TIỆN</div>
+                    <select className="selection_province" onChange={handleTypeChange}>
+                        <option disabled hidden selected>Loại</option>
+                        <option value="Car">Xe ô tô</option>
+                        <option value="truck">Xe tải</option>
+                        <option value="Motorcycles">Xe máy</option>
+                    </select>
+                    <select className="selection_province" onChange={handleModelChange}>
+                        <option disabled hidden selected>Hãng</option>
+                        {selectedType
+                        ? models
+                            .filter((model) => model.type === selectedType)
+                            .map((model) => (
+                                <option key={model.id} value={model.model}>
+                                {model.model}
+                                </option>
+                            ))
+                        : models.map((model) => (
+                            <option key={model.id} value={model.model}>
+                                {model.model}
+                            </option>
+                            ))}
+                    </select>
+                    <select className="selection_province" onChange={(e) => setSelectedYear(e.target.value)}>
+                        <option disabled hidden selected>Năm sản xuất</option>
+                        {years.map(year => <option key={year}>{year}</option>)}
+                    </select>
+                    <select className="selection_province" onChange={handleColorChange}>
+                        <option disabled hidden selected>Màu</option>
+                        {colors.map((color) => (
+                        <option key={color.id} value={color.color}>
+                            {color.color}
+                        </option>
+                        ))}
+                    </select>
+                    <input
+                        className="input_phonenumber"
+                            type="text"
+                            placeholder="Biển số xe. Ví dụ: 43A12345"
+                            value={licensePlate}
+                            onChange={(e) => setLicensePlate(e.target.value)}
+                        />
+                    <div className="error">{error}</div>
+                    <div className="form_button">
+                        <button className="back-btn" onClick={handleClickBackButton2}>QUAY LẠI</button>
+                        <button className="signup-btn" onClick={handleClickContinueButton}>TIẾP THEO</button> 
+                    </div>
+                </div>
+            )
+        }
+
 
     };
 
@@ -282,12 +428,7 @@ export const Register = () => {
                 <div className="content_right">
                     <img className="background" src="https://sea.taxseepro.com/i/background-1024.jpg" alt="background"/>
                 </div>
-
-
             </div>
-        
-        
-        
       </div>
     );
 }
