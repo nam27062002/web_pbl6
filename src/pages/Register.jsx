@@ -181,12 +181,10 @@ export const Register = () => {
           setError('Vui lòng nhập đầy đủ thông tin');
         } else {
           setError('');
-          const driverID = '1'; 
           try {
             const response = await axios.post(
               'http://ridewizard.pro:9000/api/v1/drivers/vehicle',
               {
-                driverID,
                 modelId: selectedModelId,
                 MfgYear: '2017',
                 colorId: selectedColorId,
