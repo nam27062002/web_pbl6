@@ -219,12 +219,10 @@ export const Register = (props) => {
           setError('Vui lòng nhập đầy đủ thông tin');
         } else {
           setError('');
-          const driverID = '1'; 
           try {
             const response = await axios.post(
               'http://ridewizard.pro:9000/api/v1/drivers/vehicle',
               {
-                driverID,
                 modelId: selectedModelId,
                 MfgYear: '2017',
                 colorId: selectedColorId,
@@ -239,7 +237,9 @@ export const Register = (props) => {
             );
     
             console.log('API Response:', response.data);
+//////////////////////////////////////////// xử lí tiếp theo ở đây
           } catch (error) {
+            setError("Lỗi không thể đăng kí");
             console.error('Error calling API:', error);
           }
         }
