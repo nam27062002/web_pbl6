@@ -56,9 +56,6 @@ export const Login = () => {
             return;
         }
 
-        console.log('Email:', email);
-        console.log('Password:', password);
-
         try {
             const response = await fetch('http://ridewizard.pro:9000/api/v1/users/signin', {
                 method: 'POST',
@@ -79,9 +76,14 @@ export const Login = () => {
             }
 
             const data = await response.json();
+            console.log(data);
+            history.push(data.data.user.phone_verified === 0 ? '/register' : '/home', {
+                contentTypeToSet: 'confirmOTP' ,
+                inputValueToSet: data.data.user.phNo.replace("+84", "0"),
+                tokenToSet: data.data.accessToken,
+                runCountdownToSet: true,
+              });
 
-            console.log('API response:', data);
-            history.push('/home');
         } catch (error) {
             console.error('Error calling API:', error.message);
            

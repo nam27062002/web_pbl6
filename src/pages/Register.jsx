@@ -3,13 +3,27 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/Pages/Register.css';
 import axios from 'axios';
-export const Register = () => {
+export const Register = (props) => {
     const [countdown, setCountdown] = useState(60);
-    const [token, setToken] = useState('null');
+    const [token, setToken] = useState(
+      props.location.state && props.location.state.tokenToSet
+        ? props.location.state.tokenToSet
+        : 'null'
+    );
+  
     const [provinces, setProvinces] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState(''); 
     const [selectedGender, setSelectedGender] = useState('');
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(
+      props.location.state && props.location.state.inputValueToSet
+        ? props.location.state.inputValueToSet
+        : ''
+    );
+    const [runCountdown, setRunCountdown] = useState(
+      props.location.state && props.location.state.runCountdownToSet
+        ? props.location.state.runCountdownToSet
+        : false
+    );
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [gender, setGender] = useState('');
@@ -18,7 +32,11 @@ export const Register = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [otp, setOtp] = useState('');
-    const [contentType, setContentType] = useState('personalInfo');
+    const [contentType, setContentType] = useState(
+      props.location.state && props.location.state.contentTypeToSet
+        ? props.location.state.contentTypeToSet
+        : 'personalInfo'
+    );
     const history = useHistory();
     const [selectedType, setSelectedType] = useState(null);
     const [models, setModels] = useState([]);
@@ -71,6 +89,26 @@ export const Register = () => {
     
         fetchData();
       }, []);
+
+    useEffect(() => {
+      let timer;
+  
+      if (runCountdown && countdown > 0) {
+        timer = setInterval(() => {
+          setCountdown((prevCountdown) => prevCountdown - 1);
+        }, 1000);
+      }
+  
+      return () => {
+        clearInterval(timer);
+      };
+    }, [runCountdown, countdown]);
+
+    useEffect(() => {
+      if (runCountdown){
+        requestOTP(token);
+      }
+    }, [runCountdown]);
     const handleTypeChange = (e) => {
         setSelectedType(e.target.value);
     };
@@ -416,8 +454,6 @@ export const Register = () => {
                 </div>
             )
         }
-
-
     };
 
     return (
