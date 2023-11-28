@@ -237,7 +237,7 @@ export const Register = (props) => {
             );
     
             console.log('API Response:', response.data);
-//////////////////////////////////////////// xử lí tiếp theo ở đây
+            history.push("/");
           } catch (error) {
             setError("Lỗi không thể đăng kí");
             console.error('Error calling API:', error);
