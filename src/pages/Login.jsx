@@ -77,12 +77,25 @@ export const Login = () => {
 
             const data = await response.json();
             console.log(data);
-            history.push(data.data.user.phone_verified === 0 ? '/register' : '/home', {
-                contentTypeToSet: 'confirmOTP' ,
-                inputValueToSet: data.data.user.phNo.replace("+84", "0"),
-                tokenToSet: data.data.accessToken,
-                runCountdownToSet: true,
-              });
+            history.push(
+                data.data.user.phone_verified === 0
+                  ? {
+                      pathname: '/register',
+                      state: {
+                        contentTypeToSet: 'confirmOTP',
+                        inputValueToSet: data.data.user.phNo.replace("+84", "0"),
+                        tokenToSet: data.data.accessToken,
+                        runCountdownToSet: true,
+                      },
+                    }
+                  : {
+                      pathname: '/home',
+                      state: {
+                        accessTokenToSet: data.data.accessToken,
+                        userIdToSet: data.data.user.id,
+                      },
+                    }
+              );
 
         } catch (error) {
             console.error('Error calling API:', error.message);
