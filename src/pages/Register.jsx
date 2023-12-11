@@ -10,7 +10,7 @@ export const Register = (props) => {
         ? props.location.state.tokenToSet
         : 'null'
     );
-  
+    const [isPopupOpen, setPopupOpen] = useState(false);
     const [provinces, setProvinces] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState(''); 
     const [selectedGender, setSelectedGender] = useState('');
@@ -48,6 +48,46 @@ export const Register = (props) => {
     const [licensePlate, setLicensePlate] = useState('');
     const [selectedModelId, setSelectedModelId] = useState(null);
     const [selectedColorId, setSelectedColorId] = useState(null);
+    const becomeToDriver = async (token) => {
+        try {
+          const response = await axios.get('http://ridewizard.pro:9000/api/v1/drivers/drive', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          console.log(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    };
+
+    const updateProfile = async (data) => {
+      try {
+        const url = `http://ridewizard.pro:9000/api/v1/users/profile/${data.data.user.id}`;
+        const authorizationHeader = `Bearer ${data.data.accessToken}`;
+        const response = await axios.put(
+          url,
+          {
+            firstName: lastName,
+            lastName: firstName,
+            dob: dob,
+            address: selectedProvince,
+            avatar: ""
+          },
+          {
+            headers: {
+              Authorization: authorizationHeader,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+  
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+  };
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -112,9 +152,6 @@ export const Register = (props) => {
     const handleTypeChange = (e) => {
         setSelectedType(e.target.value);
     };
-    const handleChange = (event) => {
-      setSelectedProvince(event.target.value);
-    };
     const handleModelChange = (e) => {
         const selectedModel = models.find((model) => model.model === e.target.value);
         setSelectedModelId(selectedModel ? selectedModel.id : null);
@@ -131,7 +168,11 @@ export const Register = (props) => {
         setInputValue(value);
       }
     };
-
+    const handleProvinceChange = (event) => {
+      const selectedValue = event.target.value;
+      setSelectedProvince(selectedValue);
+      console.log(selectedValue)
+    };
     const handleClickBackButton = () => {
     
         history.push('/');
@@ -181,7 +222,7 @@ export const Register = (props) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    fullName: firstName + lastName, 
+                    fullName: firstName + " "+lastName, 
                     email: email,
                     phNo: inputValue,
                     password: password
@@ -195,6 +236,9 @@ export const Register = (props) => {
             }
 
             const data = await response.json();
+            console.log(data);
+            updateProfile(data);
+            becomeToDriver(data.data.accessToken);
             requestOTP(data.data.accessToken);
             setToken(data.data.accessToken);
             setContentType('confirmOTP');
@@ -237,7 +281,7 @@ export const Register = (props) => {
             );
     
             console.log('API Response:', response.data);
-            history.push("/");
+            setPopupOpen(true);
           } catch (error) {
             setError("Lỗi không thể đăng kí");
             console.error('Error calling API:', error);
@@ -273,6 +317,7 @@ export const Register = (props) => {
             },
           });
           console.log(response.data);
+          setError("");
           setContentType("vehicleInformation");
         } catch (error) {
             setError("Mã OTP không chính xác");
@@ -298,7 +343,7 @@ export const Register = (props) => {
                 <div className="C_T_1">ĐĂNG KÝ</div>
                 <div className="C_T_2">HÃY BẮT ĐẦU KIẾM THU NHẬP TỪ HÔM NAY</div>
                 <div className="C_T_3">Không cần đến văn phòng hay nói chuyện với nhân viên. Sau khi điền đơn, bạn sẽ nhận được tên đăng nhập và mật khẩu để đăng nhập vào ứng dụng. Và đã có thể bắt đầu kiếm tiền!</div>
-                <select class="selection_province" id="provinceSelect" onchange="handleChange()">
+                <select class="selection_province" id="provinceSelect" value={selectedProvince} onChange={handleProvinceChange}>
                     {provinces.map((province) => (
                         <option key={province} value={province}>
                         {province}
@@ -455,7 +500,21 @@ export const Register = (props) => {
             )
         }
     };
-
+    const closePopup = () => {
+      setPopupOpen(false);
+    };
+    const handleConfirm = () => {
+      closePopup();
+      history.push(
+          {
+              pathname: '/',
+          }
+        );
+    };
+  
+    const handleCancel = () => {
+      closePopup();
+    }
     return (
       <div>
             <HeaderLogin/>
@@ -464,6 +523,18 @@ export const Register = (props) => {
                 <div className="content_right">
                     <img className="background" src="https://sea.taxseepro.com/i/background-1024.jpg" alt="background"/>
                 </div>
+            </div>
+            <div className="pop-up">
+                {isPopupOpen && (
+                    <div className="popup-overlay">
+                        <div className="popup">
+                            <p>Đăng kí thành công, vui lòng đăng nhập để sử dụng dịch vụ</p>
+                            <div className="button-container">
+                            <button onClick={handleConfirm} className="btn_confirm">Xác nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
       </div>
     );

@@ -26,6 +26,7 @@ export const Login = () => {
           console.error('Error fetching data:', error);
         }
     };
+
     const openPopup = () => {
         setPopupOpen(true);
       };
@@ -51,8 +52,6 @@ export const Login = () => {
       };
     
       const handleCancel = () => {
-        // Xử lý khi người dùng chọn hủy
-        // Đặt logic của bạn ở đây
         closePopup();
       };
     const handleEmailFocus = () => {
@@ -164,11 +163,11 @@ export const Login = () => {
     return(
         <div>
             <HeaderLogin/>
-            <div className="content">
-                <div className="content_left">
+            <div className="content1">
+                <div className="content_left1">
                     <img className="background" src="./images/background/background_login.png" alt="background"/>
                 </div>
-                <div className="content_right">
+                <div className="content_right1">
                     <form className="form-login" onSubmit={handleSubmit}>
                         <div className="form_title_1">Welcome back, Yash</div>
                         <div className="form_title_2">Welcome back!Please enter your details</div>

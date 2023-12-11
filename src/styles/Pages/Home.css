@@ -274,3 +274,62 @@ height: 80px;
   margin-top: 5px;
   width: calc(100% - 20px);
 }
+.error{
+  margin-left: 20px;
+}
+.selection_province{
+  margin-left: 20px;
+  width: calc(100% - 20px);
+  margin-top: 5px;
+}
+
+
+
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333333;
+}
+
+.lb {
+  display: block;
+  margin-bottom: 10px;
+  color: #666666;
+}
+
+.ip {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#error_change_pw{
+  margin-left: 0px;
+  width: 500px;
+  margin-bottom: 10px;
+}

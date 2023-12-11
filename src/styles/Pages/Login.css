@@ -1,26 +1,26 @@
-.content {
+.content1 {
     width: 100vw;
     height: 90vh; 
     display: flex;
 }
-.content .content_left{
+.content1 .content_left1{
     width: 50vw;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.content .content_right{
+.content1 .content_right1{
     width: 50vw;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.content .content_left .background{
+.content1 .content_left1 .background{
     height: 100%;
 }
-.content .content_right .form-login{
+.content1 .content_right1 .form-login{
     width: 20vw;
     height: 50vh;   
 }
