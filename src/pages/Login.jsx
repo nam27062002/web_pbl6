@@ -2,7 +2,7 @@ import HeaderLogin from "../components/header/HeaderLogin"
 import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-
+import axios from 'axios';
 export const Login = () => {
     const history = useHistory();
     const [isEmailFocused, setIsEmailFocused] = useState(false);
@@ -10,7 +10,51 @@ export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+    const [isPopupOpen, setPopupOpen] = useState(false);
+    const [token, setToken] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const becomeToDriver = async (token) => {
+        try {
+          const response = await axios.get('http://ridewizard.pro:9000/api/v1/drivers/drive', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          console.log(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    };
+    const openPopup = () => {
+        setPopupOpen(true);
+      };
+    
+      const closePopup = () => {
+        setPopupOpen(false);
+      };
+    
+      const handleConfirm = () => {
+        becomeToDriver(token);
+        closePopup();
+        history.push(
+            {
+                pathname: '/register',
+                state: {
+                  contentTypeToSet: 'confirmOTP',
+                  inputValueToSet: phoneNumber.replace("+84", "0"),
+                  tokenToSet: token,
+                  runCountdownToSet: true,
+                }
+            }
+          );
+      };
+    
+      const handleCancel = () => {
+        // Xử lý khi người dùng chọn hủy
+        // Đặt logic của bạn ở đây
+        closePopup();
+      };
     const handleEmailFocus = () => {
         setIsEmailFocused(true);
         setIsPasswordFocused(false);
@@ -77,26 +121,33 @@ export const Login = () => {
 
             const data = await response.json();
             console.log(data);
-            history.push(
-                data.data.user.phone_verified === 0
-                  ? {
-                      pathname: '/register',
-                      state: {
-                        contentTypeToSet: 'confirmOTP',
-                        inputValueToSet: data.data.user.phNo.replace("+84", "0"),
-                        tokenToSet: data.data.accessToken,
-                        runCountdownToSet: true,
-                      },
-                    }
-                  : {
-                      pathname: '/home',
-                      state: {
-                        accessTokenToSet: data.data.accessToken,
-                        userIdToSet: data.data.user.id,
-                      },
-                    }
-              );
-
+            setToken(data.data.accessToken);
+            setPhoneNumber(data.data.user.phNo);
+            if (data.data.user.driverStatus === "You are not a driver"){
+                openPopup();
+            }
+            else{
+                history.push(
+                    data.data.user.phone_verified === 0
+                      ? {
+                          pathname: '/register',
+                          state: {
+                            contentTypeToSet: 'confirmOTP',
+                            inputValueToSet: data.data.user.phNo.replace("+84", "0"),
+                            tokenToSet: data.data.accessToken,
+                            runCountdownToSet: true,
+                          },
+                        }
+                      : {
+                          pathname: '/home',
+                          state: {
+                            accessTokenToSet: data.data.accessToken,
+                            userIdToSet: data.data.user.id,
+                          },
+                        }
+                  );
+            }
+            
         } catch (error) {
             console.error('Error calling API:', error.message);
            
@@ -160,6 +211,23 @@ export const Login = () => {
                     </form>
                 </div>
             </div>
+            <div className="pop-up">
+                {isPopupOpen && (
+                    <div className="popup-overlay">
+                        <div className="popup">
+                            <span className="close" onClick={closePopup}>
+                            &times;
+                            </span>
+                            <p>Bạn có muốn trở thành tài xế?</p>
+                            <div className="button-container">
+                            <button onClick={handleConfirm} className="btn_confirm">Xác nhận</button>
+                            <button onClick={handleCancel} className="btn_cancel">Hủy</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
+       
 
     )}

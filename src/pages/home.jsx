@@ -13,10 +13,12 @@ const Avatar = ({ src, alt, size }) => {
 };
 
 export const Home = (props) => {
+    const [gender, setGender] = useState('');
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [phonenumber, setPhonenumber] = useState('');
     const [activeItem, setActiveItem] = useState('Hồ sơ cá nhân');
+    const [isEditing, setIsEditing] = useState(false);
     const [userId, setUserId] = useState(
         props.location.state && props.location.state.userIdToSet
           ? props.location.state.userIdToSet
@@ -29,6 +31,17 @@ export const Home = (props) => {
       );
     const handleItemClick = (itemName) => {
         setActiveItem(itemName);
+    };
+    const handleEditClick = () => {
+        setIsEditing(!isEditing);
+      };
+    const handleGenderChange = (event) => {
+        setGender(event.target.value);
+    };
+    const handleSaveClick = () => {
+    // Thêm logic để xử lý khi nhấn nút "Lưu chỉnh sửa"
+    alert('Đã lưu chỉnh sửa');
+    setIsEditing(false);
     };
     useEffect(() => {
         const fetchData = async () => {
@@ -151,26 +164,69 @@ export const Home = (props) => {
                         <div className='R1'>
                             <div className='A2'>Dữ liệu cá nhân</div>
                             <div className='A111'>
-                                <label for="A11" className='A112'>Họ tên</label>
-                                <input type='text' className='form-control' id='A11' value={fullName} readonly />
+                                <label htmlFor="A11" className='A112'>Họ tên</label>
+                                <input
+                                type='text'
+                                className='form-control'
+                                id='A11'
+                                value={fullName}
+                                readOnly={!isEditing}
+                                onChange={(e) => setFullName(e.target.value)}
+                                />
                             </div>
                             <div className='A111'>
-                                <label for="A12" className='A112'>Giới tính</label>
-                                <input type='text' className='form-control' id='A12' value="Nam" readonly />
+                                <label htmlFor="A12" className='A112'>Giới tính</label>
+                                <select
+                                className="selection_gender1"
+                                onChange={handleGenderChange}
+                                value={gender}
+                                disabled={!isEditing}
+                                >
+                                <option value="male">Nam</option>
+                                <option value="female">Nữ</option>
+                                </select>
                             </div>
                             <div className='A111'>
-                                <label for="A13" className='A112'>Ngày sinh</label>
-                                <input type='text' className='form-control' id='A13' value="27/06/2002" readonly />
+                                <label htmlFor="A13" className='A112'>Ngày sinh</label>
+                                <input
+                                type='text'
+                                className='form-control'
+                                id='A13'
+                                value="27/06/2002" 
+                                readOnly={!isEditing}
+                                />
                             </div>
                             <div className='A111'>
-                                <label for="A14" className='A112'>Email</label>
-                                <input type='text' className='form-control' id='A14' value={email} readonly />
+                                <label htmlFor="A14" className='A112'>Email</label>
+                                <input
+                                type='text'
+                                className='form-control'
+                                id='A14'
+                                value={email}
+                                readOnly={!isEditing}
+                                onChange={(e) => setEmail(e.target.value)}
+                                />
                             </div>
                             <div className='A111'>
-                                <label for="A15" className='A112'>Số điện thoại</label>
-                                <input type='text' className='form-control' id='A15' value={phonenumber} readonly />
+                                <label htmlFor="A15" className='A112'>Số điện thoại</label>
+                                <input
+                                type='text'
+                                className='form-control'
+                                id='A15'
+                                value={phonenumber}
+                                readOnly={!isEditing}
+                                onChange={(e) => setPhonenumber(e.target.value)}
+                                />
                             </div>
-                            <button className='btn_A2'>Thay đổi mật khẩu</button>
+                            <div className='btn_AAA'>
+                                <button
+                                className='btn_A22'
+                                onClick={isEditing ? handleSaveClick : handleEditClick}
+                                >
+                                {isEditing ? 'Lưu chỉnh sửa' : 'Chỉnh sửa'}
+                                </button>
+                                <button className='btn_A2'>Thay đổi mật khẩu</button>
+                            </div>
                         </div>
                     </div>
                 </div>

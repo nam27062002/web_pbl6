@@ -187,19 +187,19 @@ height: 80px;
 }
 
 
-  .btn_A1 {
-    margin-top: 15px;
-    width: 150px;
-    height: 40px;
-    border: none;
-    border-radius: 10px;
-    background-color: #3498db; 
-    color: #fff; 
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    align-self: flex-end;
+.btn_A1 {
+  margin-top: 15px;
+  width: 150px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background-color: #3498db; 
+  color: #fff; 
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  align-self: flex-end;
 }
 
 .btn_A1:hover {
@@ -228,7 +228,11 @@ height: 80px;
 
 .form-control[readonly] {
     background-color: #eee;
-    cursor: not-allowed; 
+    cursor: default; 
+}
+.btn_AAA{
+  display: flex;
+  justify-content:space-between;
 }
 .btn_A2{
     margin-top: 15px;
@@ -243,4 +247,30 @@ height: 80px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
     align-self: flex-end;
+}
+.btn_A22{
+  margin-top: 15px;
+  width: 150px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  margin-left: 20px;
+  background-color: #3498db; 
+  color: #fff; 
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  align-self: flex-end;
+}
+
+.selection_gender1{
+  margin-left: 20px;
+  border: 1px solid #ccc; 
+  padding: 8px;
+  border-radius: 4px; 
+  background-color: #f8f8f8; 
+  color: #333; 
+  margin-top: 5px;
+  width: calc(100% - 20px);
 }
