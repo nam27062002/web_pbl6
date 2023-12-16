@@ -16,90 +16,64 @@ const Avatar = ({ src, alt, size }) => {
 };
 
 export const Admin = () => {
-    const [userTarget, setUserTarget] = useState(null);
     const [userData, setUserData] = useState([]);
+    const [index, setIndex] = useState(0);
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://ridewizard.pro:9000/api/v1/users', {
-                    headers: {
-                        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
-                    },
-                });
-
-                let users = response.data.data.users.filter(user => user.driverStatus === 'You are not a driver');
-                const updatedUserData = users.map(user => ({
-                    id: user.id,
-                    avatar: user.avatar || "/images/avatar/avt.png",
-                    name: user.fullName || "",
-                    status: "On going",
-                    phone: user.phNo || "",
-                    email: user.email || "",
-                    avgRate: 4,
-                }));
-                setUserData(updatedUserData);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchData();
+        uploadTable(0);
     }, []);
+    const fetchUserData = async (url, headers, filterFunction) => {
+        try {
+            const response = await axios.get(url, { headers });
+            const users = response.data.data.users.filter(filterFunction);
+            return users.map(user => ({
+                id: user.id,
+                avatar: user.avatar || "/images/avatar/avt.png",
+                name: user.fullName || "",
+                status: "On going",
+                phone: user.phNo || "",
+                email: user.email || "",
+                avgRate: 4,
+            }));
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    };
+    const uploadTable = async (index) => {
+        const headers = {
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
+        };
+        const url = 'http://ridewizard.pro:9000/api/v1/users';
+        if (index === 0) {
 
+            const filterFunction = user => user.driverStatus === 'You are not a driver' && user.fullName !== '';
+            const updatedUserData = await fetchUserData(url, headers, filterFunction);
+            setUserData(updatedUserData);
+        }
+        else {
+            const filterFunction = user => user.driverStatus !== 'You are not a driver' && user.fullName !== '';
+            const updatedUserData = await fetchUserData(url, headers, filterFunction);
+            setUserData(updatedUserData);
+        }
+    };
     const [activeItem, setActiveItem] = useState('Account');
     const handleItemClick = async (itemName) => {
         setActiveItem(itemName);
-        if (itemName === "Drivers"){
-            setUserData([])
-            try {
-                const response = await axios.get('http://ridewizard.pro:9000/api/v1/users', {
-                    headers: {
-                        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
-                    },
-                });
+        setUserData([]);
 
-                let users = response.data.data.users.filter(user => user.driverStatus !== 'You are not a driver');
-                const updatedUserData = users.map(user => ({
-                    id: user.id,
-                    avatar: user.avatar || "/images/avatar/avt.png",
-                    name: user.fullName || "",
-                    status: "On going",
-                    phone: user.phNo || "",
-                    email: user.email || "",
-                    avgRate: 4,
-                }));
-                setUserData(updatedUserData);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        else if (itemName === "Account"){
-            setUserData([])
-            try {
-                const response = await axios.get('http://ridewizard.pro:9000/api/v1/users', {
-                    headers: {
-                        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
-                    },
-                });
 
-                let users = response.data.data.users.filter(user => user.driverStatus === 'You are not a driver');
-                const updatedUserData = users.map(user => ({
-                    id: user.id,
-                    avatar: user.avatar || "/images/avatar/avt.png",
-                    name: user.fullName || "",
-                    status: "On going",
-                    phone: user.phNo || "",
-                    email: user.email || "",
-                    avgRate: 4,
-                }));
-                setUserData(updatedUserData);
-            } catch (error) {
-                console.error(error);
-            }
+        if (itemName === "Drivers") {
+            setIndex(1);
+            uploadTable(1);
+
+        } else if (itemName === "Account") {
+            setIndex(0);
+            uploadTable(0);
         }
+
     };
     const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 15;
+    const rowsPerPage = 10;
 
     const getCurrentPageData = () => {
         const startIndex = (currentPage - 1) * rowsPerPage;
@@ -133,7 +107,6 @@ export const Admin = () => {
     });
 
     const handleEditButtonClick = (user) => {
-        setUserTarget(user);
         setShowPopup(true);
         setSelectedUser(user);
         setEditedFields({
@@ -165,22 +138,33 @@ export const Admin = () => {
         handleClosePopup();
     };
 
-    const handleDeleteAccount = () => {
+    const handleDeleteAccount = async () => {
+        try {
+            const response = await axios.delete(`http://ridewizard.pro:9000/api/v1/users/${selectedUser.id}`, {
+                headers: {
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
+                },
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
         console.log(`Deleted account with id ${selectedUser.id}`);
         handleClosePopup();
+        uploadTable(index);
     };
 
     const renderField = (label, value, onChange) => (
         <div>
-          <label htmlFor={label}>{label}:</label>
-          <input
-            type="text"
-            id={label}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-          />
+            <label htmlFor={label}>{label}:</label>
+            <input
+                type="text"
+                id={label}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+            />
         </div>
-      );
+    );
     return (
         <div>
             <header className="header_home">
@@ -211,7 +195,16 @@ export const Admin = () => {
                                 className={activeItem === 'Drivers' ? 'active' : ''}
                                 onClick={() => handleItemClick('Drivers')}
                             >
-                                <img src="images/car.png" className="sidebar-icon" />Drivers
+                                <img src="images/driver.png" className="sidebar-icon" />Drivers
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="#"
+                                className={activeItem === 'Vehicles' ? 'active' : ''}
+                                onClick={() => handleItemClick('Vehicles')}
+                            >
+                                <img src="images/car.png" className="sidebar-icon" />Vehicles
                             </a>
                         </li>
                     </ul>
