@@ -368,7 +368,7 @@ export const Register = (props) => {
         if (contentType === 'personalInfo'){
             return (
                 <div className="content_left">
-                      <div>THÔNG TIN CÁ NHÂN</div>
+                      <div className="form_title_1">THÔNG TIN CÁ NHÂN</div>
                       <input
                           className="input_phonenumber"
                           type="text"
@@ -521,7 +521,7 @@ export const Register = (props) => {
             <div className="content">
                 {renderContent()}
                 <div className="content_right">
-                    <img className="background" src="https://sea.taxseepro.com/i/background-1024.jpg" alt="background"/>
+                    <img className="background" src="./images/register/background.png" alt="background"/>
                 </div>
             </div>
             <div className="pop-up">

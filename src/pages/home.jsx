@@ -187,7 +187,12 @@ export const Home = (props) => {
                 Authorization: `Bearer ${accessToken}`,
               },
             });
-            setFullName(response.data.data.user.lastName + " " + response.data.data.user.firstName);
+            if (!response.data.data.lastName) {
+                setFullName(response.data.data.user.firstName);
+                
+            } else {
+                setFullName(response.data.data.user.lastName + " " + response.data.data.user.firstName);
+            }
             setEmail(response.data.data.user.email);
             setPhonenumber(response.data.data.user.phNo);
             setLastName(response.data.data.user.lastName);
@@ -203,8 +208,11 @@ export const Home = (props) => {
     return(
         <div>
             <header className="header_home">
-                <img className="logo_png" src="./images/logo.png" alt="Logo" />
-                <h1 className="logo_text">RideWizard</h1>
+                <div >
+                    <img className="logo_png" src="./images/logo.png" alt="Logo" />
+                    <h1 className="logo_text">RideWizard</h1>
+                </div>
+                
                 <div className="box_avt">
                     <div className="info_user">
                     <div className="name_user">{fullName}</div>
@@ -261,7 +269,7 @@ export const Home = (props) => {
                                 <img src="images/trend.png" className="sidebar-icon"/>Thống kê
                             </a>
                         </li>
-                        <li>
+                        <li >
                             <Link
                                 to="/"
                                 className={activeItem === 'Thoát' ? 'active' : ''}
@@ -277,28 +285,31 @@ export const Home = (props) => {
                     <div className="A1">
                         <div className="L1">
                             <div className='A2'>Phương tiện</div>
-                            <table className="custom-table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Hãng</th>
-                                        <th>Hạng</th>
-                                        <th>Số</th>
-                                        <th>Năm</th>
-                                        <th>Màu</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><button class="delete-button"><img src="./images/bin.png" alt="Xóa"/></button></td>
-                                        <td>Xe máy</td>
-                                        <td>Xe máy</td>
-                                        <td>73H111999</td>
-                                        <td>2012</td>
-                                        <td>Đỏ</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div className="scroll_x">
+                                <table className="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Hãng</th>
+                                            <th>Hạng</th>
+                                            <th>Số</th>
+                                            <th>Năm</th>
+                                            <th>Màu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><button class="delete-button"><img src="./images/bin.png" alt="Xóa"/></button></td>
+                                            <td>Xe máy</td>
+                                            <td>Xe máy</td>
+                                            <td>73H111999</td>
+                                            <td>2012</td>
+                                            <td>Đỏ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                             <button className='btn_A1'>Thêm loại xe khác</button>
                         </div>
                         <div className='R1'>
