@@ -29,7 +29,7 @@ export const Admin = () => {
                 id: user.id,
                 avatar: user.avatar || "/images/avatar/avt.png",
                 name: user.fullName || "",
-                status: "On going",
+                status: user.status || "On going",
                 phone: user.phNo || "",
                 email: user.email || "",
                 avgRate: 4,
@@ -60,7 +60,6 @@ export const Admin = () => {
     const handleItemClick = async (itemName) => {
         setActiveItem(itemName);
         setUserData([]);
-
 
         if (itemName === "Drivers") {
             setIndex(1);
