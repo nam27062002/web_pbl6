@@ -4,22 +4,25 @@ height: 90vh;
 display: flex;
 }
 .content .content_left{
-width: 50vw;
+width: 50%;
 height: 100%;
 display: flex;
+border-radius: 12px;
+padding: 20px;
 justify-content: center;
 align-items: center;
 flex-direction: column;
 }
 .content .content_right{
-width: 50vw;
+width: 50%;
 height: 100%;
 display: flex;
 justify-content: center;
 align-items: center;
 }
 .content .content_right .background{
-height: 100%;
+    width: 80%;
+    height:50%;
 }
 .C_T_1{
 color: rgb(114, 114, 114);
@@ -210,7 +213,7 @@ color: red;
 font-size: 12px;
 }
 .content .content_left1{
-width: 50vw;
+width: 50%;
 height: 100%;
 display: flex;
 flex-direction: column;
