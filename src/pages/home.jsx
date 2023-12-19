@@ -208,7 +208,7 @@ export const Home = (props) => {
     return(
         <div>
             <header className="header_home">
-                <div >
+                <div className='d-flex align-items-center'>
                     <img className="logo_png" src="./images/logo.png" alt="Logo" />
                     <h1 className="logo_text">RideWizard</h1>
                 </div>

@@ -4,6 +4,7 @@ height: 90vh;
 display: flex;
 }
 .content .content_left{
+    margin-top: 40px;
 width: 50%;
 height: 100%;
 display: flex;
@@ -90,7 +91,7 @@ background-color: #f5f5f5;
 
 .input_phonenumber {
 margin-top: 20px;
-width: 49%;
+width: 50%;
 height: 39px;
 font-size: 16px;
 border: 1px solid #ccc;

@@ -1,0 +1,44 @@
+.main-content {
+    position: absolute;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, .7);
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    padding: 0;
+}
+
+.wrapper {
+    background-color: rgb(255, 255, 255);
+    padding: 20px 30px;
+    margin: 100px 30px;
+    width: 620px;
+    border-radius: 10px;
+}
+
+textarea {
+    height: 185px;
+    line-height: 1.5em;
+    resize: vertical;
+}
+
+.submit-button button {
+    display: block;
+    margin: 30px auto 0 auto;
+    box-sizing: border-box;
+    width: 230px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #3F80B9;
+    text-align: center;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 30px;
+    color: #f5f1f1;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: none;
+    border: none;
+}
