@@ -7,11 +7,14 @@ import Contacts from './pages/Contacts/Contacts';
 import Terms from './pages/Terms/Terms';
 import About from './pages/About/About';
 import Privacy from './pages/Privacy/Privacy';
+import MethodRegister from './pages/RegisterMethod/MethodRegister';
 import HeaderLogin from "./components/header/HeaderLogin"
+import ColorVehicle from './pages/ModelVehicle/ColorVehicle';
+import ModelVehicle from './pages/ModelVehicle/ModelVehicle';
 
 import './index.css';
 
-import { BrowserRouter as Router, Route, Link, Switch  } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const App = () => {
   return (
@@ -26,7 +29,10 @@ const App = () => {
         <Route path='/contacts' component={Contacts }></Route>
         <Route path='/terms' component={ Terms}></Route>
         <Route path='/about' component={ About} />
-        <Route path='/policy-privacy' component={ Privacy}></Route>
+        <Route path='/policy-privacy' component={Privacy}></Route>
+        <Route path='/register-method' component={MethodRegister}></Route>
+        <Route path='/colorVehical' component={ColorVehicle}></Route>
+        <Route path='/modelVehical' component={ModelVehicle }></Route>
       </Router>
     </div>
     

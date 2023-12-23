@@ -8,11 +8,6 @@ import {
   MDBNavbarNav,
   MDBNavbarItem,
   MDBNavbarLink,
-  MDBBtn,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
   MDBCollapse,
 } from 'mdb-react-ui-kit';
 import '../../styles/Header/HeaderLogin.css';
@@ -22,10 +17,6 @@ const HeaderLogin = () => {
   const [openBasic, setOpenBasic] = useState(false);
 
   return (
-    // <header className="header_login">
-    //   <img className="logo_png" src="./images/logo.png" alt="Logo" />
-    //   <h1 className="logo_text">RideWizard</h1>
-    // </header>
     <MDBNavbar expand='lg' light bgColor='light'>
       <MDBContainer fluid>
         <MDBNavbarBrand href='/' className="header_login">
@@ -61,30 +52,7 @@ const HeaderLogin = () => {
             <MDBNavbarItem>
               <MDBNavbarLink href='/policy-privacy'>Policy Privacy</MDBNavbarLink>
             </MDBNavbarItem>
-            {/* <MDBNavbarItem>
-              <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
-                  Dropdown
-                </MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link>Action</MDBDropdownItem>
-                  <MDBDropdownItem link>Another action</MDBDropdownItem>
-                  <MDBDropdownItem link>Something else here</MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            </MDBNavbarItem> */}
-
-            {/* <MDBNavbarItem>
-              <MDBNavbarLink disabled href='#' tabIndex={-1} aria-disabled='true'>
-                Disabled
-              </MDBNavbarLink>
-            </MDBNavbarItem> */}
           </MDBNavbarNav>
-
-          {/* <form className='d-flex input-group w-auto'>
-            <input type='search' className='form-control' placeholder='Type query' aria-label='Search' />
-            <MDBBtn color='primary'>Search</MDBBtn>
-          </form> */}
         </MDBCollapse>
       </MDBContainer>
     </MDBNavbar>

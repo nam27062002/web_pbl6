@@ -21,7 +21,7 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     };
   }, []);
     const popupContentStyle = {
-        width: windowWidth < 768 ? '85%' : '40%', // 768 là một giả định, bạn có thể thay đổi theo nhu cầu
+        width: windowWidth < 768 ? '85%' : '40%', 
         height: 'auto',
         padding: '0px',
         background: "rgba(255, 255, 255, 0)",
@@ -36,7 +36,7 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
       };
     return (
         <div >
-            <div className="container">
+            <div className="container1">
                 <div>
                     <div  className="container_banner">
                         <img src="./images/homepage/banner/banner.png" alt="" className="banner" />

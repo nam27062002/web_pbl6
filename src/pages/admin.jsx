@@ -112,7 +112,7 @@ export const Admin = () => {
         setEditedFields({
             name: user.name || "",
             status: user.status || "",
-            phone: user.phone || "",
+            phone: user.phone || "",    
         });
     };
 
@@ -167,7 +167,7 @@ export const Admin = () => {
     );
     return (
         <div>
-            <header className="header_home">
+            {/* <header className="header_home">
                 <img className="logo_png" src="./images/logo.png" alt="Logo" />
                 <h1 className="logo_text">RideWizard</h1>
                 <div className="box_avt">
@@ -176,7 +176,7 @@ export const Admin = () => {
                     </div>
                     <Avatar src="/images/avatar/avt.png" alt="User Avatar" size="small" />
                 </div>
-            </header>
+            </header> */}
             <div className="content">
                 <div className="sidebar-collapse">
                     <ul className="sidebar-list">
