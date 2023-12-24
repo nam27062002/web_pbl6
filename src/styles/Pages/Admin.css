@@ -1,4 +1,4 @@
-.content-right{
+.content-right {
     width: 100%;
     height: auto;
 }
@@ -32,6 +32,7 @@
 .user-table thead th {
     padding: 12px;
 }
+
 .user-table tbody td img {
     margin-right: 10px;
 }
@@ -116,7 +117,7 @@
 
 
 .user-table tbody td:nth-child(5) {
-    color: #27ae60; 
+    color: #27ae60;
     font-weight: bold;
 }
 
@@ -145,6 +146,7 @@
 .star-rating .filled {
     color: #f1c40f;
 }
+
 .user-table tbody td img {
     width: 30px;
     height: 30px;
@@ -166,13 +168,14 @@
     outline: none;
     font-size: 14px;
 }
+
 .pagination-buttons {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 10px;
-  }
-  
+}
+
 .pagination-buttons button:hover {
     background-color: #2980b9;
 }
@@ -207,33 +210,33 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
-  }
-  
+}
 
-  .popup {
+
+.popup {
     background: #fff;
     max-width: 400px;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-  
+}
 
-  .popup label {
+
+.popup label {
     display: block;
     margin-bottom: 8px;
-  }
-  
-  .popup input,
-  .popup select {
+}
+
+.popup input,
+.popup select {
     width: 100%;
     padding: 8px;
     margin-bottom: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  
-  .popup button {
+}
+
+.popup button {
     background: #007bff;
     color: #fff;
     padding: 8px 16px;
@@ -241,21 +244,90 @@
     border-radius: 4px;
     cursor: pointer;
     margin-right: 8px;
-  }
-  
-  .popup button:hover {
+}
+
+.popup button:hover {
     background: #0056b3;
-  }
-  
-  .popup .close-button {
+}
+
+.popup .close-button {
     background: #ccc;
     color: #333;
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
-  
-  .popup .close-button:hover {
+}
+
+.popup .close-button:hover {
     background: #999;
-  }
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+
+
+
+
+.filter-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.filter-label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.filter-dropdown,
+.search-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.filter-dropdown {
+    width: 150px;
+}
+
+.search-input {
+    width: 200px;
+}
+
+.exact-match-checkbox {
+    margin-left: 10px;
+}
+
+/* Add some styling for the selected option in dropdown */
+.filter-dropdown option:checked {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Apply styles when checkbox is checked */
+.exact-match-checkbox:checked {
+    border-color: #007bff;
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Add some styling for the labels */
+.filter-label {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Style for the container when index is 1 */
+.filter-container.index-1 {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

@@ -4,23 +4,24 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
 import '../styles/Pages/Admin.css';
-const Avatar = ({ src, alt, size }) => {
+import Modal from 'react-modal';
 
-    return (
-        <img
-            className={`avatar ${size ? `avatar-${size}` : ''}`}
-            src={src}
-            alt={alt}
-        />
-    );
-};
 
 export const Admin = () => {
     const [userData, setUserData] = useState([]);
     const [index, setIndex] = useState(0);
+    const [searchText, setSearchText] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
     useEffect(() => {
         uploadTable(0);
     }, []);
+    const handlePendingApprovalClick = (id) => {
+        setSelectedItemId(id);
+        setIsModalOpen(true);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     const fetchUserData = async (url, headers, filterFunction) => {
         try {
             const response = await axios.get(url, { headers });
@@ -32,6 +33,7 @@ export const Admin = () => {
                 status: user.status || "On going",
                 phone: user.phNo || "",
                 email: user.email || "",
+                driverStatus: user.driverStatus || "",
                 avgRate: 4,
             }));
         } catch (error) {
@@ -45,13 +47,14 @@ export const Admin = () => {
         };
         const url = 'http://ridewizard.pro:9000/api/v1/users';
         if (index === 0) {
-
+            setSelectedDriverStatus("All");
             const filterFunction = user => user.driverStatus === 'You are not a driver' && user.fullName !== '';
             const updatedUserData = await fetchUserData(url, headers, filterFunction);
             setUserData(updatedUserData);
         }
         else if (index === 1) {
-            const filterFunction = user => user.driverStatus !== 'You are not a driver' && user.fullName !== '';
+            const filterFunction = user => user.driverStatus !== 'You are not a driver' && user.driverStatus !== 'Admin'
+                && user.fullName !== '';
             const updatedUserData = await fetchUserData(url, headers, filterFunction);
             setUserData(updatedUserData);
         }
@@ -72,12 +75,37 @@ export const Admin = () => {
 
     };
     const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 10;
-
+    const rowsPerPage = 8;
+    const [selectedField, setSelectedField] = useState("All");
+    const [exactMatch, setExactMatch] = useState(false);
     const getCurrentPageData = () => {
         const startIndex = (currentPage - 1) * rowsPerPage;
         const endIndex = startIndex + rowsPerPage;
-        return userData.slice(startIndex, endIndex);
+
+        const filteredData = userData.filter((user) => {
+            const isMatchingSearchText = exactMatch ?
+                user.id.toString() === searchText ||
+                user.name.toLowerCase() === searchText.toLowerCase() ||
+                user.phone.toLowerCase() === searchText.toLowerCase() ||
+                user.email.toLowerCase() === searchText.toLowerCase() :
+                user.id.toString().includes(searchText) ||
+                user.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                user.phone.toLowerCase().includes(searchText.toLowerCase()) ||
+                user.email.toLowerCase().includes(searchText.toLowerCase());
+
+            const isMatchingDriverStatus = selectedDriverStatus === "All" || user.driverStatus === selectedDriverStatus;
+
+            const isMatchingAvgRate = selectedAvgRate === "All" || user.avgRate.toString() === selectedAvgRate;
+
+            if (selectedField === "All") {
+                return isMatchingSearchText && isMatchingDriverStatus && isMatchingAvgRate;
+            } else {
+                const isMatchingField = user[selectedField].toString().toLowerCase().includes(searchText.toLowerCase());
+                return isMatchingField && isMatchingDriverStatus && isMatchingAvgRate;
+            }
+        });
+
+        return filteredData.slice(startIndex, endIndex);
     };
     const [selectedRows, setSelectedRows] = useState([]);
 
@@ -96,74 +124,32 @@ export const Admin = () => {
 
 
 
-    const [showPopup, setShowPopup] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedAvgRate, setSelectedAvgRate] = useState("All");
+    const [selectedDriverStatus, setSelectedDriverStatus] = useState("All");
+    const [selectedItemId, setSelectedItemId] = useState(null);
 
-    const [editedFields, setEditedFields] = useState({
-        name: "",
-        status: "",
-        phone: "",
-    });
-
-    const handleEditButtonClick = (user) => {
-        setShowPopup(true);
-        setSelectedUser(user);
-        setEditedFields({
-            name: user.name || "",
-            status: user.status || "",
-            phone: user.phone || "",
-        });
+    const handleSearchChange = (event) => {
+        setSearchText(event.target.value);
     };
-
-    const handleFieldChange = (fieldName, value) => {
-        setEditedFields((prevFields) => ({
-            ...prevFields,
-            [fieldName]: value,
-        }));
+    const highlightText = (text, search) => {
+        const regex = new RegExp(`(${search})`, "gi");
+        return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
     };
-
-    const handleClosePopup = () => {
-        setShowPopup(false);
-        setSelectedUser(null);
-        setEditedFields({
-            name: "",
-            status: "",
-            phone: "",
-        });
-    };
-
-    const handleSaveChanges = () => {
-        console.log("Saving changes:", editedFields);
-        handleClosePopup();
-    };
-
-    const handleDeleteAccount = async () => {
-        try {
-            const response = await axios.delete(`http://ridewizard.pro:9000/api/v1/users/${selectedUser.id}`, {
-                headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
-                },
-            });
-
-        } catch (error) {
-            console.error(error);
+    function getStatusColor(driverStatus) {
+        switch (driverStatus) {
+            case "Insufficient verification information":
+                return "#ff0000"; // Red
+            case "Insufficient authentication information":
+                return "#ffa500"; // Orange
+            case "Pending approval":
+                return "#007acc"; // Yellow
+            case "Approved":
+                return "#008000"; // Green
+            default:
+                return "#000000"; // Black (or any default color)
         }
-        console.log(`Deleted account with id ${selectedUser.id}`);
-        handleClosePopup();
-        uploadTable(index);
-    };
+    }
 
-    const renderField = (label, value, onChange) => (
-        <div>
-            <label htmlFor={label}>{label}:</label>
-            <input
-                type="text"
-                id={label}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-            />
-        </div>
-    );
     return (
         <div>
             <div className="content">
@@ -199,40 +185,127 @@ export const Admin = () => {
                     </ul>
                 </div>
                 <div className='content-right'>
+                    <div className={`filter-container ${index === 1 ? 'index-1' : ''}`}>
+                        <label className="filter-label">
+                            Field:
+                            <select className="filter-dropdown" value={selectedField} onChange={(e) => setSelectedField(e.target.value)}>
+                                <option value="All">All</option>
+                                <option value="id">ID</option>
+                                <option value="name">Name</option>
+                                <option value="phone">Phone</option>
+                                <option value="email">Email</option>
+                            </select>
+                        </label>
+
+                        <label className="filter-label">
+                            Search:
+                            <input
+                                className="search-input"
+                                type="text"
+                                placeholder="Search..."
+                                value={searchText}
+                                onChange={handleSearchChange}
+                            />
+                        </label>
+
+                        {index === 1 && (
+                            <label className="filter-label">
+                                Driver Status:
+                                <select className="filter-dropdown" value={selectedDriverStatus} onChange={(e) => setSelectedDriverStatus(e.target.value)}>
+                                    <option value="All">All</option>
+                                    <option value="Insufficient verification information">Insufficient verification information</option>
+                                    <option value="Insufficient authentication information">Insufficient authentication information</option>
+                                    <option value="Pending approval">Pending approval</option>
+                                    <option value="Approved">Approved</option>
+                                </select>
+                            </label>
+                        )}
+
+                        {index === 1 && (
+                            <label className="filter-label">
+                                Average Rate:
+                                <select className="filter-dropdown" value={selectedAvgRate} onChange={(e) => setSelectedAvgRate(e.target.value)}>
+                                    <option value="All">All</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </label>
+                        )}
+
+                        <label className="filter-label">
+                            Exact Match:
+                            <input
+                                className="exact-match-checkbox"
+                                type="checkbox"
+                                checked={exactMatch}
+                                onChange={() => setExactMatch(!exactMatch)}
+                            />
+                        </label>
+                    </div>
                     <table className="user-table">
                         <thead>
                             <tr>
-                                <th>
-                                    <input type="checkbox" onChange={() => { }} />
-                                </th>
-                                <th>#</th>
+                                <th>ID</th>
                                 <th></th>
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Phone</th>
                                 <th>Email</th>
+                                {index === 1 && <th>Driver Status</th>}
                                 {index === 1 && <th>AVG Rate</th>}
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {getCurrentPageData().map(user => (
                                 <tr key={user.id}>
                                     <td>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedRows.includes(user.id)}
-                                            onChange={() => handleCheckboxChange(user.id)}
-                                        />
+                                        {(selectedField === "All" || selectedField === "id") && searchText && user.id.toString().includes(searchText) ? (
+                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.id.toString(), searchText) }} />
+                                        ) : (
+                                            user.id
+                                        )}
                                     </td>
-                                    <td>{user.id}</td>
                                     <td>
                                         <img src={user.avatar} alt="Avatar" />
                                     </td>
-                                    <td>{user.name}</td>
+                                    <td>
+                                        {(selectedField === "All" || selectedField === "name") && searchText && user.name.toLowerCase().includes(searchText.toLowerCase()) ? (
+                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.name, searchText) }} />
+                                        ) : (
+                                            user.name
+                                        )}
+                                    </td>
                                     <td>{user.status}</td>
-                                    <td>{user.phone}</td>
-                                    <td>{user.email}</td>
+                                    <td>
+                                        {(selectedField === "All" || selectedField === "phone") && searchText && user.phone.toLowerCase().includes(searchText.toLowerCase()) ? (
+                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.phone, searchText) }} />
+                                        ) : (
+                                            user.phone
+                                        )}
+                                    </td>
+                                    <td>
+                                        {(selectedField === "All" || selectedField === "email") && searchText && user.email.toLowerCase().includes(searchText.toLowerCase()) ? (
+                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.email, searchText) }} />
+                                        ) : (
+                                            user.email
+                                        )}
+                                    </td>
+                                    {index === 1 && (
+                                        <td
+                                            style={{
+                                                color: getStatusColor(user.driverStatus),
+                                                cursor: user.driverStatus === 'Pending approval' ? 'pointer' : 'default',
+                                            }}
+                                            onClick={() => user.driverStatus === 'Pending approval' && handlePendingApprovalClick(user.id)}
+                                        >
+                                            {user.driverStatus}
+                                        </td>
+
+                                    )}
                                     {index === 1 && (
                                         <td>
                                             <div className="star-rating">
@@ -242,9 +315,6 @@ export const Admin = () => {
                                             </div>
                                         </td>
                                     )}
-                                    <td>
-                                        <button onClick={() => handleEditButtonClick(user)}>...</button>
-                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -262,23 +332,18 @@ export const Admin = () => {
                         </button>
                     </div>
                 </div>
-                {showPopup && (
-                    <div className="overlay">
-                        <div className="popup">
-                            <h2>Edit User Information</h2>
-                            {renderField("Name", selectedUser.name, (value) => handleFieldChange("name", value))}
-                            {renderField("Status", selectedUser.status, (value) => handleFieldChange("status", value))}
-                            {renderField("Phone", selectedUser.phone, (value) => handleFieldChange("phone", value))}
-                            <div>
-                                <button onClick={handleSaveChanges}>Save Changes</button>
-                                <button onClick={handleDeleteAccount}>Delete Account</button>
-                                <button onClick={handleClosePopup} className="close-button">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
             <ToastContainer />
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Pending Approval Modal"
+            >
+                {/* Nội dung modal ở đây */}
+                <h2>Pending Approval Details</h2>
+                <p>ID: {selectedItemId}</p>
+                <button onClick={closeModal}>Đóng</button>
+            </Modal>
         </div>
 
     )
