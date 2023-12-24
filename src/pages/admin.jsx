@@ -50,7 +50,7 @@ export const Admin = () => {
             const updatedUserData = await fetchUserData(url, headers, filterFunction);
             setUserData(updatedUserData);
         }
-        else {
+        else if (index === 1) {
             const filterFunction = user => user.driverStatus !== 'You are not a driver' && user.fullName !== '';
             const updatedUserData = await fetchUserData(url, headers, filterFunction);
             setUserData(updatedUserData);
@@ -60,7 +60,7 @@ export const Admin = () => {
     const handleItemClick = async (itemName) => {
         setActiveItem(itemName);
         setUserData([]);
-
+        setCurrentPage(1);
         if (itemName === "Drivers") {
             setIndex(1);
             uploadTable(1);
@@ -111,7 +111,7 @@ export const Admin = () => {
         setEditedFields({
             name: user.name || "",
             status: user.status || "",
-            phone: user.phone || "",    
+            phone: user.phone || "",
         });
     };
 
@@ -166,16 +166,6 @@ export const Admin = () => {
     );
     return (
         <div>
-            {/* <header className="header_home">
-                <img className="logo_png" src="./images/logo.png" alt="Logo" />
-                <h1 className="logo_text">RideWizard</h1>
-                <div className="box_avt">
-                    <div className="info_user">
-                        <div className="name_user">ADMIN</div>
-                    </div>
-                    <Avatar src="/images/avatar/avt.png" alt="User Avatar" size="small" />
-                </div>
-            </header> */}
             <div className="content">
                 <div className="sidebar-collapse">
                     <ul className="sidebar-list">
@@ -221,7 +211,7 @@ export const Admin = () => {
                                 <th>Status</th>
                                 <th>Phone</th>
                                 <th>Email</th>
-                                <th>AVG Rate</th>
+                                {index === 1 && <th>AVG Rate</th>}
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -243,13 +233,15 @@ export const Admin = () => {
                                     <td>{user.status}</td>
                                     <td>{user.phone}</td>
                                     <td>{user.email}</td>
-                                    <td>
-                                        <div className="star-rating">
-                                            {[...Array(5)].map((_, index) => (
-                                                <span key={index} className={index < user.avgRate ? 'filled' : ''}>★</span>
-                                            ))}
-                                        </div>
-                                    </td>
+                                    {index === 1 && (
+                                        <td>
+                                            <div className="star-rating">
+                                                {[...Array(5)].map((_, index) => (
+                                                    <span key={index} className={index < user.avgRate ? 'filled' : ''}>★</span>
+                                                ))}
+                                            </div>
+                                        </td>
+                                    )}
                                     <td>
                                         <button onClick={() => handleEditButtonClick(user)}>...</button>
                                     </td>
@@ -257,6 +249,7 @@ export const Admin = () => {
                             ))}
                         </tbody>
                     </table>
+
                     <div className="pagination-buttons">
                         <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
                             Previous
