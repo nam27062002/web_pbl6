@@ -187,7 +187,12 @@ export const Home = (props) => {
                 Authorization: `Bearer ${accessToken}`,
               },
             });
-            setFullName(response.data.data.user.lastName + " " + response.data.data.user.firstName);
+            if (!response.data.data.lastName) {
+                setFullName(response.data.data.user.firstName);
+                
+            } else {
+                setFullName(response.data.data.user.lastName + " " + response.data.data.user.firstName);
+            }
             setEmail(response.data.data.user.email);
             setPhonenumber(response.data.data.user.phNo);
             setLastName(response.data.data.user.lastName);
@@ -202,9 +207,12 @@ export const Home = (props) => {
       }, []);
     return(
         <div>
-            <header className="header_home">
-                <img className="logo_png" src="./images/logo.png" alt="Logo" />
-                <h1 className="logo_text">RideWizard</h1>
+            {/* <header className="header_home">
+                <div className='d-flex align-items-center'>
+                    <img className="logo_png" src="./images/logo.png" alt="Logo" />
+                    <h1 className="logo_text">RideWizard</h1>
+                </div>
+                
                 <div className="box_avt">
                     <div className="info_user">
                     <div className="name_user">{fullName}</div>
@@ -212,93 +220,87 @@ export const Home = (props) => {
                     </div>
                     <Avatar src="/images/avatar/avt.png" alt="User Avatar" size="small" />
                 </div>
-            </header>
+            </header> */}
             <div className="content">
-                <div className="sidebar-collapse">
-                    <ul className="sidebar-list">
-                        <li>
+                <nav className="collapse d-lg-block sidebar collapse bg-white">
+                    <div className="position-sticky">
+                        <div className="list-group list-group-flush ">
                             <a
                                 href="#"
-                                className={activeItem === 'Hồ sơ cá nhân' ? 'active' : ''}
+                                className={activeItem === 'Hồ sơ cá nhân' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
                                 onClick={() => handleItemClick('Hồ sơ cá nhân')}
                             >
                                  <img src="images/user.png" className="sidebar-icon"/>Hồ sơ cá nhân
                             </a>
-                        </li>
-                        <li>
                             <a
                                 href="#"
-                                className={activeItem === 'Dịch vụ' ? 'active' : ''}
+                                className={activeItem === 'Dịch vụ' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
                                 onClick={() => handleItemClick('Dịch vụ')}
                             >
                                 <img src="images/car.png" className="sidebar-icon"/>Dịch vụ
                             </a>
-                        </li>
-                        <li>
                             <a
                                 href="#"
-                                className={activeItem === 'Lịch sử các cuốc xe' ? 'active' : ''}
+                                className={activeItem === 'Lịch sử các cuốc xe' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
                                 onClick={() => handleItemClick('Lịch sử các cuốc xe')}
                             >
                                 <img src="images/file.png" className="sidebar-icon"/>Lịch sử các cuốc xe
                             </a>
-                        </li>
-                        <li>
                             <a
                                 href="#"
-                                className={activeItem === 'Tài khoản và thẻ' ? 'active' : ''}
+                                className={activeItem === 'Tài khoản và thẻ' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
                                 onClick={() => handleItemClick('Tài khoản và thẻ')}
                             >
                                 <img src="images/credit-card.png" className="sidebar-icon"/>Tài khoản và thẻ
                             </a>
-                        </li>
-                        <li>
                             <a
                                 href="#"
-                                className={activeItem === 'Thống kê' ? 'active' : ''}
+                                className={activeItem === 'Thống kê' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
                                 onClick={() => handleItemClick('Thống kê')}
                             >
                                 <img src="images/trend.png" className="sidebar-icon"/>Thống kê
                             </a>
-                        </li>
-                        <li>
                             <Link
                                 to="/"
-                                className={activeItem === 'Thoát' ? 'active' : ''}
+                                className={activeItem === 'Thoát' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
                                 onClick={() => handleItemClick('Thoát')}
                             >
                                 <img src="images/power-off.png" className="sidebar-icon"/>Thoát
                             </Link>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                        
+                    </div>
+                </nav>
                 <div className="content_1">
                     <div className='T1'>Hồ sơ cá nhân</div>
                     <div className="A1">
                         <div className="L1">
                             <div className='A2'>Phương tiện</div>
-                            <table className="custom-table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Hãng</th>
-                                        <th>Hạng</th>
-                                        <th>Số</th>
-                                        <th>Năm</th>
-                                        <th>Màu</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><button class="delete-button"><img src="./images/bin.png" alt="Xóa"/></button></td>
-                                        <td>Xe máy</td>
-                                        <td>Xe máy</td>
-                                        <td>73H111999</td>
-                                        <td>2012</td>
-                                        <td>Đỏ</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div className="scroll_x">
+                                <table className="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Hãng</th>
+                                            <th>Hạng</th>
+                                            <th>Số</th>
+                                            <th>Năm</th>
+                                            <th>Màu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><button class="delete-button"><img src="./images/bin.png" alt="Xóa"/></button></td>
+                                            <td>Xe máy</td>
+                                            <td>Xe máy</td>
+                                            <td>73H111999</td>
+                                            <td>2012</td>
+                                            <td>Đỏ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                             <button className='btn_A1'>Thêm loại xe khác</button>
                         </div>
                         <div className='R1'>

@@ -1,8 +1,12 @@
-import HeaderLogin from "../components/header/HeaderLogin"
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../styles/Pages/Register.css';
 import axios from 'axios';
+
+import Lottie from "lottie-react";
+import groovyWalkAnimation from "../lotti/driver_banner.json";
+
+
 export const Register = (props) => {
     const [countdown, setCountdown] = useState(60);
     const [token, setToken] = useState(
@@ -339,7 +343,8 @@ export const Register = (props) => {
     const renderContent = () => {
         if (contentType === 'verify') {
           return (
-            <div className="content_left">
+
+            <div className="content_left ">
                 <div className="C_T_1">ĐĂNG KÝ</div>
                 <div className="C_T_2">HÃY BẮT ĐẦU KIẾM THU NHẬP TỪ HÔM NAY</div>
                 <div className="C_T_3">Không cần đến văn phòng hay nói chuyện với nhân viên. Sau khi điền đơn, bạn sẽ nhận được tên đăng nhập và mật khẩu để đăng nhập vào ứng dụng. Và đã có thể bắt đầu kiếm tiền!</div>
@@ -366,9 +371,9 @@ export const Register = (props) => {
           );
         }
         if (contentType === 'personalInfo'){
-            return (
+          return (
                 <div className="content_left">
-                      <div>THÔNG TIN CÁ NHÂN</div>
+                      <div className="form_title_1">THÔNG TIN CÁ NHÂN</div>
                       <input
                           className="input_phonenumber"
                           type="text"
@@ -517,11 +522,11 @@ export const Register = (props) => {
     }
     return (
       <div>
-            <HeaderLogin/>
             <div className="content">
                 {renderContent()}
                 <div className="content_right">
-                    <img className="background" src="https://sea.taxseepro.com/i/background-1024.jpg" alt="background"/>
+            {/* <img className="background" src="./images/register/background.png" alt="background"/> */}
+                   <Lottie animationData={groovyWalkAnimation} loop={true} className='banner' />
                 </div>
             </div>
             <div className="pop-up">

@@ -1,18 +1,23 @@
 .content1 {
-    width: 100vw;
-    height: 90vh; 
+    width: 100%;
+    height: auto; 
+    padding: 12px;
     display: flex;
+    border-radius:12px;
+    /* background: linear-gradient(to right, #ebf4f5, #b5c6e0); */
+    background: rgba(255, 255, 255, 0);
+    /* background-color: #0f5f5f; */
 }
 .content1 .content_left1{
-    width: 50vw;
+    width: 50%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .content1 .content_right1{
-    width: 50vw;
-    height: 100%;
+    width: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,8 +26,12 @@
     height: 100%;
 }
 .content1 .content_right1 .form-login{
-    width: 20vw;
-    height: 50vh;   
+    width: 30vw;
+    height: 60vh; 
+    background-color: #ffffff;  
+    padding: 20px;
+    border-radius:8px;
+    box-shadow: 10px 20px 10px rgba(0, 0, 0, 0.5);
 }
 
 .form_title_1{
@@ -196,4 +205,206 @@ border: 1px solid #137878;
 }
 .btn_cancel:hover {
     background-color: #e7e3e3; 
+}
+
+
+@media screen and (max-width: 1024px){
+    .content1 {
+        display: flex;
+    }
+    .content1 .content_left1{
+        display: none;
+        /* width: 50vw; */
+        /* height: 100%; */
+        /* display: flex; */
+        /* justify-content: center; */
+        /* align-items: center; */
+    }
+    .content1 .content_right1{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .content1 .content_left1 .background{
+        height: 100%;
+    }
+    .content1 .content_right1 .form-login{
+        margin: 20px;
+        width: 100%;
+    }
+    
+    .form_title_1{
+        /* font-size: 30px; */
+        font-weight: bold;
+    }
+    .form_title_2{
+        /* margin-top: 20px; */
+        font-size: 16px;
+        font-weight: 400;
+    }
+    
+    .box_input{
+        width: 100%;
+        height: 30px;
+        border-bottom: 1px solid rgb(169, 156, 156); 
+        margin-top: 10px;
+    }
+    .box_input input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+    }
+    
+    .login-btn{
+        margin-top: 20px;
+        width: 100%;
+        height: 6vh;
+        background: black;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .box{
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .checkbox-label{
+        font-size: 12px;
+    }
+    .checkbox-input{
+        height: 12px;
+    }
+    .forgot_pw_text {
+        text-decoration: underline;
+        color: #000; 
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+      
+    .forgot_pw_text:hover {
+        text-decoration: underline; 
+        color: rgb(42, 42, 253); 
+    }
+    
+    .no-account-text{
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+        font-size: 12px;
+    }
+    .sign-up{
+        margin-left: 5px;
+        font-size: 12px;
+        color: #000; 
+        text-decoration: underline;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    
+    .sign-up:hover {
+        text-decoration: underline; 
+        color: rgb(42, 42, 253); 
+    }
+    
+    .error-text{
+        margin-top: 5px;
+        color: red;
+        font-size: 12px;
+    }
+    
+    
+    
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+    .popup {
+    background: #ffffff;
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    text-align: center;
+    }
+    
+    .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #888;
+    }
+    
+    .close:hover {
+    color: #333;
+    }
+    
+    .popup p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #333;
+    }
+    
+    .button-container {
+    display: flex;
+    justify-content:space-around;
+    }
+    
+    
+    
+    .btn_confirm {
+    width: 100px;
+    height: 40px;
+    background-color: #137878; 
+    color: #fff; 
+    border: none;
+    border-radius: 20px; 
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+    
+    .btn_confirm:hover {
+        background-color: #0f5f5f; 
+    }
+    .btn_cancel {
+    width: 100px;
+    height: 40px;
+    background-color: #fff; 
+    color: #137878; 
+    border: none;
+    border-radius: 20px; 
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #137878;
+    }
+    .btn_cancel:hover {
+        background-color: #e7e3e3; 
+    }
 }

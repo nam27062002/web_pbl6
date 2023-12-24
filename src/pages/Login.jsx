@@ -3,7 +3,7 @@ import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
-export const Login = () => {
+export  const Login = () => {
     const history = useHistory();
     const [isEmailFocused, setIsEmailFocused] = useState(false);
     const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -162,11 +162,11 @@ export const Login = () => {
     
     return(
         <div>
-            <HeaderLogin/>
+            {/* <HeaderLogin/> */}
             <div className="content1">
-                <div className="content_left1">
+                {/* <div className="content_left1">
                     <img className="background" src="./images/background/background_login.png" alt="background"/>
-                </div>
+                </div> */}
                 <div className="content_right1">
                     <form className="form-login" onSubmit={handleSubmit}>
                         <div className="form_title_1">Welcome back, Yash</div>

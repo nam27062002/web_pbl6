@@ -1,16 +1,14 @@
 .header_login {
-    width: 100vw;
-    height: 10vh;
     display: flex;
     align-items: center;
-    margin-left: 20px;
 }
   
-.header_login .logo_png {
-  width: 2vw;
+.logo_png {
+  margin-left: 20px;
+  width: 3vw;
 }
 
-.header_login .logo_text {
+.logo_text {
   margin-left: 10px;
   font-weight: bold;
   font-size: 2vw;
@@ -18,4 +16,19 @@
   -webkit-background-clip: text; 
   color: transparent;
   transition: background 0.5s ease; 
+}
+@media screen and (max-width: 1024px){
+  .header_login .logo_png {
+    margin-left: 20px;
+    width: 12vw;
+  }
+  .header_login .logo_text {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 6vw;
+    background: linear-gradient(to bottom, #56b3f5, #5487e6);
+    -webkit-background-clip: text; 
+    color: transparent;
+    transition: background 0.5s ease; 
+  }
 }
