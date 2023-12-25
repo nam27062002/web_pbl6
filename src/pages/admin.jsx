@@ -6,7 +6,6 @@ import { useHistory, Link } from 'react-router-dom';
 import '../styles/Pages/Admin.css';
 import Modal from 'react-modal';
 
-
 export const Admin = () => {
     const [userData, setUserData] = useState([]);
     const [index, setIndex] = useState(0);
@@ -15,11 +14,35 @@ export const Admin = () => {
     useEffect(() => {
         uploadTable(0);
     }, []);
+
+    const getListPhotoVerifyData = async (id) => {
+        try {
+            const response = await fetch(`http://ridewizard.pro:9000/api/v1/drivers/identification/${id}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            const data = await response.json();
+            setlistPhotoVerify(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const [listPhotoVerify, setlistPhotoVerify] = useState(null);
     const handlePendingApprovalClick = (id) => {
         setSelectedItemId(id);
+        getListPhotoVerifyData(id);
         setIsModalOpen(true);
     };
     const closeModal = () => {
+        setCurrentImageIndex(0);
         setIsModalOpen(false);
     };
     const fetchUserData = async (url, headers, filterFunction) => {
@@ -149,7 +172,49 @@ export const Admin = () => {
                 return "#000000"; // Black (or any default color)
         }
     }
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const handleApprove = async () => {
+        try {
+            const response = await fetch(`http://ridewizard.pro:9000/api/v1/drivers/driver/:type?user_id=149&type=5`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
+                },
+            });
 
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+
+
+    const handleDeny = async () => {
+        try {
+            const response = await fetch(`http://ridewizard.pro:9000/api/v1/drivers/driver/:type?user_id=${selectedItemId}&type=${currentImageIndex + 1}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to deny image');
+            }
+
+            console.log('Image Denied');
+
+            await getListPhotoVerifyData(selectedItemId);
+        } catch (error) {
+            console.error('Error denying image:', error);
+        }
+    };
     return (
         <div>
             <div className="content">
@@ -339,11 +404,56 @@ export const Admin = () => {
                 onRequestClose={closeModal}
                 contentLabel="Pending Approval Modal"
             >
-                {/* Nội dung modal ở đây */}
-                <h2>Pending Approval Details</h2>
-                <p>ID: {selectedItemId}</p>
-                <button onClick={closeModal}>Đóng</button>
+                <div className="modal-header">
+                    <div className="title-container">
+                        <h2>Pending Approval Details</h2>
+                    </div>
+                    <div className="close-button" onClick={closeModal}>
+                        X
+                    </div>
+                </div>
+
+                {listPhotoVerify ? (
+                    <div className="modal-content">
+                        <div className="image-container">
+                            <img src={listPhotoVerify.data[`type_${currentImageIndex + 1}`]} alt={`Type ${currentImageIndex + 1}`} />
+                            <div className="image-status">
+                                <p className='status_txt' style={{ color: listPhotoVerify.data[`type_${currentImageIndex + 1}_status`] === 'Approved' ? 'green' : 'deepskyblue' }}>
+                                    Status: {listPhotoVerify.data[`type_${currentImageIndex + 1}_status`]}
+                                </p>
+                                {listPhotoVerify.data[`type_${currentImageIndex + 1}_status`] === 'Pending approval' && (
+                                    <div className='B11'>
+                                        <button onClick={() => handleApprove()} className='btn_approve'>
+                                            Approve
+                                        </button>
+                                        <button onClick={() => handleDeny()} className='btn_deny'>
+                                            Deny
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="pagination-buttons" id='B12'>
+                            <button disabled={currentImageIndex === 0} onClick={() => setCurrentImageIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : 0))}>
+                                Previous
+                            </button>
+
+                            <span>{`Page ${currentImageIndex + 1} of 18`}</span>
+
+                            <button disabled={currentPage === 17} onClick={() => setCurrentImageIndex(prevIndex => (prevIndex < 17 ? prevIndex + 1 : 17))}>
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <p>Loading...</p>
+                )}
             </Modal>
+
+
+
+
+
         </div>
 
     )

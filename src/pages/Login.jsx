@@ -3,7 +3,7 @@ import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
-export  const Login = () => {
+export const Login = () => {
     const history = useHistory();
     const [isEmailFocused, setIsEmailFocused] = useState(false);
     const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -15,45 +15,45 @@ export  const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const becomeToDriver = async (token) => {
         try {
-          const response = await axios.get('http://ridewizard.pro:9000/api/v1/drivers/drive', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-  
-          console.log(response.data);
+            const response = await axios.get('http://ridewizard.pro:9000/api/v1/drivers/drive', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            console.log(response.data);
         } catch (error) {
-          console.error('Error fetching data:', error);
+            console.error('Error fetching data:', error);
         }
     };
 
     const openPopup = () => {
         setPopupOpen(true);
-      };
-    
-      const closePopup = () => {
+    };
+
+    const closePopup = () => {
         setPopupOpen(false);
-      };
-    
-      const handleConfirm = () => {
+    };
+
+    const handleConfirm = () => {
         becomeToDriver(token);
         closePopup();
         history.push(
             {
                 pathname: '/register',
                 state: {
-                  contentTypeToSet: 'confirmOTP',
-                  inputValueToSet: phoneNumber.replace("+84", "0"),
-                  tokenToSet: token,
-                  runCountdownToSet: true,
+                    contentTypeToSet: 'confirmOTP',
+                    inputValueToSet: phoneNumber.replace("+84", "0"),
+                    tokenToSet: token,
+                    runCountdownToSet: true,
                 }
             }
-          );
-      };
-    
-      const handleCancel = () => {
+        );
+    };
+
+    const handleCancel = () => {
         closePopup();
-      };
+    };
     const handleEmailFocus = () => {
         setIsEmailFocused(true);
         setIsPasswordFocused(false);
@@ -122,45 +122,46 @@ export  const Login = () => {
             console.log(data);
             setToken(data.data.accessToken);
             setPhoneNumber(data.data.user.phNo);
-            if (data.data.user.driverStatus === "You are not a driver"){
+            if (data.data.user.driverStatus === "You are not a driver") {
                 openPopup();
             }
-            else{
+            else {
                 history.push(
                     data.data.user.phone_verified === 0
-                      ? {
-                          pathname: '/register',
-                          state: {
-                            contentTypeToSet: 'confirmOTP',
-                            inputValueToSet: data.data.user.phNo.replace("+84", "0"),
-                            tokenToSet: data.data.accessToken,
-                            runCountdownToSet: true,
-                          },
+                        ? {
+                            pathname: '/register',
+                            state: {
+                                contentTypeToSet: 'confirmOTP',
+                                inputValueToSet: data.data.user.phNo.replace("+84", "0"),
+                                tokenToSet: data.data.accessToken,
+                                runCountdownToSet: true,
+                            },
                         }
-                      : {
-                          pathname: '/home',
-                          state: {
-                            accessTokenToSet: data.data.accessToken,
-                            userIdToSet: data.data.user.id,
-                          },
+                        : {
+                            pathname: '/home',
+                            state: {
+                                accessTokenToSet: data.data.accessToken,
+                                userIdToSet: data.data.user.id,
+                            },
                         }
-                  );
+                );
             }
-            
+
         } catch (error) {
             console.error('Error calling API:', error.message);
-           
+
         }
-        
+
     };
 
     const validateEmail = (email) => {
+        return true
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
-    
-    return(
+
+    return (
         <div>
             {/* <HeaderLogin/> */}
             <div className="content1">
@@ -178,23 +179,23 @@ export  const Login = () => {
                                 onFocus={handleEmailFocus}
                                 onBlur={handleInputBlur}
                                 onChange={handleEmailChange}
-                                value={email}/>
+                                value={email} />
                         </div>
                         <div className="box_input" style={{ borderBottom: `2px solid ${isPasswordFocused ? 'green' : 'rgb(169, 156, 156)'}` }}>
-                                <input
-                                    className="input"
-                                    placeholder="Password"
-                                    type="password"
-                                    onFocus={handlePasswordFocus}
-                                    onBlur={handleInputBlur}
-                                    onChange={handlePasswordChange}
-                                    value={password}/>
+                            <input
+                                className="input"
+                                placeholder="Password"
+                                type="password"
+                                onFocus={handlePasswordFocus}
+                                onBlur={handleInputBlur}
+                                onChange={handlePasswordChange}
+                                value={password} />
                         </div>
                         <div className="error-text">{error}</div>
                         <div className="box">
                             <label className="checkbox-label">
                                 <input className="checkbox-input"
-                                type="checkbox"
+                                    type="checkbox"
                                 />
                                 Terms & Conditions
                             </label>
@@ -202,7 +203,7 @@ export  const Login = () => {
                         </div>
                         <button className="login-btn">Log In</button>
                         <div className="no-account-text">
-                            You don't have an account? 
+                            You don't have an account?
                             <Link to="/register" className="sign-up">
                                 Sign up for free
                             </Link>
@@ -215,18 +216,19 @@ export  const Login = () => {
                     <div className="popup-overlay">
                         <div className="popup">
                             <span className="close" onClick={closePopup}>
-                            &times;
+                                &times;
                             </span>
                             <p>Bạn có muốn trở thành tài xế?</p>
                             <div className="button-container">
-                            <button onClick={handleConfirm} className="btn_confirm">Xác nhận</button>
-                            <button onClick={handleCancel} className="btn_cancel">Hủy</button>
+                                <button onClick={handleConfirm} className="btn_confirm">Xác nhận</button>
+                                <button onClick={handleCancel} className="btn_cancel">Hủy</button>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
         </div>
-       
 
-    )}
+
+    )
+}
