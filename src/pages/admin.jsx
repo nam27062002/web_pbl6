@@ -18,6 +18,7 @@ const Avatar = ({ src, alt, size }) => {
 export const Admin = () => {
     const [userData, setUserData] = useState([]);
     const [index, setIndex] = useState(0);
+    
     useEffect(() => {
         uploadTable(0);
     }, []);
@@ -57,7 +58,7 @@ export const Admin = () => {
         }
     };
     const [activeItem, setActiveItem] = useState('Account');
-    const handleItemClick = async (itemName) => {
+    const   handleItemClick = async (itemName) => {
         setActiveItem(itemName);
         setUserData([]);
 

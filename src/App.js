@@ -11,15 +11,18 @@ import MethodRegister from './pages/RegisterMethod/MethodRegister';
 import HeaderLogin from "./components/header/HeaderLogin"
 import ColorVehicle from './pages/ModelVehicle/ColorVehicle';
 import ModelVehicle from './pages/ModelVehicle/ModelVehicle';
+import NoInternet from './components/no_internet/NoInternet';
 
 import './index.css';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const App = () => {
+  
   return (
     <div className="background">
       <HeaderLogin></HeaderLogin>
+
       <Router>
         <Route path="/" exact component={Welcome} />
         <Route path="/login" component={Login} />
@@ -32,7 +35,8 @@ const App = () => {
         <Route path='/policy-privacy' component={Privacy}></Route>
         <Route path='/register-method' component={MethodRegister}></Route>
         <Route path='/colorVehical' component={ColorVehicle}></Route>
-        <Route path='/modelVehical' component={ModelVehicle }></Route>
+        <Route path='/modelVehical' component={ModelVehicle}></Route>
+        <Route path='/nointernet' component={NoInternet }></Route>
       </Router>
     </div>
     

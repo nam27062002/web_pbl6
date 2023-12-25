@@ -5,7 +5,8 @@ import axios from 'axios';
 
 import Lottie from "lottie-react";
 import groovyWalkAnimation from "../lotti/driver_banner.json";
-
+import Spinner from "../components/spinner/Spinner";
+import NoInternet from '../components/no_internet/NoInternet';
 
 export const Register = (props) => {
     const [countdown, setCountdown] = useState(60);
@@ -51,23 +52,37 @@ export const Register = (props) => {
     const [selectedColor, setSelectedColor] = useState(null);
     const [licensePlate, setLicensePlate] = useState('');
     const [selectedModelId, setSelectedModelId] = useState(null);
-    const [selectedColorId, setSelectedColorId] = useState(null);
-    const becomeToDriver = async (token) => {
-        try {
-          const response = await axios.get('http://ridewizard.pro:9000/api/v1/drivers/drive', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+  const [selectedColorId, setSelectedColorId] = useState(null);
+  const [loading, setLoading] = useState(false);
+    const [isOnline, setIsOnline] = useState(true);
+  const becomeToDriver = async (token) => {
+    if (navigator.onLine) {
+      setIsOnline(true)
+      try {
+        setLoading(true)
+        const response = await axios.get('http://ridewizard.pro:9000/api/v1/drivers/drive', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-          console.log(response.data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setIsOnline(false)
+      }
+        
     };
 
-    const updateProfile = async (data) => {
+  const updateProfile = async (data) => {
+    if (navigator.onLine) {
+      setIsOnline(true)
       try {
+          setLoading(true);
         const url = `http://ridewizard.pro:9000/api/v1/users/profile/${data.data.user.id}`;
         const authorizationHeader = `Bearer ${data.data.accessToken}`;
         const response = await axios.put(
@@ -90,11 +105,20 @@ export const Register = (props) => {
         console.log(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
+        } finally {
+          setLoading(false);
       }
+    } else {
+      setIsOnline(false)
+      }
+      
   };
     useEffect(() => {
       const fetchData = async () => {
-        try {
+        if (navigator.onLine) {
+          setIsOnline(true)
+          try {
+            setLoading(true);
           const response = await fetch('https://provinces.open-api.vn/api/?depth=3');
   
           if (!response.ok) {
@@ -108,7 +132,13 @@ export const Register = (props) => {
           setProvinces(provinceNames);
         } catch (error) {
           console.error('Error fetching data:', error);
+          } finally {
+            setLoading(false);
         }
+        } else {
+          setIsOnline(false);
+        }
+        
       };
   
       fetchData();
@@ -119,8 +149,11 @@ export const Register = (props) => {
         setYears(years);
     }, []);
     useEffect(() => {
-        const fetchData = async () => {
+      const fetchData = async () => {
+        if (navigator.onLine) {
+          setIsOnline(true)
           try {
+              setLoading(true)
             const modelsResponse = await axios.get('http://ridewizard.pro:9000/api/v1/vehicle/models');
             const colorsResponse = await axios.get('http://ridewizard.pro:9000/api/v1/vehicle/colors');
     
@@ -128,7 +161,13 @@ export const Register = (props) => {
             setColors(colorsResponse.data.data.colors);
           } catch (error) {
             console.error('Error fetching data:', error);
+            } finally {
+              setLoading(false);
           }
+        } else {
+          setIsOnline(false)
+          }
+          
         };
     
         fetchData();
@@ -218,47 +257,56 @@ export const Register = (props) => {
         setContentType('verify');
     }
     
-    const handleClicContinueButton1 = async () =>{
-        try {
-            const response = await fetch('http://ridewizard.pro:9000/api/v1/users/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fullName: firstName + " "+lastName, 
-                    email: email,
-                    phNo: inputValue,
-                    password: password
-                }),
-            });
+  const handleClicContinueButton1 = async () => {
+    if (navigator.onLine) {
+      setIsOnline(true)
+      try {
+        setLoading(true);
+          const response = await fetch('http://ridewizard.pro:9000/api/v1/users/signup', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  fullName: firstName + " "+lastName, 
+                  email: email,
+                  phNo: inputValue,
+                  password: password
+              }),
+          });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                setError(errorData.message);
-                throw new Error('Signup failed');
+          if (!response.ok) {
+              const errorData = await response.json();
+              setError(errorData.message);
+              throw new Error('Signup failed');
+          }
+
+          const data = await response.json();
+          console.log(data);
+          updateProfile(data);
+          becomeToDriver(data.data.accessToken);
+          requestOTP(data.data.accessToken);
+          setToken(data.data.accessToken);
+          setContentType('confirmOTP');
+          let timer;
+          if (countdown > 0) {
+              timer = setInterval(() => {
+                setCountdown((prevCountdown) => prevCountdown - 1);
+              }, 1000);
             }
-
-            const data = await response.json();
-            console.log(data);
-            updateProfile(data);
-            becomeToDriver(data.data.accessToken);
-            requestOTP(data.data.accessToken);
-            setToken(data.data.accessToken);
-            setContentType('confirmOTP');
-            let timer;
-            if (countdown > 0) {
-                timer = setInterval(() => {
-                  setCountdown((prevCountdown) => prevCountdown - 1);
-                }, 1000);
-              }
-          
-              return () => {
-                clearInterval(timer);
-              };
-        } catch (error) {
-            console.error('Error calling API:', error.message);
-        }
+        
+            return () => {
+              clearInterval(timer);
+            };
+      } catch (error) {
+          console.error('Error calling API:', error.message);
+      } finally {
+        setLoading(false);
+      }
+        
+    } else {
+      setIsOnline(false);
+      }
        
     }
 
@@ -267,29 +315,38 @@ export const Register = (props) => {
           setError('Vui lòng nhập đầy đủ thông tin');
         } else {
           setError('');
-          try {
-            const response = await axios.post(
-              'http://ridewizard.pro:9000/api/v1/drivers/vehicle',
-              {
-                modelId: selectedModelId,
-                MfgYear: '2017',
-                colorId: selectedColorId,
-                licensePlate,
-                active: '',
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
+          if (navigator.onLine) {
+            setIsOnline(true)
+            try {
+            setLoading(true)
+              const response = await axios.post(
+                'http://ridewizard.pro:9000/api/v1/drivers/vehicle',
+                {
+                  modelId: selectedModelId,
+                  MfgYear: '2017',
+                  colorId: selectedColorId,
+                  licensePlate,
+                  active: '',
                 },
-              }
-            );
-    
-            console.log('API Response:', response.data);
-            setPopupOpen(true);
-          } catch (error) {
-            setError("Lỗi không thể đăng kí");
-            console.error('Error calling API:', error);
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+      
+              console.log('API Response:', response.data);
+              setPopupOpen(true);
+            } catch (error) {
+              setError("Lỗi không thể đăng kí");
+              console.error('Error calling API:', error);
+            } finally {
+              setLoading(false);
+            }
+          } else {
+            setIsOnline(false);
           }
+          
         }
       };
     
@@ -297,38 +354,56 @@ export const Register = (props) => {
         setGender(event.target.value);
     };
     
-    const requestOTP = async (token) => {
-        try {
-          const response = await axios.get('http://ridewizard.pro:9000/api/v1/auth/otp/phone', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+  const requestOTP = async (token) => {
+    if (navigator.onLine) {
+      setIsOnline(true)
+      try {
+        setLoading(true)
+        const response = await axios.get('http://ridewizard.pro:9000/api/v1/auth/otp/phone', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
   
-          console.log(response.data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-    };
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setIsOnline(false)
+    }
+    
+  };
 
-    const verifyOTP = async (token, otp) => {
-        try {
-          const response = await axios.post('http://ridewizard.pro:9000/api/v1/auth/otp/phone/verify', {
-            otp: otp,
-          }, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log(response.data);
-          setError("");
-          setContentType("vehicleInformation");
-        } catch (error) {
-            setError("Mã OTP không chính xác");
-            console.error('Error verifying OTP:', error);
-        }
+  const verifyOTP = async (token, otp) => {
+    if (navigator.onLine) {
+      setIsOnline(true)
+      try {
+        setLoading(true);
+        const response = await axios.post('http://ridewizard.pro:9000/api/v1/auth/otp/phone/verify', {
+          otp: otp,
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data);
+        setError("");
+        setContentType("vehicleInformation");
+      } catch (error) {
+        setError("Mã OTP không chính xác");
+        console.error('Error verifying OTP:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setIsOnline(false)
+    }
+        
       
-    };
+  };
 
     const handleInputChange2 = (e) => {
         const inputText = e.target.value.replace(/\D/g, '');
@@ -343,12 +418,11 @@ export const Register = (props) => {
     const renderContent = () => {
         if (contentType === 'verify') {
           return (
-
             <div className="content_left ">
                 <div className="C_T_1">ĐĂNG KÝ</div>
                 <div className="C_T_2">HÃY BẮT ĐẦU KIẾM THU NHẬP TỪ HÔM NAY</div>
                 <div className="C_T_3">Không cần đến văn phòng hay nói chuyện với nhân viên. Sau khi điền đơn, bạn sẽ nhận được tên đăng nhập và mật khẩu để đăng nhập vào ứng dụng. Và đã có thể bắt đầu kiếm tiền!</div>
-                <select class="selection_province" id="provinceSelect" value={selectedProvince} onChange={handleProvinceChange}>
+                <select class="selection_province-register " id="provinceSelect" value={selectedProvince} onChange={handleProvinceChange}>
                     {provinces.map((province) => (
                         <option key={province} value={province}>
                         {province}
@@ -455,13 +529,13 @@ export const Register = (props) => {
             return (
                 <div className="content_left">
                     <div>THÔNG TIN PHƯƠNG TIỆN</div>
-                    <select className="selection_province" onChange={handleTypeChange}>
+                    <select className="selection_province-register " onChange={handleTypeChange}>
                         <option disabled hidden selected>Loại</option>
                         <option value="Car">Xe ô tô</option>
                         <option value="truck">Xe tải</option>
                         <option value="Motorcycles">Xe máy</option>
                     </select>
-                    <select className="selection_province" onChange={handleModelChange}>
+                    <select className="selection_province-register " onChange={handleModelChange}>
                         <option disabled hidden selected>Hãng</option>
                         {selectedType
                         ? models
@@ -477,11 +551,11 @@ export const Register = (props) => {
                             </option>
                             ))}
                     </select>
-                    <select className="selection_province" onChange={(e) => setSelectedYear(e.target.value)}>
+                    <select className="selection_province-register " onChange={(e) => setSelectedYear(e.target.value)}>
                         <option disabled hidden selected>Năm sản xuất</option>
                         {years.map(year => <option key={year}>{year}</option>)}
                     </select>
-                    <select className="selection_province" onChange={handleColorChange}>
+                    <select className="selection_province-register " onChange={handleColorChange}>
                         <option disabled hidden selected>Màu</option>
                         {colors.map((color) => (
                         <option key={color.id} value={color.color}>
@@ -520,27 +594,39 @@ export const Register = (props) => {
     const handleCancel = () => {
       closePopup();
     }
-    return (
-      <div>
-            <div className="content">
-                {renderContent()}
-                <div className="content_right">
+  return (
+    <div className="d-flex justify-content-center vh-100">
+      {isOnline ? (
+        <div className="content-register">
+          {loading &&
+            <div className="overlay d-flex align-items-center justify-content-center">
+              <Spinner />
+            </div>
+          }
+          {renderContent()}
+          <div className="content_right">
             {/* <img className="background" src="./images/register/background.png" alt="background"/> */}
-                   <Lottie animationData={groovyWalkAnimation} loop={true} className='banner' />
-                </div>
+            <Lottie animationData={groovyWalkAnimation} loop={true} className='banner' />
+          </div>
+        </div>
+      ) : (
+        <div className="content-register">
+          <NoInternet />
+        </div>
+      )}
+      
+      <div className="pop-up">
+        {isPopupOpen && (
+          <div className="popup-overlay">
+            <div className="popup">
+              <p>Đăng kí thành công, vui lòng đăng nhập để sử dụng dịch vụ</p>
+              <div className="button-container">
+                <button onClick={handleConfirm} className="btn_confirm">Xác nhận</button>
+              </div>
             </div>
-            <div className="pop-up">
-                {isPopupOpen && (
-                    <div className="popup-overlay">
-                        <div className="popup">
-                            <p>Đăng kí thành công, vui lòng đăng nhập để sử dụng dịch vụ</p>
-                            <div className="button-container">
-                            <button onClick={handleConfirm} className="btn_confirm">Xác nhận</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
+          </div>
+        )}
       </div>
-    );
+    </div>
+  );
 }

@@ -32,7 +32,7 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
       const handleButtonClick = () => {
         // Sử dụng history.push để chuyển đến đường dẫn mong muốn
-        history.push('/Register');
+        history.push('/register');
       };
     return (
         <div >
@@ -68,10 +68,9 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
                                     }
                                 </Popup>
                                 <input type="button" value="Sign up" className="btn_log"
-                                    onClick={() => {
-                                        handleButtonClick()
-                                    }}
-                                />
+                                    onClick={handleButtonClick}
+                                >
+                                </input>
                             </div>
                             
                         </div>
