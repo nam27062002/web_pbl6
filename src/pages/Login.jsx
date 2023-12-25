@@ -139,6 +139,7 @@ export  const Login = () => {
                 console.log(data);
                 setToken(data.data.accessToken);
                 setPhoneNumber(data.data.user.phNo);
+                localStorage.setItem('user', JSON.stringify(data.data.user));
                 if (data.data.user.driverStatus === "You are not a driver") {
                     openPopup();
                 }

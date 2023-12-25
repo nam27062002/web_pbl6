@@ -1,0 +1,12 @@
+.avatar{
+    width: 50px;
+}
+.container-avatar{
+    display: flex;
+    align-items: center;
+    border: none;
+    background: transparent;
+}
+.container-avatar p {
+    margin-bottom: 0px;
+}

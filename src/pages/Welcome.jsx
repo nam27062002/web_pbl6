@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import { Login } from './Login'
 import { motion } from 'framer-motion';
+import {Link} from 'react-router-dom';
 
 
 export const Welcome = () => {
@@ -67,10 +68,13 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
                                         )
                                     }
                                 </Popup>
-                                <input type="button" value="Sign up" className="btn_log"
+                                {/* <input type="button" value="Sign up" className="btn_log"
                                     onClick={handleButtonClick}
                                 >
-                                </input>
+                                </input> */}
+                                <button type="button" className="btn_log">
+                                    <Link to= "/register" className="nav-link">Register</Link>
+                                </button>
                             </div>
                             
                         </div>
