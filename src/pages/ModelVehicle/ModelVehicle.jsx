@@ -5,11 +5,15 @@ import Popup from 'reactjs-popup';
 import { motion } from 'framer-motion';
 import AddUpdateVehiclePopup from '../../components/popup/AddUpdateVehiclePopup';
 import ReactPaginate from 'react-paginate';
+import NoInternet from '../../components/no_internet/NoInternet';
+import Spinner from '../../components/spinner/Spinner';
 
 export default function ModelVehicle() {
     const [vehicles, setVehicles] = useState([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [currentPage, setCurrentPage] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [isOnline, setIsOnline] = useState(true);
     const itemsPerPage = 6; 
     const pageCount = Math.ceil(vehicles.length / itemsPerPage);
     const handlePageClick = ({ selected }) => {
@@ -17,13 +21,26 @@ export default function ModelVehicle() {
       };
     // const [types,setTypes] = useState([]);
     const getVehicleModels = async () => {
-        let res = await VehicleService.getVehicleModels()
-        console.log(res);
+        if (navigator.onLine) {
+            setIsOnline(true)
+            try {
+                setLoading(true)
+                let res = await VehicleService.getVehicleModels()
+                console.log(res);
 
-        if (res) {
-
-            setVehicles(res.data.data.models)
+                if (res) {
+                    setVehicles(res.data.data.models)
+                }
+            } catch (error) {
+            
+            } finally {
+                setLoading(false)
+            }
+        
+        } else {
+            setIsOnline(false)
         }
+        
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
@@ -81,67 +98,84 @@ const handleUpdateItem = (newRow) => {
     ]
 
     return (
-        <div className="container vh-100 bg-light ">
-            <AddUpdateVehiclePopup
-                className={"btn btn-success float-end my-3"}
-                value={"Add"}
-                vehicleModel={null}
-                callback={addItem}
-            />
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">id</th>
-                        <th scope="col">Model</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Update</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        currentItems.map((vehicle, index) => {
-                            return (
-                                <tr key={index}>
-                                    <th scope="row">{vehicle.id}</th>
-                                    <td>{vehicle.model}</td>
-                                    <td>{vehicle.type}</td>
-                                    <td>
-                                        <AddUpdateVehiclePopup
-                                            className={"btn btn-primary"}
-                                            value={"Update"}
-                                            vehicleModel={vehicle}
-                                            callback={handleUpdateItem}
-                                        /> </td>
-                                    <td><button type="button" class="btn btn-danger">Delete</button></td>
-                                </tr>
-                            );
-                        })
+        <div>
+            {isOnline ? (
+                <div>
+                    {loading && 
+                        <div className="container vh-100 bg-light ">
+                            <Spinner/>
+                        </div>
                     }
+                    <div className="container vh-100 bg-light ">
+                        <AddUpdateVehiclePopup
+                            className={"btn btn-success float-end my-3"}
+                            value={"Add"}
+                            vehicleModel={null}
+                            callback={addItem}
+                        />
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Model</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Update</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    currentItems.map((vehicle, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <th scope="row">{vehicle.id}</th>
+                                                <td>{vehicle.model}</td>
+                                                <td>{vehicle.type}</td>
+                                                <td>
+                                                    <AddUpdateVehiclePopup
+                                                        className={"btn btn-primary"}
+                                                        value={"Update"}
+                                                        vehicleModel={vehicle}
+                                                        callback={handleUpdateItem}
+                                                    /> </td>
+                                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                            </tr>
+                                        );
+                                    })
+                                }
                     
                     
-                </tbody>
-            </table>
-            {vehicles.length > itemsPerPage && (
-                <div className="d-flex flex-row justify-content-center">
-                    <ReactPaginate
-                        pageCount={pageCount}
-                        pageRangeDisplayed={3}
-                        marginPagesDisplayed={2}
-                        onPageChange={handlePageClick}
-                        breakClassName={'page-item'}
-                        breakLinkClassName={'page-link'}
-                        containerClassName={'pagination'}
-                        pageClassName={'page-item'}
-                        pageLinkClassName={'page-link'}
-                        previousClassName={'page-item'}
-                        previousLinkClassName={'page-link'}
-                        nextClassName={'page-item'}
-                        nextLinkClassName={'page-link'}
-                        activeClassName={'active'}
-                    />
+                            </tbody>
+                        </table>
+                        {vehicles.length > itemsPerPage && (
+                            <div className="d-flex flex-row justify-content-center">
+                                <ReactPaginate
+                                    pageCount={pageCount}
+                                    pageRangeDisplayed={3}
+                                    marginPagesDisplayed={2}
+                                    onPageChange={handlePageClick}
+                                    breakClassName={'page-item'}
+                                    breakLinkClassName={'page-link'}
+                                    containerClassName={'pagination'}
+                                    pageClassName={'page-item'}
+                                    pageLinkClassName={'page-link'}
+                                    previousClassName={'page-item'}
+                                    previousLinkClassName={'page-link'}
+                                    nextClassName={'page-item'}
+                                    nextLinkClassName={'page-link'}
+                                    activeClassName={'active'}
+                                />
+                            </div>
+                
+                        )}
+                    </div>
                 </div>
                 
+            
+            ) : (
+                <div className="container vh-100 bg-light ">
+                    <NoInternet />
+                </div>
             )}
         </div>
     );

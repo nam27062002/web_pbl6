@@ -10,7 +10,7 @@
 }
 .content1 .content_left1{
     width: 50%;
-    height: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,8 +26,8 @@
     height: 100%;
 }
 .content1 .content_right1 .form-login{
-    width: 30vw;
-    height: 60vh; 
+    width: 25vw;
+    height: auto; 
     background-color: #ffffff;  
     padding: 20px;
     border-radius:8px;
