@@ -1,10 +1,12 @@
 // import React, { useState } from 'react';
 import '../styles/Pages/Welcome.css'
-import HeaderLogin from "../components/header/HeaderLogin"
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import Popup from 'reactjs-popup';
-import {Login} from './Login'
+import { Login } from './Login'
+import { motion } from 'framer-motion';
+import {Link} from 'react-router-dom';
+
 
 export const Welcome = () => {
 const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -20,25 +22,26 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     };
   }, []);
     const popupContentStyle = {
-        width: windowWidth < 768 ? '85%' : '40%', // 768 là một giả định, bạn có thể thay đổi theo nhu cầu
+        width: windowWidth < 768 ? '85%' : '40%', 
         height: 'auto',
         padding: '0px',
-
-        borderRadius: '12px'
+        background: "rgba(255, 255, 255, 0)",
+        borderRadius: '12px',
+        boxShadow: "none"
       };
       const history = useHistory();
 
       const handleButtonClick = () => {
         // Sử dụng history.push để chuyển đến đường dẫn mong muốn
-        history.push('/Register');
+        history.push('/register');
       };
     return (
         <div >
-            <HeaderLogin />
-            <div className="container">
+            <div className="container1">
                 <div>
                     <div  className="container_banner">
                         <img src="./images/homepage/banner/banner.png" alt="" className="banner" />
+                        {/* <Lottie animationData={groovyWalkAnimation} loop={true} className='banner' /> */}
                         <div className="container_form">
                             <h1 className="title">Get in the driver's seat and get paid</h1>
                             <p>Drive on the platform with the largest network of active riders.</p>
@@ -46,23 +49,32 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
                                 <Popup 
                                     trigger={
                                         <input type="button" value="Sign in" className="btn_log" />
+                                        
                                     }
                                     modal nested
                                     contentStyle={popupContentStyle}
                                 >
                                     {
                                         close =>  (
-                                            <div className=''>
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.9 }}
+                                                transition={{ duration: 0.5 }}
+                                            >
                                                 <Login></Login>
-                                            </div>
+                                            </motion.div>
+                                                
                                         )
                                     }
                                 </Popup>
-                                <input type="button" value="Sign up" className="btn_log"
-                                    onClick={() => {
-                                        handleButtonClick()
-                                    }}
-                                />
+                                {/* <input type="button" value="Sign up" className="btn_log"
+                                    onClick={handleButtonClick}
+                                >
+                                </input> */}
+                                <button type="button" className="btn_log">
+                                    <Link to= "/register" className="nav-link">Register</Link>
+                                </button>
                             </div>
                             
                         </div>
