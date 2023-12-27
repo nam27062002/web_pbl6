@@ -1,4 +1,6 @@
 import HeaderLogin from "../components/header/HeaderLogin"
+import { Redirect } from "react-router-dom";
+
 import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
@@ -139,7 +141,7 @@ export const Login = () => {
                 console.log(data);
                 setToken(data.data.accessToken);
                 setPhoneNumber(data.data.user.phNo);
-                localStorage.setItem('user', JSON.stringify(data.data.user));
+                localStorage.setItem('user', JSON.stringify(data.data));
                 if (data.data.user.driverStatus === "You are not a driver") {
                     openPopup();
                 }
@@ -156,7 +158,7 @@ export const Login = () => {
                                 },
                             }
                             : {
-                                pathname: '/home',
+                                pathname: '/driver',
                                 state: {
                                     accessTokenToSet: data.data.accessToken,
                                     userIdToSet: data.data.user.id,

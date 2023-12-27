@@ -13,6 +13,8 @@ import ColorVehicle from "./pages/ModelVehicle/ColorVehicle";
 import ModelVehicle from "./pages/ModelVehicle/ModelVehicle";
 import NoInternet from "./components/no_internet/NoInternet";
 import DriverHome from "./pages/DriverHome/DriverHome";
+import HomeContainer from "./home/HomeContainer";
+import DriverContainer from "./dirver/DriverContainer";
 
 import "./index.css";
 
@@ -22,9 +24,10 @@ const App = () => {
   return (
     <>
       <Router>
-        <HeaderLogin></HeaderLogin>
-        <Route path="/" exact component={Welcome} />
-        <Route path="/login" component={Login} />
+        {/* <HeaderLogin></HeaderLogin> */}
+        <Route path="/" exact component={HomeContainer} />
+        <Route path="/driver" component={DriverContainer}/>
+        {/* <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/home" component={Home} />
         <Route path="/admin" component={Admin} />
@@ -32,7 +35,9 @@ const App = () => {
         <Route path="/terms" component={Terms}></Route>
         <Route path="/about" component={About} />
         <Route path="/policy-privacy" component={Privacy}></Route>
-        <Route path="/register-method" component={MethodRegister}></Route>
+        <Route path="/register-method" component={MethodRegister}></Route> */}
+        <Route path="/login" component={Login} /> 
+        <Route path="/register" component={Register} />
         <Route path="/colorVehical" component={ColorVehicle}></Route>
         <Route path="/modelVehical" component={ModelVehicle}></Route>
         <Route path="/nointernet" component={NoInternet}></Route>

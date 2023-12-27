@@ -73,45 +73,10 @@ const HeaderLogin = () => {
                 to="/policy-privacy">Policy Privacy</Link>
             </li>
             
-          </ul>
-          {user && (
-            <button className="container-avatar" id="navbarNavDarkDropdown" onClick= {handleOnclickAvatar}>
-              <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                  <div class="container-avatar">
-                    <p className='mx-3'>{user.fullName}</p>
-                    <img
-                      src={user.avatar ? user.avatar : "./images/avatar/avt.png"}
-                      // src='./images/avatar/avt.png'
-                      className='rounded-circle avatar'
-                      alt="" srcset="" />
-                  </div>
-                  <ul className={`dropdown-menu dropdown-menu-dark ${showDropdown?"show":""}`} aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li>
-                      <Link></Link>
-                      <a className="dropdown-item" href="#">Profie</a>
-                    </li>
-                    <li><a className="dropdown-item" href="#">Log out</a></li>
-                    {/* <li><a className="dropdown-item" href="#">Something else here</a></li> */}
-                  </ul>
-                </li>
-              </ul>
-            </button>
-            // <div class="container-avatar">
-            //   <p className='mx-3'>{user.fullName }</p>
-            //   <img
-            //     // src={user.avatar ? user.avatar : "./image/avatar/avt.png"}
-            //     src='./images/avatar/avt.png'
-            //     className='rounded-circle avatar'
-            //     alt="" srcset="" />
-            // </div>
-          )}
-          
+          </ul>  
         </div>
       </div>
     </nav>
-      
-    
   );
 }
 

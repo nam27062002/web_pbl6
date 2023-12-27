@@ -280,7 +280,7 @@ export const Home = (props) => {
             <Spinner />
           </div>
         )}
-        <SidebarDriver activeItem={activeItem} handleItemClick={handleItemClick} />
+        {/* <SidebarDriver activeItem={activeItem} handleItemClick={handleItemClick} /> */}
         {isOnline ? (
           <div className="content_1">
             <div className='T1'>{activeItem}</div>
