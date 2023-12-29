@@ -42,6 +42,7 @@ const App = () => {
         <Route path="/modelVehical" component={ModelVehicle}></Route>
         <Route path="/nointernet" component={NoInternet}></Route>
         <Route path="/dirverhome" component={DriverHome}></Route>
+        <Route path="/admin" component={Admin} />
       </Router>
     </>
   );
