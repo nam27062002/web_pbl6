@@ -15,33 +15,76 @@ import NoInternet from "./components/no_internet/NoInternet";
 import DriverHome from "./pages/DriverHome/DriverHome";
 import HomeContainer from "./home/HomeContainer";
 import DriverContainer from "./dirver/DriverContainer";
-
+import HistoryTrip from "./pages/Driver/historytrip/HistoryTrip";
+import Profile from "./pages/Driver/profile/Profile";
+import SidebarDriver from "./components/header/sidebar/SidebarDriver";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
 
 const App = () => {
+  const [user, setUser] = useState(() => {
+    const localData = JSON.parse(localStorage.getItem("user"));
+    console.log(localData);
+    return localData || null;
+  });
+  const [isAdmin, setIsAdmin] = useState(() => {
+    return user.user.role.some(item => item.role === "admin");
+  })
+  
+  window.addEventListener("message", (event) => {
+    // Kiểm tra xem thông điệp có phải là loại removeItem không
+    if (event.data && event.data.action === "removeItem") {
+      // Kiểm tra xem key của item cần xóa có phải là 'user' không
+      if (event.data.key === "user") {
+        // Thực hiện các bước xử lý khi item 'user' bị xóa
+        setUser(null);
+        setIsAdmin(false)
+      }
+    } else if (event.data && event.data.action === "checkLocalStorage") {
+      if (event.data.key === "user") {
+        // Thực hiện các bước xử lý khi item 'user' bị xóa
+        setUser(() => {
+          const localData = JSON.parse(localStorage.getItem("user"));
+          console.log(localData);
+          setIsAdmin(() => {
+            return localData.user.role.some(item => item.role === "admin");
+          })
+          return localData || null;
+        });
+        
+      }
+    }
+  });
+
   return (
     <>
       <Router>
-        {/* <HeaderLogin></HeaderLogin> */}
-        <Route path="/" exact component={HomeContainer} />
-        <Route path="/driver" component={DriverContainer}/>
-        {/* <Route path="/login" component={Login} />
+        <HeaderLogin></HeaderLogin>
+
+        {/* welcome */}
+        <Route path="/" exact component={Welcome} />
         <Route path="/register" component={Register} />
-        <Route path="/home" component={Home} />
-        <Route path="/admin" component={Admin} />
         <Route path="/contacts" component={Contacts}></Route>
         <Route path="/terms" component={Terms}></Route>
         <Route path="/about" component={About} />
         <Route path="/policy-privacy" component={Privacy}></Route>
-        <Route path="/register-method" component={MethodRegister}></Route> */}
-        <Route path="/login" component={Login} /> 
+        <Route path="/register-method" component={MethodRegister}></Route>
+        <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        {/* admin */}
+        <Route path="/admin" component={Admin}></Route>
         <Route path="/colorVehical" component={ColorVehicle}></Route>
         <Route path="/modelVehical" component={ModelVehicle}></Route>
-        <Route path="/nointernet" component={NoInternet}></Route>
-        <Route path="/dirverhome" component={DriverHome}></Route>
+        {/* <Route path="/nointernet" component={NoInternet}></Route> */}
+        {/* driver */}
+        <div className="driver">
+          {console.log(isAdmin)}
+          {user && !isAdmin && <SidebarDriver></SidebarDriver>}
+          <Route path="/history" component={HistoryTrip}></Route>
+          <Route path="/profile" component={Profile}></Route>
+        </div>
       </Router>
     </>
   );

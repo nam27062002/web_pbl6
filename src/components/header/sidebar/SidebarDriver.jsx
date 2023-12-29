@@ -1,20 +1,28 @@
 import { useHistory, Link } from 'react-router-dom';
 import './style.css';
+import React, { useEffect, useState } from 'react';
 
-const SidebarDriver = ({ activeItem, handleItemClick }) => {
+const SidebarDriver = () => {
+
+
+    const [activeItem, setActiveItem] = useState("history")
+    
+
+
+
     return (
         <div className="sidebar-container">
             <nav className="collapse d-lg-block sidebar collapse bg-white">
                 <div className="position-sticky">
                     <div className="list-group list-group-flush ">
-                        <a
-                            href="#"
-                            className={activeItem === 'Hồ sơ cá nhân' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
-                            onClick={() => handleItemClick('Hồ sơ cá nhân')}
+                        <Link to="/history"
+                            className={activeItem === 'history' ? 'list-group-item list-group-item-action py-2 ripple bg-indigo-300 active' : 'list-group-item list-group-item-action py-2 ripple'}
+                            onClick={() => setActiveItem("history")}
                         >
-                            <img src="images/user.png" className="sidebar-icon" />Hồ sơ cá nhân
-                        </a>
-                        <a
+                             <img src="images/file.png" className="sidebar-icon" /> History Trip
+                        </Link>
+                      
+                        {/* <a
                             href="#"
                             className={activeItem === 'Dịch vụ' ? 'list-group-item list-group-item-action py-2 ripple active' : 'list-group-item list-group-item-action py-2 ripple'}
                             onClick={() => handleItemClick('Dịch vụ')}
@@ -48,7 +56,7 @@ const SidebarDriver = ({ activeItem, handleItemClick }) => {
                             onClick={() => handleItemClick('Thoát')}
                         >
                             <img src="images/power-off.png" className="sidebar-icon" />Thoát
-                        </Link>
+                        </Link> */}
                     </div>
 
                 </div>

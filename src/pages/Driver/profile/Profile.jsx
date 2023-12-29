@@ -277,192 +277,153 @@ const Profile = () => {
         fetchData();
         
     },[]);
-    return (
-      <div>
-        <div className="content">
-          {loading && (
-            <div className="overlay d-flex align-items-center justify-content-center">
-              <Spinner />
-            </div>
-          )}
-          {/* <SidebarDriver activeItem={activeItem} handleItemClick={handleItemClick} /> */}
-          {isOnline ? (
-            <div className="content_1">
-              <div className='T1'>{activeItem}</div>
-              {activeItem === 'Hồ sơ cá nhân' && (
-                <div className="A1">
-                  <div className="L1">
-                    <div className='A2'>Phương tiện</div>
-                    <div className="scroll_x">
-                      <table className="custom-table">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th>Hãng</th>
-                            <th>Hạng</th>
-                            <th>Số</th>
-                            <th>Năm</th>
-                            <th>Màu</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td><button class="delete-button"><img src="./images/bin.png" alt="Xóa" /></button></td>
-                            <td>Xe máy</td>
-                            <td>Xe máy</td>
-                            <td>73H111999</td>
-                            <td>2012</td>
-                            <td>Đỏ</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-  
-                    <button className='btn_A1'>Thêm loại xe khác</button>
-                  </div>
-                  <div className='R1'>
-                    <div className='A2'>Dữ liệu cá nhân</div>
-                    <div className='A111'>
-                      <label htmlFor="A11" className='A112'>Họ</label>
-                      <input
-                        type='text'
-                        className='form-control'
-                        id='A11'
-                        value={lastName}
-                        readOnly={!isEditing}
-                        onChange={(e) => setLastName(e.target.value)}
-                      />
-                    </div>
-                    <div className='A111'>
-                      <label htmlFor="A11" className='A112'>Tên</label>
-                      <input
-                        type='text'
-                        className='form-control'
-                        id='A11'
-                        value={firstName}
-                        readOnly={!isEditing}
-                        onChange={(e) => setFirstName(e.target.value)}
-                      />
-                    </div>
-                    <div className='A111'>
-                      <label htmlFor="A12" className='A112'>Giới tính</label>
-                      <select
-                        className="selection_gender1"
-                        onChange={handleGenderChange}
-                        value={gender}
-                        disabled={true}
-                      >
-                        <option value="male">Nam</option>
-                        <option value="female">Nữ</option>
-                      </select>
-                    </div>
-                    <div className='A111'>
-                      <label htmlFor="A13" className='A112'>Ngày sinh</label>
-                      <input
-                        type='date'
-                        className='form-control'
-                        id='A13'
-                        value={dob}
-                        readOnly={!isEditing}
-                        onChange={(e) => setDob(e.target.value)}
-                      />
-                    </div>
-                    <div className='A111'>
-                      <label htmlFor="A13" className='A112'>Địa chỉ</label>
-                      <select
-                        class="selection_province"
-                        id="provinceSelect"
-                        value={selectedProvince}
-                        disabled={!isEditing}
-                        onChange={handleProvinceChange}>
-                        {provinces.map((province) => (
-                          <option key={province} value={province}>
-                            {province}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-  
-                    <div className='A111'>
-                      <label htmlFor="A14" className='A112'>Email</label>
-                      <input
-                        type='text'
-                        className='form-control'
-                        id='A14'
-                        value={email}
-                        readOnly={true}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </div>
-                    <div className='A111'>
-                      <label htmlFor="A15" className='A112'>Số điện thoại</label>
-                      <input
-                        type='text'
-                        className='form-control'
-                        id='A15'
-                        value={phonenumber}
-                        readOnly={true}
-                        onChange={(e) => setPhonenumber(e.target.value)}
-                      />
-                    </div>
-  
-                    <div className='error'>{error}</div>
-                    <div className='btn_AAA'>
-                      <button
-                        className='btn_A22'
-                        onClick={isEditing ? handleSaveClick : handleEditClick}
-                      >
-                        {isEditing ? 'Lưu chỉnh sửa' : 'Chỉnh sửa'}
-                      </button>
-                      <button className='btn_A2' onClick={handleOpenPopupChangePassword}>Thay đổi mật khẩu</button>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {activeItem === 'Lịch sử các cuốc xe' && (
-                <div className="A22A">
-                  {loading1 ? (
-                    <p>Loading...</p>
-                  ) : (
-                    <table className="trip-table">
+  return (
+    <div>
+      <div className="content">
+        {loading && (
+          <div className="overlay d-flex align-items-center justify-content-center">
+            <Spinner />
+          </div>
+        )}
+        {isOnline ? (
+          <div className="content_1">
+            <div className='T1'>{activeItem}</div>
+            {activeItem === 'Hồ sơ cá nhân' && (
+              <div className="A1">
+                <div className="L1">
+                  <div className='A2'>Phương tiện</div>
+                  <div className="scroll_x">
+                    <table className="custom-table">
                       <thead>
                         <tr>
-                          <th>ID</th>
-                          <th>Pickup Address</th>
-                          <th>Destination Address</th>
-                          <th>Status</th>
-                          <th>Created At</th>
+                          <th></th>
+                          <th>Hãng</th>
+                          <th>Hạng</th>
+                          <th>Số</th>
+                          <th>Năm</th>
+                          <th>Màu</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {Array.isArray(trips) && trips.length > 0 ? (
-                          trips.map((trip) => (
-                            <tr key={trip.id} className={trip.status === 'completed' ? 'completed' : 'canceled'}>
-                              <td>{trip.id}</td>
-                              <td>{trip.pickupAddress}</td>
-                              <td>{trip.destinationAddress}</td>
-                              <td className="status">{trip.status}</td>
-                              <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="5">No trips available.</td>
-                          </tr>
-                        )}
+                        <tr>
+                          <td><button class="delete-button"><img src="./images/bin.png" alt="Xóa" /></button></td>
+                          <td>Xe máy</td>
+                          <td>Xe máy</td>
+                          <td>73H111999</td>
+                          <td>2012</td>
+                          <td>Đỏ</td>
+                        </tr>
                       </tbody>
                     </table>
-                  )}
-                </div>
-              )}
+                  </div>
   
-            </div>
-          ) : (
-            <div className="content_1">
-              <NoInternet />
-            </div>
-          )}
-        </div>
+                  <button className='btn_A1'>Thêm loại xe khác</button>
+                </div>
+                <div className='R1'>
+                  <div className='A2'>Dữ liệu cá nhân</div>
+                  <div className='A111'>
+                    <label htmlFor="A11" className='A112'>Họ</label>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='A11'
+                      value={lastName}
+                      readOnly={!isEditing}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </div>
+                  <div className='A111'>
+                    <label htmlFor="A11" className='A112'>Tên</label>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='A11'
+                      value={firstName}
+                      readOnly={!isEditing}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </div>
+                  <div className='A111'>
+                    <label htmlFor="A12" className='A112'>Giới tính</label>
+                    <select
+                      className="selection_gender1"
+                      onChange={handleGenderChange}
+                      value={gender}
+                      disabled={true}
+                    >
+                      <option value="male">Nam</option>
+                      <option value="female">Nữ</option>
+                    </select>
+                  </div>
+                  <div className='A111'>
+                    <label htmlFor="A13" className='A112'>Ngày sinh</label>
+                    <input
+                      type='date'
+                      className='form-control'
+                      id='A13'
+                      value={dob}
+                      readOnly={!isEditing}
+                      onChange={(e) => setDob(e.target.value)}
+                    />
+                  </div>
+                  <div className='A111'>
+                    <label htmlFor="A13" className='A112'>Địa chỉ</label>
+                    <select
+                      class="selection_province"
+                      id="provinceSelect"
+                      value={selectedProvince}
+                      disabled={!isEditing}
+                      onChange={handleProvinceChange}>
+                      {provinces.map((province) => (
+                        <option key={province} value={province}>
+                          {province}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+  
+                  <div className='A111'>
+                    <label htmlFor="A14" className='A112'>Email</label>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='A14'
+                      value={email}
+                      readOnly={true}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className='A111'>
+                    <label htmlFor="A15" className='A112'>Số điện thoại</label>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='A15'
+                      value={phonenumber}
+                      readOnly={true}
+                      onChange={(e) => setPhonenumber(e.target.value)}
+                    />
+                  </div>
+  
+                  <div className='error'>{error}</div>
+                  <div className='btn_AAA'>
+                    <button
+                      className='btn_A22'
+                      onClick={isEditing ? handleSaveClick : handleEditClick}
+                    >
+                      {isEditing ? 'Lưu chỉnh sửa' : 'Chỉnh sửa'}
+                    </button>
+                    <button className='btn_A2' onClick={handleOpenPopupChangePassword}>Thay đổi mật khẩu</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="content_1">
+            <NoInternet />
+          </div>
+        )}
         <ToastContainer />
         {isPopupChangePasswordOpen && (
           <div className="popup-container">
@@ -510,7 +471,9 @@ const Profile = () => {
           </div>
         )}
       </div>
-    );
+        
+    </div>
+  );
 }
 
 

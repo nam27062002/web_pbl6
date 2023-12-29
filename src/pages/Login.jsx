@@ -19,6 +19,10 @@ export const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [loading, setLoading] = useState(false);
     const [isOnline, setIsOnline] = useState(true);
+
+
+
+
     const becomeToDriver = async (token) => {
         if (navigator.onLine) {
             setIsOnline(true)
@@ -142,29 +146,38 @@ export const Login = () => {
                 setToken(data.data.accessToken);
                 setPhoneNumber(data.data.user.phNo);
                 localStorage.setItem('user', JSON.stringify(data.data));
-                if (data.data.user.driverStatus === "You are not a driver") {
+                const isAdmin = data.data.user.role.some(item => item.role === "admin")
+                if (data.data.user.driverStatus === "You are not a driver" && !isAdmin) {
                     openPopup();
                 }
                 else {
-                    history.push(
-                        data.data.user.phone_verified === 0
-                            ? {
-                                pathname: '/register',
-                                state: {
-                                    contentTypeToSet: 'confirmOTP',
-                                    inputValueToSet: data.data.user.phNo.replace("+84", "0"),
-                                    tokenToSet: data.data.accessToken,
-                                    runCountdownToSet: true,
-                                },
-                            }
-                            : {
-                                pathname: '/driver',
-                                state: {
-                                    accessTokenToSet: data.data.accessToken,
-                                    userIdToSet: data.data.user.id,
-                                },
-                            }
-                    );
+                    if (!isAdmin) {
+                        history.push(
+                            data.data.user.phone_verified === 0
+                                ? {
+                                    pathname: '/register',
+                                    state: {
+                                        contentTypeToSet: 'confirmOTP',
+                                        inputValueToSet: data.data.user.phNo.replace("+84", "0"),
+                                        tokenToSet: data.data.accessToken,
+                                        runCountdownToSet: true,
+                                    },
+                                }
+                                : {
+                                    pathname: '/history',
+                                    state: {
+                                        accessTokenToSet: data.data.accessToken,
+                                        userIdToSet: data.data.user.id,
+                                    },
+                                }
+                        );
+                    } else {
+                        history.push('/admin')
+                    }
+                    
+
+
+                    window.postMessage({ action: 'checkLocalStorage', key: 'user' }, '*');
                 }
 
 

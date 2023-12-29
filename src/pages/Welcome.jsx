@@ -9,13 +9,23 @@ import {Link} from 'react-router-dom';
 
 
 export const Welcome = () => {
-const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const history = useHistory();
 
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth);
-  };
+    const [user, setUser] = useState(() => {
+        const localData = JSON.parse(localStorage.getItem('user'));
+        console.log(localData);
+        return localData || null
+      });
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+        if (user) {
+        history.push('/history');
+    }
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -29,7 +39,6 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
         borderRadius: '12px',
         boxShadow: "none"
       };
-      const history = useHistory();
 
       const handleButtonClick = () => {
         // Sử dụng history.push để chuyển đến đường dẫn mong muốn
