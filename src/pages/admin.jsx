@@ -5,7 +5,11 @@ import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
 import '../styles/Pages/Admin.css';
 import Modal from 'react-modal';
-
+import PendingApprovalModal from '../admin/PendingApprovalModal';
+import UserTable from '../admin/UserTable';
+import Sidebar from '../admin/Sidebar'
+import HelpDesk from '../admin/HelpDesk';
+import Promo from '../admin/Promo';
 export const Admin = () => {
     const [userData, setUserData] = useState([]);
     const [index, setIndex] = useState(0);
@@ -95,6 +99,12 @@ export const Admin = () => {
             setIndex(0);
             uploadTable(0);
         }
+        else if (itemName === "Help Desk") {
+            setIndex(2);
+        }
+        else if (itemName === "Create Promo"){
+            setIndex(3);
+        }
 
     };
     const [currentPage, setCurrentPage] = useState(1);
@@ -154,10 +164,7 @@ export const Admin = () => {
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
     };
-    const highlightText = (text, search) => {
-        const regex = new RegExp(`(${search})`, "gi");
-        return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
-    };
+
     function getStatusColor(driverStatus) {
         switch (driverStatus) {
             case "Insufficient verification information":
@@ -219,237 +226,120 @@ export const Admin = () => {
     return (
         <div>
             <div className="content">
-                <div className="sidebar-collapse">
-                    <ul className="sidebar-list">
-                        <li>
-                            <a
-                                href="#"
-                                className={activeItem === 'Account' ? 'active' : ''}
-                                onClick={() => handleItemClick('Account')}
-                            >
-                                <img src="images/user.png" className="sidebar-icon" />Account
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className={activeItem === 'Drivers' ? 'active' : ''}
-                                onClick={() => handleItemClick('Drivers')}
-                            >
-                                <img src="images/driver.png" className="sidebar-icon" />Drivers
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className={activeItem === 'Vehicles' ? 'active' : ''}
-                                onClick={() => handleItemClick('Vehicles')}
-                            >
-                                <img src="images/car.png" className="sidebar-icon" />Vehicles
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <Sidebar activeItem={activeItem} handleItemClick={handleItemClick} />
                 <div className='content-right'>
-                    <div className={`filter-container ${index === 1 ? 'index-1' : ''}`}>
-                        <label className="filter-label">
-                            Field:
-                            <select className="filter-dropdown" value={selectedField} onChange={(e) => setSelectedField(e.target.value)}>
-                                <option value="All">All</option>
-                                <option value="id">ID</option>
-                                <option value="name">Name</option>
-                                <option value="phone">Phone</option>
-                                <option value="email">Email</option>
-                            </select>
-                        </label>
+                    {index < 2 && ( 
+                        <div>
+                            <div className={`filter-container ${index === 1 ? 'index-1' : ''}`}>
+                                <label className="filter-label">
+                                    Field:
+                                    <select className="filter-dropdown" value={selectedField} onChange={(e) => setSelectedField(e.target.value)}>
+                                        <option value="All">All</option>
+                                        <option value="id">ID</option>
+                                        <option value="name">Name</option>
+                                        <option value="phone">Phone</option>
+                                        <option value="email">Email</option>
+                                    </select>
+                                </label>
 
-                        <label className="filter-label">
-                            Search:
-                            <input
-                                className="search-input"
-                                type="text"
-                                placeholder="Search..."
-                                value={searchText}
-                                onChange={handleSearchChange}
+                                <label className="filter-label">
+                                    Search:
+                                    <input
+                                        className="search-input"
+                                        type="text"
+                                        placeholder="Search..."
+                                        value={searchText}
+                                        onChange={handleSearchChange}
+                                    />
+                                </label>
+
+                                {index === 1 && (
+                                    <label className="filter-label">
+                                        Driver Status:
+                                        <select className="filter-dropdown" value={selectedDriverStatus} onChange={(e) => setSelectedDriverStatus(e.target.value)}>
+                                            <option value="All">All</option>
+                                            <option value="Insufficient verification information">Insufficient verification information</option>
+                                            <option value="Insufficient authentication information">Insufficient authentication information</option>
+                                            <option value="Pending approval">Pending approval</option>
+                                            <option value="Approved">Approved</option>
+                                        </select>
+                                    </label>
+                                )}
+
+                                {index === 1 && (
+                                    <label className="filter-label">
+                                        Average Rate:
+                                        <select className="filter-dropdown" value={selectedAvgRate} onChange={(e) => setSelectedAvgRate(e.target.value)}>
+                                            <option value="All">All</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </label>
+                                )}
+
+                                <label className="filter-label">
+                                    Exact Match:
+                                    <input
+                                        className="exact-match-checkbox"
+                                        type="checkbox"
+                                        checked={exactMatch}
+                                        onChange={() => setExactMatch(!exactMatch)}
+                                    />
+                                </label>
+                            </div>
+                            <UserTable
+                                index={index}
+                                getCurrentPageData={getCurrentPageData}
+                                selectedField={selectedField}
+                                searchText={searchText}
+                                handleCheckboxChange={handleCheckboxChange}
+                                getStatusColor={getStatusColor}
+                                handlePendingApprovalClick={handlePendingApprovalClick}
+                                handleApprove={handleApprove}
+                                handleDeny={handleDeny}
+                                selectedRows={selectedRows}
+                                currentImageIndex={currentImageIndex}
+                                totalPages={totalPages}
+                                currentPage={currentPage}
+                                handlePageChange={handlePageChange}
                             />
-                        </label>
+                            <div className="pagination-buttons">
+                                <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                                    Previous
+                                </button>
 
-                        {index === 1 && (
-                            <label className="filter-label">
-                                Driver Status:
-                                <select className="filter-dropdown" value={selectedDriverStatus} onChange={(e) => setSelectedDriverStatus(e.target.value)}>
-                                    <option value="All">All</option>
-                                    <option value="Insufficient verification information">Insufficient verification information</option>
-                                    <option value="Insufficient authentication information">Insufficient authentication information</option>
-                                    <option value="Pending approval">Pending approval</option>
-                                    <option value="Approved">Approved</option>
-                                </select>
-                            </label>
-                        )}
+                                <span>{`Page ${currentPage} of ${totalPages}`}</span>
 
-                        {index === 1 && (
-                            <label className="filter-label">
-                                Average Rate:
-                                <select className="filter-dropdown" value={selectedAvgRate} onChange={(e) => setSelectedAvgRate(e.target.value)}>
-                                    <option value="All">All</option>
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </label>
-                        )}
+                                <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    {index === 2 && (
+                        <HelpDesk/>
+                    )}
+                    {index === 3 && (
+                        <Promo/>
+                    )}
 
-                        <label className="filter-label">
-                            Exact Match:
-                            <input
-                                className="exact-match-checkbox"
-                                type="checkbox"
-                                checked={exactMatch}
-                                onChange={() => setExactMatch(!exactMatch)}
-                            />
-                        </label>
-                    </div>
-                    <table className="user-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                {index === 1 && <th>Driver Status</th>}
-                                {index === 1 && <th>AVG Rate</th>}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {getCurrentPageData().map(user => (
-                                <tr key={user.id}>
-                                    <td>
-                                        {(selectedField === "All" || selectedField === "id") && searchText && user.id.toString().includes(searchText) ? (
-                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.id.toString(), searchText) }} />
-                                        ) : (
-                                            user.id
-                                        )}
-                                    </td>
-                                    <td>
-                                        <img src={user.avatar} alt="Avatar" />
-                                    </td>
-                                    <td>
-                                        {(selectedField === "All" || selectedField === "name") && searchText && user.name.toLowerCase().includes(searchText.toLowerCase()) ? (
-                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.name, searchText) }} />
-                                        ) : (
-                                            user.name
-                                        )}
-                                    </td>
-                                    <td>{user.status}</td>
-                                    <td>
-                                        {(selectedField === "All" || selectedField === "phone") && searchText && user.phone.toLowerCase().includes(searchText.toLowerCase()) ? (
-                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.phone, searchText) }} />
-                                        ) : (
-                                            user.phone
-                                        )}
-                                    </td>
-                                    <td>
-                                        {(selectedField === "All" || selectedField === "email") && searchText && user.email.toLowerCase().includes(searchText.toLowerCase()) ? (
-                                            <span dangerouslySetInnerHTML={{ __html: highlightText(user.email, searchText) }} />
-                                        ) : (
-                                            user.email
-                                        )}
-                                    </td>
-                                    {index === 1 && (
-                                        <td
-                                            style={{
-                                                color: getStatusColor(user.driverStatus),
-                                                cursor: user.driverStatus === 'Pending approval' ? 'pointer' : 'default',
-                                            }}
-                                            onClick={() => user.driverStatus === 'Pending approval' && handlePendingApprovalClick(user.id)}
-                                        >
-                                            {user.driverStatus}
-                                        </td>
-
-                                    )}
-                                    {index === 1 && (
-                                        <td>
-                                            <div className="star-rating">
-                                                {[...Array(5)].map((_, index) => (
-                                                    <span key={index} className={index < user.avgRate ? 'filled' : ''}>★</span>
-                                                ))}
-                                            </div>
-                                        </td>
-                                    )}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-                    <div className="pagination-buttons">
-                        <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
-                            Previous
-                        </button>
-
-                        <span>{`Page ${currentPage} of ${totalPages}`}</span>
-
-                        <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
-                            Next
-                        </button>
-                    </div>
                 </div>
             </div>
             <ToastContainer />
-            <Modal
-                isOpen={isModalOpen}
-                onRequestClose={closeModal}
-                contentLabel="Pending Approval Modal"
-            >
-                <div className="modal-header">
-                    <div className="title-container">
-                        <h2>Pending Approval Details</h2>
-                    </div>
-                    <div className="close-button" onClick={closeModal}>
-                        X
-                    </div>
-                </div>
+            <PendingApprovalModal
+                isModalOpen={isModalOpen}
+                closeModal={closeModal}
+                listPhotoVerify={listPhotoVerify}
+                handleApprove={handleApprove}
+                handleDeny={handleDeny}
+                currentImageIndex={currentImageIndex}
+                setCurrentImageIndex={setCurrentImageIndex}
+            />
 
-                {listPhotoVerify ? (
-                    <div className="modal-content">
-                        <div className="image-container">
-                            <img src={listPhotoVerify.data[`type_${currentImageIndex + 1}`]} alt={`Type ${currentImageIndex + 1}`} />
-                            <div className="image-status">
-                                <p className='status_txt' style={{ color: listPhotoVerify.data[`type_${currentImageIndex + 1}_status`] === 'Approved' ? 'green' : 'deepskyblue' }}>
-                                    Status: {listPhotoVerify.data[`type_${currentImageIndex + 1}_status`]}
-                                </p>
-                                {listPhotoVerify.data[`type_${currentImageIndex + 1}_status`] === 'Pending approval' && (
-                                    <div className='B11'>
-                                        <button onClick={() => handleApprove()} className='btn_approve'>
-                                            Approve
-                                        </button>
-                                        <button onClick={() => handleDeny()} className='btn_deny'>
-                                            Deny
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                        <div className="pagination-buttons" id='B12'>
-                            <button disabled={currentImageIndex === 0} onClick={() => setCurrentImageIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : 0))}>
-                                Previous
-                            </button>
-
-                            <span>{`Page ${currentImageIndex + 1} of 18`}</span>
-
-                            <button disabled={currentPage === 17} onClick={() => setCurrentImageIndex(prevIndex => (prevIndex < 17 ? prevIndex + 1 : 17))}>
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </Modal>
 
 
 

@@ -1,0 +1,201 @@
+.helpDesk {
+    padding: 20px;
+    text-align: center;
+}
+
+.helpDesk__title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.helpDesk__tableContainer {
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.helpDesk__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.helpDesk__tableHeaderCell,
+.helpDesk__tableCell {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.helpDesk__tableHeaderCell {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.helpDesk__tableRow:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.helpDesk__tableHeaderCell {
+    background-color: #4CAF50;
+    /* Green header background */
+    color: white;
+    /* White text color */
+}
+
+.helpDesk__tableCell {
+    font-size: 14px;
+    /* Adjust the font size for better readability */
+}
+
+.helpDesk__tableRow:hover {
+    background-color: #e0f2f1;
+    /* Light green on hover */
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.helpDesk__tableContainer {
+    overflow-x: auto;
+}
+
+.helpDesk__tableHeaderCell,
+.helpDesk__tableCell {
+    text-align: center;
+}
+
+
+.helpDesk__tableRow {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.helpDesk__tableRow:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-3px);
+    /* Move the row up slightly on hover */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.helpDesk__tableCell {
+    font-size: 14px;
+    /* Default font size */
+}
+
+@media screen and (max-width: 600px) {
+    .helpDesk__tableCell {
+        font-size: 12px;
+        /* Adjust font size for smaller screens */
+    }
+}
+
+.helpDesk__loading {
+    font-size: 18px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.helpDesk__tableRow {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.helpDesk__tableRow:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-3px);
+    cursor: pointer;
+}
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.popup h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.popup p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.popup textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.popup h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.popup p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.popup textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.popup button {
+    width: 100px;
+    height: 40px;
+    background-color: #137878;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.popup button:hover {
+    background-color: #0f5f5f;
+}
+
+.BTT{
+    margin-top: 20px;
+}
+
