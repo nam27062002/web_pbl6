@@ -28,6 +28,12 @@ const SidebarDriver = () => {
                         >
                              <img src="images/file.png" className="sidebar-icon" /> statistics
                         </Link>
+                        <Link to="/profile"
+                            className={activeItem === 'profile' ? 'sidebar-link text-white active_item' : 'sidebar-link text-white'}
+                            onClick={() => setActiveItem("profile")}
+                        >
+                             <img src="images/file.png" className="sidebar-icon" /> Profile
+                        </Link>
                       
                         {/* <a
                             href="#"
