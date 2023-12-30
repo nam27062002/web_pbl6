@@ -23,7 +23,49 @@ const HelpDesk = () => {
   const [open, setOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const issuesPerPage = 5;
+  const totalPages = Math.ceil(issues.length / issuesPerPage);
+  const startIndex = (currentPage - 1) * issuesPerPage;
+  const endIndex = startIndex + issuesPerPage;
+  const currentIssues = () => {
+    const filteredData = issues.filter((issue) => {
+      const isMatchingSearchText = exactMatch
+        ? issue.id.toString() === searchText ||
+          issue.description.toLowerCase() === searchText.toLowerCase()
+        : issue.id.toString().includes(searchText) ||
+          issue.description.toLowerCase().includes(searchText.toLowerCase());
+      const isMatchingIssueStatus =
+        selectedIssueStatus === "All" || issue.status === selectedIssueStatus;
+      if (selectedField === "All") {
+        return isMatchingSearchText && isMatchingIssueStatus;
+      } else {
+        const isMatchingField = issue[selectedField]
+          .toString()
+          .toLowerCase()
+          .includes(searchText.toLowerCase());
+        return isMatchingField && isMatchingIssueStatus;
+      }
+    });
+    return filteredData.slice(startIndex, endIndex);
+  };
+  const [searchText, setSearchText] = useState("");
+  const [selectedField, setSelectedField] = useState("All");
+  const [selectedIssueStatus, setSelectedIssueStatus] = useState("All");
+  const [exactMatch, setExactMatch] = useState(false);
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+  };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+  const highlightText = (text, search) => {
+    const regex = new RegExp(`(${search})`, "gi");
+    return text.replace(
+      regex,
+      (match) => `<span class="highlight">${match}</span>`
+    );
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -130,6 +172,55 @@ const HelpDesk = () => {
   return (
     <div className="helpDesk">
       <h1 className="helpDesk__title">Issue List</h1>
+
+      <div className={"filter-container"}>
+        <label className="filter-label">
+          Field:
+          <select
+            className="filter-dropdown"
+            value={selectedField}
+            onChange={(e) => setSelectedField(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="id">ID</option>
+            <option value="description">Description</option>
+          </select>
+        </label>
+
+        <label className="filter-label">
+          Search:
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Search..."
+            value={searchText}
+            onChange={handleSearchChange}
+          />
+        </label>
+
+        <label className="filter-label">
+          Driver Status:
+          <select
+            className="filter-dropdown"
+            value={selectedIssueStatus}
+            onChange={(e) => setSelectedIssueStatus(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Resolved">Resolved</option>
+            <option value="InProgress">InProgress</option>
+          </select>
+        </label>
+
+        <label className="filter-label">
+          Exact Match:
+          <input
+            className="exact-match-checkbox"
+            type="checkbox"
+            checked={exactMatch}
+            onChange={() => setExactMatch(!exactMatch)}
+          />
+        </label>
+      </div>
       <TableContainer component={Paper} className="helpDesk__tableContainer">
         <Table className="helpDesk__table">
           <TableHead>
@@ -152,7 +243,7 @@ const HelpDesk = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {issues.map((issue) => (
+            {currentIssues().map((issue) => (
               <TableRow
                 key={issue.id}
                 className={`helpDesk__tableRow ${
@@ -163,13 +254,36 @@ const HelpDesk = () => {
                 }
               >
                 <TableCell className="helpDesk__tableCell">
-                  {issue.id}
+                  {(selectedField === "All" || selectedField === "id") &&
+                  searchText &&
+                  issue.id.toString().includes(searchText) ? (
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: highlightText(issue.id.toString(), searchText),
+                      }}
+                    />
+                  ) : (
+                    issue.id
+                  )}
                 </TableCell>
                 <TableCell className="helpDesk__tableCell">
                   {issue.subject}
                 </TableCell>
                 <TableCell className="helpDesk__tableCell">
-                  {issue.description}
+                  {(selectedField === "All" ||
+                    selectedField === "description") &&
+                  searchText &&
+                  issue.description
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase()) ? (
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: highlightText(issue.description, searchText),
+                      }}
+                    />
+                  ) : (
+                    issue.description
+                  )}
                 </TableCell>
                 <TableCell className="helpDesk__tableCell">
                   {issue.status}
@@ -182,7 +296,23 @@ const HelpDesk = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <div className="pagination-buttons">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          Previous
+        </button>
 
+        <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          Next
+        </button>
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
