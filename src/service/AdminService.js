@@ -1,20 +1,21 @@
 import axios from 'axios';
 
-const TripService = {
-    getHistoryTrip: (token,driverId) => {
+const AdminService = {
+    getAllUser: async (token) => {
         try {
-            // console.log(token,driverId);
-            const response = axios.get(`http://ridewizard.pro:9000/api/v1/trips?driverID=${driverId}`, {
+            const response = await axios.get("http://ridewizard.pro:9000/api/v1/users", {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 }
             })
-            return response
+            return response;
         } catch (error) {
             return null;
         }
+
     }
 }
 
-export default TripService
+
+export default AdminService

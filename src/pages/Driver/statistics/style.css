@@ -1,0 +1,6 @@
+.container-statistics{
+    width: calc(100% - 190px);
+    margin-left: 190px;
+    margin-top: 12px;
+    padding-bottom: 12px;
+}

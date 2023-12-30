@@ -37,8 +37,8 @@ const HeaderDriver = () => {
             <button className="container-avatar" id="navbarNavDarkDropdown" onClick= {handleOnclickAvatar}>
               <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                  <div class="container-avatar">
-                    <p className='mx-3'>{user.user.fullName}</p>
+                  <div class="container-avatar text-white">
+                    <p className='mx-3 text-white'>{user.user.fullName}</p>
                     <img
                       src={user.user.avatar ? user.user.avatar : "./images/avatar/avt.png"}
                       // src='./images/avatar/avt.png'

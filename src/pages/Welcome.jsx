@@ -9,18 +9,33 @@ import {Link} from 'react-router-dom';
 
 
 export const Welcome = () => {
-const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const history = useHistory();
+    
+    const [user, setUser] = useState(() => {
+        const localData = JSON.parse(localStorage.getItem('user'));
+        console.log(localData);
+        return localData || null
+    });
+    const [isAdmin, setIsAdmin] = useState(() => {
+        return user ? user.user.role.some(item => item.role === "admin") : false;
+    });
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
     };
-  }, []);
+
+    useEffect(() => {
+        if (user && !isAdmin) {
+            history.push('/history');
+        } else if (user && isAdmin) {
+            history.push("/admin")
+        }
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
     const popupContentStyle = {
         width: windowWidth < 768 ? '85%' : '40%', 
         height: 'auto',
@@ -29,7 +44,6 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
         borderRadius: '12px',
         boxShadow: "none"
       };
-      const history = useHistory();
 
       const handleButtonClick = () => {
         // Sử dụng history.push để chuyển đến đường dẫn mong muốn
