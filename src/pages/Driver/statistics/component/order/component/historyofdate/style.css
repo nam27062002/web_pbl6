@@ -1,0 +1,17 @@
+.point{
+    width:16px;
+    height: 16px;
+    background: #138C9C;
+    border-radius: 50%;
+}
+.point-outline{
+    width:16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid  #138C9C;
+}
+.content-historyofdate{
+    background: #1b2430;
+    padding: 24px 18px;
+    border-radius: 12px;
+}

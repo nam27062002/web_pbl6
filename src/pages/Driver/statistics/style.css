@@ -3,4 +3,23 @@
     margin-left: 190px;
     margin-top: 12px;
     padding-bottom: 12px;
+    
+}
+
+.content-statistics{
+    width: 50%;
+    background:#1b2430;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 0px 24px;
+}
+
+.button-statistics{
+    border: none;
+    padding: 12px 0px;
+    width: 50%;
+    background: #2A3443;
+}
+.selected{
+    background: #179CAE !important;
 }
