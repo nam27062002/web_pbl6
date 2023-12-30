@@ -195,7 +195,30 @@
     background-color: #0f5f5f;
 }
 
-.BTT{
+.BTT {
     margin-top: 20px;
 }
 
+.helpDesk__tableRow.resolved {
+    background-color: #a5d6a7;
+    /* Màu nền cho Resolved */
+}
+
+.helpDesk__tableRow.inProgress {
+    background-color: #ffb74d;
+    /* Màu nền cho InProgress */
+}
+
+.helpDesk__tableHeaderCell,
+.helpDesk__tableCell {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    border-radius: 6px;
+}
+
+.helpDesk__tableHeaderCell {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}

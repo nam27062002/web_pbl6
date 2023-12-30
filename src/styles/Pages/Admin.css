@@ -474,3 +474,15 @@
     font-size: 18px;
 }
 
+.success {
+    background-color: #4CAF50;
+    /* Màu nền xanh */
+    color: white;
+}
+
+/* CSS cho thông báo thất bại */
+.error {
+    background-color: #ff6347;
+    /* Màu nền đỏ */
+    color: white;
+}
