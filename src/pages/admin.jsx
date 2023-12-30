@@ -15,6 +15,7 @@ export const Admin = () => {
     const [index, setIndex] = useState(0);
     const [searchText, setSearchText] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectAll, setSelectAll] = useState(false);
     useEffect(() => {
         uploadTable(0);
     }, []);
@@ -27,7 +28,7 @@ export const Admin = () => {
                     Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
                 },
             });
-            console.log("admin " +response);
+            console.log("admin " + response);
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
@@ -103,7 +104,7 @@ export const Admin = () => {
         else if (itemName === "Help Desk") {
             setIndex(2);
         }
-        else if (itemName === "Create Promo"){
+        else if (itemName === "Create Promo") {
             setIndex(3);
         }
 
@@ -141,6 +142,32 @@ export const Admin = () => {
 
         return filteredData.slice(startIndex, endIndex);
     };
+    const getCurrentPageData1 = () => {
+        const filteredData = userData.filter((user) => {
+            const isMatchingSearchText = exactMatch ?
+                user.id.toString() === searchText ||
+                user.name.toLowerCase() === searchText.toLowerCase() ||
+                user.phone.toLowerCase() === searchText.toLowerCase() ||
+                user.email.toLowerCase() === searchText.toLowerCase() :
+                user.id.toString().includes(searchText) ||
+                user.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                user.phone.toLowerCase().includes(searchText.toLowerCase()) ||
+                user.email.toLowerCase().includes(searchText.toLowerCase());
+
+            const isMatchingDriverStatus = selectedDriverStatus === "All" || user.driverStatus === selectedDriverStatus;
+
+            const isMatchingAvgRate = selectedAvgRate === "All" || user.avgRate.toString() === selectedAvgRate;
+
+            if (selectedField === "All") {
+                return isMatchingSearchText && isMatchingDriverStatus && isMatchingAvgRate;
+            } else {
+                const isMatchingField = user[selectedField].toString().toLowerCase().includes(searchText.toLowerCase());
+                return isMatchingField && isMatchingDriverStatus && isMatchingAvgRate;
+            }
+        });
+
+        return filteredData;
+    };
     const [selectedRows, setSelectedRows] = useState([]);
 
     const handleCheckboxChange = (userId) => {
@@ -156,7 +183,13 @@ export const Admin = () => {
         setCurrentPage(newPage);
     };
 
-
+    const [selectedUsers, setSelectedUsers] = useState([]);
+    function handleSelectAllChange() {
+        setSelectAll(!selectAll);
+        setSelectedUsers(
+            selectAll ? [] : getCurrentPageData1().map((user) => user.id)
+        );
+    }
 
     const [selectedAvgRate, setSelectedAvgRate] = useState("All");
     const [selectedDriverStatus, setSelectedDriverStatus] = useState("All");
@@ -229,7 +262,7 @@ export const Admin = () => {
             <div className="content">
                 <Sidebar activeItem={activeItem} handleItemClick={handleItemClick} />
                 <div className='content-right'>
-                    {index < 2 && ( 
+                    {index < 2 && (
                         <div>
                             <div className={`filter-container ${index === 1 ? 'index-1' : ''}`}>
                                 <label className="filter-label">
@@ -307,6 +340,11 @@ export const Admin = () => {
                                 totalPages={totalPages}
                                 currentPage={currentPage}
                                 handlePageChange={handlePageChange}
+                                selectAll={selectAll}
+                                setSelectAll={setSelectAll}
+                                handleSelectAllChange={handleSelectAllChange}
+                                selectedUsers={selectedUsers}
+                                setSelectedUsers={setSelectedUsers}
                             />
                             <div className="pagination-buttons">
                                 <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
@@ -322,10 +360,10 @@ export const Admin = () => {
                         </div>
                     )}
                     {index === 2 && (
-                        <HelpDesk/>
+                        <HelpDesk />
                     )}
                     {index === 3 && (
-                        <Promo/>
+                        <Promo />
                     )}
 
                 </div>
