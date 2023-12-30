@@ -10,7 +10,6 @@ const HeaderLogin = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [user, setUser] = useState(() => {
     const localData = JSON.parse(localStorage.getItem('user'));
-    console.log(localData);
     return localData || null
   });
   const [showDropdown, setShowDropdown] = useState(false);
@@ -42,7 +41,6 @@ const HeaderLogin = () => {
         // Thực hiện các bước xử lý khi item 'user' bị xóa
         setUser(() => {
           const localData = JSON.parse(localStorage.getItem('user'));
-          console.log(localData);
           return localData || null
         });
       }
@@ -51,7 +49,7 @@ const HeaderLogin = () => {
 
   return (
 
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg fixed-top bg-nav">
       <div className="container-fluid">
         <div className="d-flex">
           <img className="logo_png" src="./images/logo.png" alt="Logo" />

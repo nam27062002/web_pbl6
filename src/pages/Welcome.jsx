@@ -10,12 +10,15 @@ import {Link} from 'react-router-dom';
 
 export const Welcome = () => {
     const history = useHistory();
-
+    
     const [user, setUser] = useState(() => {
         const localData = JSON.parse(localStorage.getItem('user'));
         console.log(localData);
         return localData || null
-      });
+    });
+    const [isAdmin, setIsAdmin] = useState(() => {
+        return user ? user.user.role.some(item => item.role === "admin") : false;
+    });
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const handleResize = () => {
@@ -23,14 +26,16 @@ export const Welcome = () => {
     };
 
     useEffect(() => {
-        if (user) {
-        history.push('/history');
-    }
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+        if (user && !isAdmin) {
+            history.push('/history');
+        } else if (user && isAdmin) {
+            history.push("/admin")
+        }
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
     const popupContentStyle = {
         width: windowWidth < 768 ? '85%' : '40%', 
         height: 'auto',

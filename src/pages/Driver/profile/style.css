@@ -1,0 +1,13 @@
+.container-verify{
+    padding: 12px 8px;
+    border: 8px;
+    
+}
+
+.container-profile{
+    margin-left: 190px;
+    width: calc(100%-190px);
+}
+.column{
+    width: 50%;
+}

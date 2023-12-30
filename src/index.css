@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif ; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,10 +12,18 @@ code {
     monospace;
 }
 .background{
-  background: linear-gradient(to bottom, #56b3f5, #5487e6);
+  background: #171C23;
+  min-height: 100vh;
+  height: 100%;
+  overflow-x: hidden;
+
+}
+.header{
+  height: 70px;
 }
 .driver{
-  display: flex;
+  max-width: 100vw;
+  width: 100vw;
 }
 @media screen and (max-width: 1024px) {
   .driver{

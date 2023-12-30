@@ -4,7 +4,7 @@ import Popup from 'reactjs-popup';
 import { motion } from 'framer-motion';
 import { Login } from '../../../pages/Login';
 
-import '../style.css'
+import './style.css'
 import '../../../styles/Header/HeaderLogin.css';
 
 
@@ -34,17 +34,17 @@ const WelcomeContentHeader = () => {
       }, []);
     return (
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 mx-5">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0 mx-5  ">
                 <li className="nav-item">
 
                     <Link to="/"
-                        className={selectedItem === 'home' ? 'active nav-link' : 'nav-link'}
+                        className={selectedItem === 'home' ? 'active nav-link text-secondary' : 'nav-link text-white'}
                         onClick={() => handleSelectedItem("home")}
                     >Home</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/about"
-                        className={selectedItem === 'about' ? 'active nav-link' : 'nav-link'}
+                        className={selectedItem === 'about' ? 'active nav-link text-secondary ' : 'nav-link text-white'}
                         onClick={() => handleSelectedItem("about")}
                     >About</Link>
                 </li>
@@ -53,17 +53,17 @@ const WelcomeContentHeader = () => {
                 onClick={()=>handleSelectedItem("terms")}
                 href="/terms">Terms</a> */}
                     <Link to="/terms"
-                        className={selectedItem === 'terms' ? 'active nav-link' : 'nav-link'}
+                        className={selectedItem === 'terms' ? 'active nav-link text-secondary' : 'nav-link text-white'}
                         onClick={() => handleSelectedItem("terms")}
                     >Terms</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className={selectedItem === 'contacts' ? 'active nav-link' : 'nav-link'}
+                    <Link className={selectedItem === 'contacts' ? 'active nav-link text-secondary ' : 'nav-link text-white'}
                         onClick={() => handleSelectedItem("contacts")}
                         to="/contacts">Contacts</Link>
                 </li>
-                <li className="nav-item">
-                    <Link className={selectedItem === 'policy-privacy' ? 'active nav-link' : 'nav-link'}
+                <li className="nav-item ">
+                    <Link className={selectedItem === 'policy-privacy' ? 'active nav-link text-secondary ' : 'nav-link text-white'}
                         onClick={() => handleSelectedItem("policy-privacy")}
                         to="/policy-privacy">Policy Privacy</Link>
                 </li>

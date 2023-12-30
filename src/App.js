@@ -16,8 +16,11 @@ import DriverHome from "./pages/DriverHome/DriverHome";
 import HomeContainer from "./home/HomeContainer";
 import DriverContainer from "./dirver/DriverContainer";
 import HistoryTrip from "./pages/Driver/historytrip/HistoryTrip";
+import Statistics from "./pages/Driver/statistics/Statistics";
 import Profile from "./pages/Driver/profile/Profile";
+import ProfileText from "./pages/Driver/profile/ProfileTest";
 import SidebarDriver from "./components/header/sidebar/SidebarDriver";
+// import Verify from "./pages/Driver/profile/verify/Verify";
 import React, { useState, useEffect } from "react";
 import "./index.css";
 
@@ -30,9 +33,9 @@ const App = () => {
     return localData || null;
   });
   const [isAdmin, setIsAdmin] = useState(() => {
-    return user.user.role.some(item => item.role === "admin");
-  })
-  
+    return user ? user.user.role.some((item) => item.role === "admin") : false;
+  });
+
   window.addEventListener("message", (event) => {
     // Kiểm tra xem thông điệp có phải là loại removeItem không
     if (event.data && event.data.action === "removeItem") {
@@ -40,28 +43,27 @@ const App = () => {
       if (event.data.key === "user") {
         // Thực hiện các bước xử lý khi item 'user' bị xóa
         setUser(null);
-        setIsAdmin(false)
+        setIsAdmin(false);
       }
     } else if (event.data && event.data.action === "checkLocalStorage") {
       if (event.data.key === "user") {
         // Thực hiện các bước xử lý khi item 'user' bị xóa
         setUser(() => {
           const localData = JSON.parse(localStorage.getItem("user"));
-          console.log(localData);
           setIsAdmin(() => {
-            return localData.user.role.some(item => item.role === "admin");
-          })
+            return localData.user.role.some((item) => item.role === "admin");
+          });
           return localData || null;
         });
-        
       }
     }
   });
 
   return (
-    <>
+    <div className="background">
       <Router>
         <HeaderLogin></HeaderLogin>
+        <div className="header"></div>
 
         {/* welcome */}
         <Route path="/" exact component={Welcome} />
@@ -74,6 +76,7 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         {/* admin */}
+
         <Route path="/admin" component={Admin}></Route>
         <Route path="/colorVehical" component={ColorVehicle}></Route>
         <Route path="/modelVehical" component={ModelVehicle}></Route>
@@ -83,10 +86,12 @@ const App = () => {
           {console.log(isAdmin)}
           {user && !isAdmin && <SidebarDriver></SidebarDriver>}
           <Route path="/history" component={HistoryTrip}></Route>
-          <Route path="/profile" component={Profile}></Route>
+          <Route path="/profile" component={ProfileText}></Route>
+          <Route path="/statistics" component={Statistics}></Route>
+          {/* <Route path="/verify" component={Verify}></Route> */}
         </div>
       </Router>
-    </>
+    </div>
   );
 };
 

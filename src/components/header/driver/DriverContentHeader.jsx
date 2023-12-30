@@ -28,7 +28,7 @@ const DriverContentHeader = () => {
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
               <div class="container-avatar">
-                <p className='mx-3'>{user.user.fullName}</p>
+                <p className='mx-3 text-white'>{user.user.fullName}</p>
                 <img
                   src={user.user.avatar ? user.user.avatar : "./images/avatar/avt.png"}
                   // src='./images/avatar/avt.png'

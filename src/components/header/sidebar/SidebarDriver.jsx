@@ -11,15 +11,22 @@ const SidebarDriver = () => {
 
 
     return (
-        <div className="sidebar-container">
-            <nav className="collapse d-lg-block sidebar collapse bg-white">
+        <div className="">
+            
+            <nav className="collapse d-lg-block sidebar collapse sidebar-container fixed-bottom">
                 <div className="position-sticky">
-                    <div className="list-group list-group-flush ">
+                    <div className="sidebar-item ">
                         <Link to="/history"
-                            className={activeItem === 'history' ? 'list-group-item list-group-item-action py-2 ripple bg-indigo-300 active' : 'list-group-item list-group-item-action py-2 ripple'}
+                            className={activeItem === 'history' ? 'sidebar-link text-white active_item' : 'sidebar-link text-white'}
                             onClick={() => setActiveItem("history")}
                         >
-                             <img src="images/file.png" className="sidebar-icon" /> History Trip
+                             <img src="images/file.png" className="sidebar-icon" /> Trip History
+                        </Link>
+                        <Link to="/statistics"
+                            className={activeItem === 'statistics' ? 'sidebar-link text-white active_item' : 'sidebar-link text-white'}
+                            onClick={() => setActiveItem("statistics")}
+                        >
+                             <img src="images/file.png" className="sidebar-icon" /> statistics
                         </Link>
                       
                         {/* <a
