@@ -199,7 +199,7 @@ const HelpDesk = () => {
         </label>
 
         <label className="filter-label">
-          Driver Status:
+          Status:
           <select
             className="filter-dropdown"
             value={selectedIssueStatus}
