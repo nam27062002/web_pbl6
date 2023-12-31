@@ -30,7 +30,7 @@ const DriverContentHeader = () => {
               <div class="container-avatar">
                 <p className='mx-3 text-white'>{user.user.fullName}</p>
                 <img
-                  src={user.user.avatar ? user.user.avatar : "./images/avatar/avt.png"}
+                  src={user.user.avatar? user.user.avatar : "./images/avatar/avt.png"}
                   // src='./images/avatar/avt.png'
                   className='rounded-circle avatar'
                   alt="" srcset="" />

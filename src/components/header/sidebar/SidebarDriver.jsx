@@ -26,7 +26,7 @@ const SidebarDriver = () => {
                             className={activeItem === 'statistics' ? 'sidebar-link text-white active_item' : 'sidebar-link text-white'}
                             onClick={() => setActiveItem("statistics")}
                         >
-                             <img src="images/file.png" className="sidebar-icon" /> statistics
+                             <img src="images/file.png" className="sidebar-icon" /> Statistics
                         </Link>
                         <Link to="/profile"
                             className={activeItem === 'profile' ? 'sidebar-link text-white active_item' : 'sidebar-link text-white'}

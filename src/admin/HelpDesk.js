@@ -129,12 +129,12 @@ const HelpDesk = () => {
   };
   return (
     <div className="helpDesk">
-      <h1 className="helpDesk__title">Issue List</h1>
+      <h1 className="helpDesk__title text-light">Issue List</h1>
       <TableContainer component={Paper} className="helpDesk__tableContainer">
         <Table className="helpDesk__table">
           <TableHead>
-            <TableRow>
-              <TableCell className="helpDesk__tableCell helpDesk__tableHeaderCell">
+            <TableRow className="text-light">
+              <TableCell className="helpDesk__tableCell helpDesk__tableHeaderCell ">
                 ID
               </TableCell>
               <TableCell className="helpDesk__tableCell helpDesk__tableHeaderCell">

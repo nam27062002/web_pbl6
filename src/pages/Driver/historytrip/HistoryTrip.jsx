@@ -44,8 +44,11 @@ const HistoryTrip = () => {
   const handleDateChange = (event) => {
     const newDateValue = event.target.value;
     setSelectedDate(newDateValue);
+    console.log(newDateValue);
     setSearchData(() => {
-      return trips.filter(item => item.createdAt.includes(newDateValue)||item.createdAt.includes(newDateValue))
+      return trips.filter(item => {
+        return item.createdAt.includes(newDateValue)
+      })
     })
     console.log(searchData);
   };
@@ -117,9 +120,9 @@ const HistoryTrip = () => {
               </div>
               
             ) : (
-              <div className="d-flex flex-column align-items-center">
+                  <div className="d-flex flex-column align-items-center">
+                <h3 className="text-light">No trip</h3>
                 <Lottie animationData={groovyWalkAnimation} loop={true} className='lottie' />
-                <h3>No trip</h3>
               </div>
             )
             }

@@ -13,8 +13,6 @@ import ColorVehicle from "./pages/ModelVehicle/ColorVehicle";
 import ModelVehicle from "./pages/ModelVehicle/ModelVehicle";
 import NoInternet from "./components/no_internet/NoInternet";
 import DriverHome from "./pages/DriverHome/DriverHome";
-import HomeContainer from "./home/HomeContainer";
-import DriverContainer from "./dirver/DriverContainer";
 import HistoryTrip from "./pages/Driver/historytrip/HistoryTrip";
 import Statistics from "./pages/Driver/statistics/Statistics";
 import Profile from "./pages/Driver/profile/Profile";

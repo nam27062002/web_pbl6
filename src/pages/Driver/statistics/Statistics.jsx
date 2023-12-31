@@ -41,7 +41,7 @@ const Statistics = () => {
     return (
         <>
             <div className="container-statistics">
-                <h1 className="text-light">Statistics</h1>
+                <h1 className="text-light ms-4">Statistics</h1>
                 <div className="content-statistics">
                     <div className="px-3">
                         <button

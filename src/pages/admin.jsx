@@ -6,8 +6,8 @@ import { useHistory, Link } from 'react-router-dom';
 import '../styles/Pages/Admin.css';
 import Modal from 'react-modal';
 import PendingApprovalModal from '../admin/PendingApprovalModal';
-import UserTable from '../admin/UserTable';
-import Sidebar from '../admin/Sidebar'
+import UserTable from '../admin/usertable/UserTable';
+import Sidebar from '../admin/Sidebar/Sidebar'
 import HelpDesk from '../admin/HelpDesk';
 import Promo from '../admin/Promo';
 export const Admin = () => {
@@ -226,15 +226,15 @@ export const Admin = () => {
     };
     return (
         <div>
-            <div className="content">
+            <div className="">
                 <Sidebar activeItem={activeItem} handleItemClick={handleItemClick} />
                 <div className='content-right'>
                     {index < 2 && ( 
                         <div>
-                            <div className={`filter-container ${index === 1 ? 'index-1' : ''}`}>
-                                <label className="filter-label">
+                            <div className={`filter-container ${index === 1 ? '' : ''}`}>
+                                <label className="filter-label text-light">
                                     Field:
-                                    <select className="filter-dropdown" value={selectedField} onChange={(e) => setSelectedField(e.target.value)}>
+                                    <select className="filter-dropdown form-item-admin mx-3" value={selectedField} onChange={(e) => setSelectedField(e.target.value)}>
                                         <option value="All">All</option>
                                         <option value="id">ID</option>
                                         <option value="name">Name</option>
@@ -243,10 +243,10 @@ export const Admin = () => {
                                     </select>
                                 </label>
 
-                                <label className="filter-label">
+                                <label className="filter-label text-light">
                                     Search:
                                     <input
-                                        className="search-input"
+                                        className="search-input form-item-admin mx-3"
                                         type="text"
                                         placeholder="Search..."
                                         value={searchText}
@@ -255,9 +255,9 @@ export const Admin = () => {
                                 </label>
 
                                 {index === 1 && (
-                                    <label className="filter-label">
+                                    <label className="filter-label text-light">
                                         Driver Status:
-                                        <select className="filter-dropdown" value={selectedDriverStatus} onChange={(e) => setSelectedDriverStatus(e.target.value)}>
+                                        <select className="filter-dropdown form-item-admin mx-3" value={selectedDriverStatus} onChange={(e) => setSelectedDriverStatus(e.target.value)}>
                                             <option value="All">All</option>
                                             <option value="Insufficient verification information">Insufficient verification information</option>
                                             <option value="Insufficient authentication information">Insufficient authentication information</option>
@@ -268,9 +268,9 @@ export const Admin = () => {
                                 )}
 
                                 {index === 1 && (
-                                    <label className="filter-label">
+                                    <label className="filter-label text-light">
                                         Average Rate:
-                                        <select className="filter-dropdown" value={selectedAvgRate} onChange={(e) => setSelectedAvgRate(e.target.value)}>
+                                        <select className="filter-dropdown form-item-admin mx-3" value={selectedAvgRate} onChange={(e) => setSelectedAvgRate(e.target.value)}>
                                             <option value="All">All</option>
                                             <option value="0">0</option>
                                             <option value="1">1</option>
@@ -282,7 +282,7 @@ export const Admin = () => {
                                     </label>
                                 )}
 
-                                <label className="filter-label">
+                                <label className="filter-label text-light d-flex align-items-center">
                                     Exact Match:
                                     <input
                                         className="exact-match-checkbox"
@@ -292,7 +292,8 @@ export const Admin = () => {
                                     />
                                 </label>
                             </div>
-                            <UserTable
+                            <div className="px-4">
+                                <UserTable
                                 index={index}
                                 getCurrentPageData={getCurrentPageData}
                                 selectedField={selectedField}
@@ -308,6 +309,8 @@ export const Admin = () => {
                                 currentPage={currentPage}
                                 handlePageChange={handlePageChange}
                             />
+                            </div>
+                            
                             <div className="pagination-buttons">
                                 <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
                                     Previous

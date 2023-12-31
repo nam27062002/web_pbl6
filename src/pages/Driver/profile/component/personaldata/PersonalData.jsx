@@ -3,9 +3,11 @@ import React, {useState, useEffect} from 'react'
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Popup from 'reactjs-popup';
+import ChangePassword from './ChangePassword';
 
 
-const PersonalData = () => {
+const PersonalData = ({noti,isSuccess}) => {
     const [user, setUser] = useState(() => {
         const localData = JSON.parse(localStorage.getItem("user"));
         return localData || null;
@@ -13,7 +15,6 @@ const PersonalData = () => {
     const [fullName, setFullName] = useState('');
     const [gender, setGender] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
-    const [addresses, setAddresses] = useState('');
     const [error, setError] = useState("");
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -22,6 +23,7 @@ const PersonalData = () => {
     const [selectedProvince, setSelectedProvince] = useState("");
     const [loading, setLoading] = useState(false);
     const [isOnline, setIsOnline] = useState(true);
+    const [showMessage, setShowMessage] = useState(false);
 
     const fetchData = async () => {
         if (navigator.onLine) {
@@ -77,8 +79,8 @@ const PersonalData = () => {
         } else {
           setIsOnline(false);
         }
-      };
-  
+    };
+
     const handleProvinceChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedProvince(selectedValue);
@@ -109,44 +111,74 @@ const PersonalData = () => {
 
     const updateProfile = async () => {
         if (navigator.onLine) {
-          setIsOnline(true);
-          try {
-            setLoading(true);
-            const url = `http://ridewizard.pro:9000/api/v1/users/profile/${user.user.id}`;
-            const authorizationHeader = `Bearer ${user.accessToken}`;
-            const response = await axios.put(
-              url,
-              {
-                  fullName: fullName,
-                  dob: dateOfBirth,
-                address: selectedProvince,
-                avatar: "",
-              },
-              {
-                headers: {
-                  Authorization: authorizationHeader,
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-    
-            toast.success("Hồ sơ được cập nhật thành công!", { autoClose: 3000 });
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          } finally {
-            setLoading(false);
-          }
+            setIsOnline(true);
+            if (navigator.onLine) {
+                
+            }
+            try {
+                setLoading(true);
+                const url = `http://ridewizard.pro:9000/api/v1/users/profile/${user.user.id}`;
+                const authorizationHeader = `Bearer ${user.accessToken}`;
+                const response = await axios.put(
+                    url,
+                    {
+                        fullName: fullName,
+                        dob: dateOfBirth,
+                        address: selectedProvince,
+                    },
+                    {
+                        headers: {
+                            Authorization: authorizationHeader,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                if (response.status === 200) {
+                    noti(true)
+                    isSuccess(true)
+                } else {
+                    noti(true)
+                    isSuccess(false)
+                }
+                console.log(response);
+              
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                noti(true)
+                isSuccess(false)
+                return
+            } finally {
+                setLoading(false);
+            }
         } else {
-          setIsOnline(false);
+            setIsOnline(false);
+            noti(true)
+            isSuccess(false)
         }
-      };
-
+    };
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const popupContentStyle = {
+        width: windowWidth < 768 ? '85%' : '40%', 
+        height: 'auto',
+        padding: '0px',
+        background: "rgba(255, 255, 255, 0)",
+        borderRadius: '12px',
+        boxShadow: "none"
+    };
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
     useEffect(() => {
         fetchData();
         getProfile();
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     return (
+
         <div className="Personal-container">
             <h4 className="text-light w-100 border-1 border-bottom border-light px-3 py-3">Personal Data</h4>
             <div className="mx-4 pt-2 pb-3">
@@ -239,11 +271,31 @@ const PersonalData = () => {
                 <button
                     onClick={handleEditClick}
                     className="button-style text-light px-5">
-                    {!isEdit?"EDIT":"Complete"}
+                    {!isEdit ? "EDIT" : "Complete"}
                 </button>
-                <button className="button-style text-light">
-                    Change password
-                </button>
+                
+                <Popup
+                    trigger={
+                        <button className="button-style text-light">
+                            Change password
+                        </button>
+                                        
+                    }
+                    modal nested
+                    contentStyle={popupContentStyle}
+                >
+                    {
+                        close => (
+                            <>
+                                <ChangePassword
+                                    close={close}
+                                    noti={noti}
+                                    isSuccess = {isSuccess}
+                                ></ChangePassword>
+                            </>
+                        )
+                    }
+                </Popup>
             </div>
         </div>
             
