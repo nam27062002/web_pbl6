@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import axios from "axios";
 import util from "../../../../../util";
 
-const ChangePassword = ({ close,noti,isSuccess }) => {
+const ChangePassword = ({ close }) => {
     const [user, setUser] = useState(() => {
         const localData = JSON.parse(localStorage.getItem("user"));
         return localData || null;
@@ -10,34 +10,35 @@ const ChangePassword = ({ close,noti,isSuccess }) => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const changePw = async () => {
-        try {
-            const url = `http://ridewizard.pro:9000/api/v1/users/change-password`;
-            const authorizationHeader = `Bearer ${user.accessToken}`;
-            const response = await axios.put(
-                url,
-                {
-                    currentPassword: oldPassword,
-                    newPassword: newPassword,
-                },
-                {
-                    headers: {
-                        Authorization: authorizationHeader,
-                        "Content-Type": "application/json",
+        if (navigator.onLine) {
+            try {
+                const url = `http://ridewizard.pro:9000/api/v1/users/change-password`;
+                const authorizationHeader = `Bearer ${user.accessToken}`;
+                const response = await axios.put(
+                    url,
+                    {
+                        currentPassword: oldPassword,
+                        newPassword: newPassword,
                     },
+                    {
+                        headers: {
+                            Authorization: authorizationHeader,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                if (response.status === 200) {
+                    util.showToastSuccess("Success")
+                } else {
+                    util.showToastWarning(response.data.message)
                 }
-            );
-            if (response.status === 200) {
-                noti(true)
-                isSuccess(true)
-                close()
-            } else {
-                noti(true)
-                isSuccess(false)
-            }
-        } catch (error) {
-            noti(true)
-            isSuccess(false)
-        } 
+            } catch (error) {
+                util.showToastWarning(error.message)
+            } 
+        } else {
+            util.showToastWarning('Check your connection')
+        }
+        
     };
 
     return (

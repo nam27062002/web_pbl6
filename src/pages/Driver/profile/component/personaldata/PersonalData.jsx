@@ -1,13 +1,12 @@
 import './style.css'
 import React, {useState, useEffect} from 'react'
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Popup from 'reactjs-popup';
 import ChangePassword from './ChangePassword';
 import util from '../../../../../util';
 
-const PersonalData = ({noti,isSuccess}) => {
+const PersonalData = () => {
     const [user, setUser] = useState(() => {
         const localData = JSON.parse(localStorage.getItem("user"));
         return localData || null;
@@ -37,8 +36,9 @@ const PersonalData = ({noti,isSuccess}) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
-  
+                
                 const data = await response.json();
+
                 let provinceNames = data.map((province) => province.name);
                 provinceNames = provinceNames.map((name) =>
                     name.replace("Tỉnh ", "").replace("Thành phố ", "")
@@ -112,9 +112,6 @@ const PersonalData = ({noti,isSuccess}) => {
     const updateProfile = async () => {
         if (navigator.onLine) {
             setIsOnline(true);
-            if (navigator.onLine) {
-                
-            }
             try {
                 setLoading(true);
                 const url = `http://ridewizard.pro:9000/api/v1/users/profile/${user.user.id}`;
@@ -133,27 +130,23 @@ const PersonalData = ({noti,isSuccess}) => {
                         },
                     }
                 );
-                if (response.status === 200) {
-                    noti(true)
-                    isSuccess(true)
+                if (response.status !== 200) {
+                    util.showToastWarning(response.data.message)
                 } else {
-                    noti(true)
-                    isSuccess(false)
+                    util.showToastSuccess(response.data.message)
                 }
                 console.log(response);
               
             } catch (error) {
                 console.error("Error fetching data:", error);
-                noti(true)
-                isSuccess(false)
+                util.showToastWarning(error.message)
                 return
             } finally {
                 setLoading(false);
             }
         } else {
             setIsOnline(false);
-            noti(true)
-            isSuccess(false)
+            util.showToastWarning("Check your connection")
         }
     };
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -289,8 +282,6 @@ const PersonalData = ({noti,isSuccess}) => {
                             <>
                                 <ChangePassword
                                     close={close}
-                                    noti={noti}
-                                    isSuccess = {isSuccess}
                                 ></ChangePassword>
                             </>
                         )
