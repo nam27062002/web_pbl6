@@ -72,7 +72,6 @@ const App = () => {
         <Route path="/policy-privacy" component={Privacy}></Route>
         <Route path="/register-method" component={MethodRegister}></Route>
         <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
         {/* admin */}
 
         <Route path="/admin" component={Admin}></Route>
