@@ -14,6 +14,7 @@ import HistoryTrip from "./pages/Driver/historytrip/HistoryTrip";
 import Statistics from "./pages/Driver/statistics/Statistics";
 import ProfileText from "./pages/Driver/profile/ProfileTest";
 import SidebarDriver from "./components/header/sidebar/SidebarDriver";
+import Issues from "./pages/Driver/issue/Issues";
 // import Verify from "./pages/Driver/profile/verify/Verify";
 import React, { useState, useEffect } from "react";
 import "./index.css";
@@ -75,6 +76,7 @@ const App = () => {
         <Route path="/admin" component={Admin}></Route>
         <Route path="/colorVehical" component={ColorVehicle}></Route>
         <Route path="/modelVehical" component={ModelVehicle}></Route>
+        <Route path="/issue" component={Issues}></Route>
         {/* <Route path="/nointernet" component={NoInternet}></Route> */}
         {/* driver */}
         <div className="driver">

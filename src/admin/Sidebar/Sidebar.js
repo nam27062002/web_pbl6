@@ -1,10 +1,10 @@
 import React from 'react';
-
+import './style.css'
 const Sidebar = ({ activeItem, handleItemClick }) => {
     return (
         <div className="collapse d-lg-block sidebar collapse sidebar-container fixed-bottom">
             <ul className="sidebar-list">
-                <li>
+                <li className="">
                     <a href="#" className={activeItem === 'Account' ? 'active_item ' : ''} onClick={() => handleItemClick('Account')}>
                         <img src="images/user.png" className="sidebar-icon" />
                         <span className="text-light">Account</span> 
