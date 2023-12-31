@@ -28,7 +28,7 @@ const VehicleTable = () => {
     return (
         <div className="table-container w-100  pb-3">
             <h4 className="text-light w-100 border-1 border-bottom border-light px-3 py-3">Vehicle</h4>
-            <div className="mx-3">
+            <div className=" table-scroll px-3">
                 <table className="w-100 background-table text-light ">
                     <thead className="border-bottom ">
                         <tr className="">

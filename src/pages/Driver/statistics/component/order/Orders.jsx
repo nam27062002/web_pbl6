@@ -41,7 +41,7 @@ const Orders = ({dateBefore,dateAfter}) => {
             
             <div className="container-order">
                 <div className="mt-3 d-flex py-4">
-                    <div className="w-50">
+                    <div className="w-50 w-phone">
                         <span className="text-white-50">Complete</span>
                         <h3 className="text-light">{complete||"0"}</h3>
                     </div>

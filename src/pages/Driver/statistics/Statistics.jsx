@@ -94,7 +94,7 @@ const Statistics = () => {
                 </div>
                 {selected === 'Orders' ? (
                     <>
-                        <div className="ms-4 w-50">
+                        <div className="ms-4 w-device">
                             {history.length > 0 && history.map((item) => (
                                 <HistoryOfDate
                                 history={item}

@@ -11,6 +11,8 @@ const DriverContentHeader = () => {
     console.log(localData);
     return localData || null
   });
+
+
   const [showDropdown, setShowDropdown] = useState(false);
   const handleOnclickAvatar = () => {
 
@@ -26,32 +28,35 @@ const DriverContentHeader = () => {
       {user && (
         <button className="container-avatar" id="navbarNavDarkDropdown" onClick={handleOnclickAvatar}>
           <ul class="navbar-nav">
-            <li class="nav-item dropdown">
+            <li class=" dropdown">
               <div class="container-avatar">
                 <p className='mx-3 text-white'>{user.user.fullName}</p>
                 <img
-                  src={user.user.avatar? user.user.avatar : "./images/avatar/avt.png"}
+                  src={user.user.avatar ? user.user.avatar : "./images/avatar/avt.png"}
                   // src='./images/avatar/avt.png'
                   className='rounded-circle avatar'
                   alt="" srcset="" />
               </div>
-              <ul className={`dropdown-menu dropdown-menu-dark ${showDropdown ? "show" : ""}`} aria-labelledby="navbarDarkDropdownMenuLink">
+              <ul className={`dropdown-menu dropdown-menu-dark dropdown-position ${showDropdown ? "show" : ""}`} aria-labelledby="navbarDarkDropdownMenuLink">
                 <li>
                   <Link to='/profile' className="dropdown-item">Profie</Link>
-                  {/* <a className="dropdown-item" href="#">Profie</a> */}
+                </li>
+                <li>
+                  <Link to='/history' className="dropdown-item show-phone-screen">Trip History</Link>
+                </li>
+                <li>
+                  <Link to='/statistics' className="dropdown-item show-phone-screen">Statistics</Link>
                 </li>
                 <li>
                   <Link to="/" onClick={handleLogOut} className="dropdown-item">Log out </Link>
-                  {/* <a className="dropdown-item" href="#">Log out</a> */}
                 </li>
-                {/* <li><a className="dropdown-item" href="#">Something else here</a></li> */}
               </ul>
             </li>
           </ul>
         </button>
       )}
     </>
-  )
+  );
 }
 
 

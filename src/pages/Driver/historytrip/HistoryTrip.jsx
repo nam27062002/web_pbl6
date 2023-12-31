@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './style.css'
 import TripService from "../../../service/TripService";
 import moment from 'moment';
-import groovyWalkAnimation from '../../../lotti/driver_banner.json';
+import groovyWalkAnimation from '../../../lotti/HistoryAnimation.json';
 import Lottie from "lottie-react";
 import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 
@@ -88,9 +88,9 @@ const HistoryTrip = () => {
               </label>
             </div>
             {trips.length > 0 ? (
-              <div className="table-container w-100  pb-3">
-                <div className="mx-3">
-                  <table className="w-100 background-table text-light">
+              <div className="table-container  pb-3">
+                <div className="mx-3 table-scroll">
+                  <table className=" background-table text-light  ">
                 
                     <thead className="">
                       <tr >
@@ -106,7 +106,7 @@ const HistoryTrip = () => {
                       {trips.map((trip) => (
                         <tr key={trip.id} className={trip.status === 'completed' ? 'completed border-top' : 'canceled border-top'}>
                           <td>{trip.id}</td>
-                          <td>{trip.pickupAddress}</td>
+                          <td >{trip.pickupAddress}</td>
                           <td>{trip.destinationAddress}</td>
                           <td className="status">{trip.status}</td>
                           <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>

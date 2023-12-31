@@ -37,7 +37,7 @@ const HistoryOfDate = ({ history }) => {
                 <h5 className="text-light">{dateTrip }</h5>
                 <div className="content-historyofdate">
                     <div className="d-flex align-items-center">
-                        <div className="me-5">
+                        <div className="me-device">
                             <span className="text-white-50 d-block">{ fullDateTrip }</span>
                             <span className="text-light d-block  ">{ timeTrip }</span>
                         </div>
@@ -45,11 +45,11 @@ const HistoryOfDate = ({ history }) => {
                             <h4 className="text-light ms-5">Canceled</h4>
                         ) : (
                                 <div className="d-flex">
-                                    <div className="mx-5">
+                                    <div className="mx-device ">
                                         <span className="text-white-50 d-block">Commission fee</span>
                                         <span className="text-light d-block  ">${ history.fee }</span>
                                     </div>
-                                    <div className="mx-5">
+                                    <div className="mx-device">
                                         <span className="text-white-50 d-block">Cash</span>
                                         <span className="text-light d-block  ">${ history.estFare }</span>
                                     </div>

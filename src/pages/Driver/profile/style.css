@@ -11,3 +11,23 @@
 .column{
     width: 50%;
 }
+.display{
+    display: flex;
+}
+
+
+@media screen and (max-width: 1024px){
+    .container-profile{
+        margin-left: 0px;
+        width: calc(100%);
+        padding-right: 20px;
+    }
+    .column{
+        width: 100%;
+    }
+    .display{
+        display:flex;
+        flex-direction: column-reverse;
+        padding-right: 20px;
+    }
+}

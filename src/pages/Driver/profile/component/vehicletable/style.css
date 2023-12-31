@@ -25,3 +25,8 @@
 .background-table td,th {
     padding:15px;
 }
+
+.table-scroll{
+    width: 100%;
+    overflow-x: auto;
+}
