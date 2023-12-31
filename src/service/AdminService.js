@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import util from '../util';
 const AdminService = {
     getAllUser: async (token) => {
         try {
@@ -9,9 +9,12 @@ const AdminService = {
                     'Content-Type': 'application/json',
                 }
             })
+
             return response;
         } catch (error) {
+            util.showToastWarning('Fail call API')
             return null;
+
         }
 
     }

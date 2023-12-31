@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-
+import util from "../../../../../../util";
 const Verify = ({ verify }) => {
   const [isShow, setIsShow] = useState(false);
   const [photoVerify, setPhotoVerify] = useState(verify);

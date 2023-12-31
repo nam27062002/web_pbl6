@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import util from '../util';
 const TripService = {
     getHistoryTrip: (token,driverId) => {
         try {
@@ -12,6 +12,7 @@ const TripService = {
             })
             return response
         } catch (error) {
+            util.showToastWarning('Fail call API')
             return null;
         }
     }

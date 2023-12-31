@@ -4,6 +4,7 @@ import Finances from './component/finances/Finances';
 import Orders from './component/order/Orders';
 import HistoryOfDate from './component/order/component/historyofdate/HistoryOfDate';
 import axios from 'axios';
+import util from '../../../util';
 
 
 const Statistics = () => {

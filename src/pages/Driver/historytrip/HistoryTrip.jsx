@@ -5,6 +5,9 @@ import moment from 'moment';
 import groovyWalkAnimation from '../../../lotti/HistoryAnimation.json';
 import Lottie from "lottie-react";
 import { setSelectionRange } from "@testing-library/user-event/dist/utils";
+import util from '../../../util';
+
+
 
 const HistoryTrip = () => {
     const [trips, setTrips] = useState([]);

@@ -6,7 +6,7 @@ import Popup from 'reactjs-popup';
 import { Login } from './Login'
 import { motion } from 'framer-motion';
 import {Link} from 'react-router-dom';
-
+import util from '../util';
 
 export const Welcome = () => {
     const history = useHistory();
