@@ -159,6 +159,7 @@ const HistoryTrip = () => {
                                       id={trip.id}
                                       pickUpPoint={trip.pickupAddress}
                                       destinationPoint={trip.destinationAddress}
+                                      close={close}
                                     ></PopupIssue>
                                   </>
                                 )

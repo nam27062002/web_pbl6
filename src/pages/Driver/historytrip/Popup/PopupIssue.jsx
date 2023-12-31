@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import util from '../../../../util';
-const PopupIssue = ({ pickUpPoint, destinationPoint, id }) => {
+const PopupIssue = ({ pickUpPoint, destinationPoint, id ,close }) => {
     const [user, setUser] = useState(() => {
         const localData = JSON.parse(localStorage.getItem("user"));
         return localData || null;
@@ -98,6 +98,7 @@ const PopupIssue = ({ pickUpPoint, destinationPoint, id }) => {
                         Send
                     </button>
                     <button className="button-style text-light px-5"
+                        onClick={close}
                     >
                         Cancel
                     </button>

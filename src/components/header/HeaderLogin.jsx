@@ -13,6 +13,9 @@ const HeaderLogin = () => {
     return localData || null
   });
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
+
+
   const handleSelectedItem = (item) => {
     setSelectedItem(item)
   }
@@ -35,6 +38,7 @@ const HeaderLogin = () => {
       if (event.data.key === 'user') {
         // Thực hiện các bước xử lý khi item 'user' bị xóa
         setUser(null);
+        setIsAdmin(false);
       }
     } else if (event.data && event.data.action === 'checkLocalStorage') {
       if (event.data.key === 'user') {
@@ -43,9 +47,16 @@ const HeaderLogin = () => {
           const localData = JSON.parse(localStorage.getItem('user'));
           return localData || null
         });
+        setIsAdmin(() => {
+          const localData = JSON.parse(localStorage.getItem('user'));
+          return localData.user.role.some((item) => item.role === "admin");
+        });
       }
     }
   });
+  useEffect(() => {
+    console.log(isAdmin);
+  })
 
   return (
 
@@ -58,7 +69,8 @@ const HeaderLogin = () => {
         
         {
           user ? (
-            <DriverContentHeader></DriverContentHeader>
+            <DriverContentHeader
+            ></DriverContentHeader>
           ) : (
               <WelcomeContentHeader></WelcomeContentHeader>
           )
