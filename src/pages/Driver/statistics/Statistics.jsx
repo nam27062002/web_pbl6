@@ -4,6 +4,7 @@ import Finances from './component/finances/Finances';
 import Orders from './component/order/Orders';
 import HistoryOfDate from './component/order/component/historyofdate/HistoryOfDate';
 import axios from 'axios';
+import util from '../../../util';
 
 
 const Statistics = () => {
@@ -41,7 +42,8 @@ const Statistics = () => {
     return (
         <>
             <div className="container-statistics">
-                <h1 className="text-light">Statistics</h1>
+                <h1 className="text-light ms-4">Statistics</h1>
+                
                 <div className="content-statistics">
                     <div className="px-3">
                         <button
@@ -93,7 +95,7 @@ const Statistics = () => {
                 </div>
                 {selected === 'Orders' ? (
                     <>
-                        <div className="ms-4 w-50">
+                        <div className="ms-4 w-device">
                             {history.length > 0 && history.map((item) => (
                                 <HistoryOfDate
                                 history={item}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "../styles/Pages/Register.css";
 import axios from "axios";
-
+import util from '../util';
 import Lottie from "lottie-react";
 import groovyWalkAnimation from "../lotti/driver_banner.json";
 import Spinner from "../components/spinner/Spinner";
@@ -296,7 +296,7 @@ export const Register = (props) => {
           setError(errorData.message);
           throw new Error("Signup failed");
         }
-
+        util.showToastSuccess("Successfully")
         const data = await response.json();
         console.log(data);
         updateProfile(data);
@@ -316,11 +316,14 @@ export const Register = (props) => {
         };
       } catch (error) {
         console.error("Error calling API:", error.message);
+        util.showToastWarning('Fail call API')
       } finally {
         setLoading(false);
       }
     } else {
       setIsOnline(false);
+      util.showToastWarning('No internet')
+
     }
   };
 
@@ -359,6 +362,7 @@ export const Register = (props) => {
         }
       } else {
         setIsOnline(false);
+        util.showToastWarning('No internet')
       }
     }
   };
@@ -682,7 +686,8 @@ export const Register = (props) => {
         </div>
       ) : (
         <div className="content-register">
-          <NoInternet />
+            <NoInternet />
+            {util.showToastWarning("Check your connection")}
         </div>
       )}
 

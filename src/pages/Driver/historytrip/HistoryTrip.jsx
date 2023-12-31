@@ -2,9 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './style.css'
 import TripService from "../../../service/TripService";
 import moment from 'moment';
-import groovyWalkAnimation from '../../../lotti/driver_banner.json';
+import groovyWalkAnimation from '../../../lotti/HistoryAnimation.json';
 import Lottie from "lottie-react";
 import { setSelectionRange } from "@testing-library/user-event/dist/utils";
+import util from '../../../util';
+import PopupIssue from './Popup/PopupIssue';
+import { BiSolidMessage } from "react-icons/bi";
+import Popup from 'reactjs-popup';
+
+
 
 const HistoryTrip = () => {
     const [trips, setTrips] = useState([]);
@@ -19,21 +25,41 @@ const HistoryTrip = () => {
   const [address, setAddress] = useState("");
   const [searchData, setSearchData] = useState([])
   const [selectedDate, setSelectedDate] = useState('');
-    const getTrips = async () => {
-
-        const res = await TripService.getHistoryTrip(accessToken, userId);
-        console.log(res);
-        if (res) {
-            setTrips(res.data.data)
-            console.log(res.data);
-        }
-        setLoading1(false)
+  const [isOnline, setIsOnline] = useState(true);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+};
+  const getTrips = async () => {
+    if (navigator.onLine) {
+      const res = await TripService.getHistoryTrip(accessToken, userId);
+      console.log(res);
+      if (res) {
+        setTrips(res.data.data)
+        console.log(res.data);
+      }
+      setLoading1(false)
+    } else {
+      util.showToastWarning("Check your connection")
     }
+        
+  }
     useEffect(() => {
-        getTrips()
+      getTrips()
+      window.addEventListener('resize', handleResize);
+      return () => {
+          window.removeEventListener('resize', handleResize);
+      };
     }, [])
-  
-  
+
+    const popupContentStyle = {
+      width: windowWidth < 768 ? '85%' : '50%', 
+      height: 'auto',
+      padding: '0px',
+      background: "rgba(255, 255, 255, 0)",
+      borderRadius: '12px',
+      boxShadow: "none"
+  };
   const handleSearch = (address) => {
     setAddress(address)
     setSearchData(() => {
@@ -44,8 +70,11 @@ const HistoryTrip = () => {
   const handleDateChange = (event) => {
     const newDateValue = event.target.value;
     setSelectedDate(newDateValue);
+    console.log(newDateValue);
     setSearchData(() => {
-      return trips.filter(item => item.createdAt.includes(newDateValue)||item.createdAt.includes(newDateValue))
+      return trips.filter(item => {
+        return item.createdAt.includes(newDateValue)
+      })
     })
     console.log(searchData);
   };
@@ -85,41 +114,71 @@ const HistoryTrip = () => {
               </label>
             </div>
             {trips.length > 0 ? (
-                <div className="table-container w-100  pb-3">
-                  <div className="mx-3">
-                    <table className="w-100 background-table text-light">
+              <div className="table-container  pb-3">
+                <div className="px-3 table-scroll">
+                  <table className=" background-table text-light  ">
                 
-                  <thead className="border-bottom">
-                    <tr >
-                      <th>ID</th>
-                      <th>Pickup Address</th>
-                      <th>Destination Address</th>
-                      <th>Status</th>
-                      <th>Created At</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                              
-                    {trips.map((trip) => (
-                      <tr key={trip.id} className={trip.status === 'completed' ? 'completed border-bottom' : 'canceled border-bottom'}>
-                        <td>{trip.id}</td>
-                        <td>{trip.pickupAddress}</td>
-                        <td>{trip.destinationAddress}</td>
-                        <td className="status">{trip.status}</td>
-                        <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                    <thead className="">
+                      <tr >
+                        <th>ID</th>
+                        <th>Pickup Address</th>
+                        <th>Destination Address</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th></th>
                       </tr>
-                    ))}
+                    </thead>
+                    <tbody>
+                              
+                      {trips.map((trip) => (
+                        <tr className={trip.status === 'completed' ? 'completed border-top' : 'canceled border-top'}>
+                          <td>{trip.id}</td>
+                          <td >{trip.pickupAddress}</td>
+                          <td>{trip.destinationAddress}</td>
+                          <td className="status">{trip.status}</td>
+                          <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                          {/* <td ><PopupIssue
+                            id={trip.id}
+                            pickUpPoint={trip.pickupAddress}
+                            destinationPoint={trip.destinationAddress}
+                            token={accessToken}
+                          ></PopupIssue></td> */}
+                          <td>
+                            <Popup
+                              trigger={
+                                <BiSolidMessage></BiSolidMessage>
+                                        
+                              }
+                              modal nested
+                              contentStyle={popupContentStyle}
+                            >
+                              {
+                                close => (
+                                  <>
+                                    <PopupIssue
+                                      id={trip.id}
+                                      pickUpPoint={trip.pickupAddress}
+                                      destinationPoint={trip.destinationAddress}
+                                    ></PopupIssue>
+                                  </>
+                                )
+                              }
+                               
+                            </Popup>
+                          </td>
+                        </tr>
+                      ))}
                                           
-                  </tbody>
-                </table>
-                  </div>
+                    </tbody>
+                  </table>
+                </div>
                 
               </div>
               
             ) : (
               <div className="d-flex flex-column align-items-center">
+                <h3 className="text-light">No trip</h3>
                 <Lottie animationData={groovyWalkAnimation} loop={true} className='lottie' />
-                <h3>No trip</h3>
               </div>
             )
             }

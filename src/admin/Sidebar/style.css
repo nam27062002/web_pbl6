@@ -6,7 +6,7 @@
 }
 .sidebar-width{
     width: 250px;
-}
+}   
 .sidebar-item{
     width: 100%;
     
@@ -23,9 +23,6 @@
     color: #fff;
 }
 .sidebar-icon{
-    width: 20px;
-    width: 20px;
-    margin-right: 12px;
     filter: grayscale(100%) invert(100%);
 }
 

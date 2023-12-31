@@ -71,10 +71,10 @@ const WelcomeContentHeader = () => {
             </ul>
             <div>
                 
-                <Link to="/register" className="btn btn-primary mx-3">Register</Link>
+                <Link to="/register" className="btn bg-info mx-3 text-light">Register</Link>
                 <Popup
                     trigger={
-                        <input type="button" value="Sign in" className="btn btn-success" />
+                        <input type="button" value="Sign in" className="btn btn_log-header text-light" />
                                         
                     }
                     modal nested

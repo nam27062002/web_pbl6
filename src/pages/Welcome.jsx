@@ -6,7 +6,7 @@ import Popup from 'reactjs-popup';
 import { Login } from './Login'
 import { motion } from 'framer-motion';
 import {Link} from 'react-router-dom';
-
+import util from '../util';
 
 export const Welcome = () => {
     const history = useHistory();
@@ -54,11 +54,11 @@ export const Welcome = () => {
             <div className="container1">
                 <div>
                     <div  className="container_banner">
-                        <img src="./images/homepage/banner/banner.png" alt="" className="banner" />
+                        <img src="./images/homepage/banner/software.png" alt="" className="banner" />
                         {/* <Lottie animationData={groovyWalkAnimation} loop={true} className='banner' /> */}
                         <div className="container_form">
                             <h1 className="title">Get in the driver's seat and get paid</h1>
-                            <p>Drive on the platform with the largest network of active riders.</p>
+                            <p className="text-light">Drive on the platform with the largest network of active riders.</p>
                             <div className="container_btn_sign">
                                 <Popup 
                                     trigger={
@@ -86,7 +86,7 @@ export const Welcome = () => {
                                     onClick={handleButtonClick}
                                 >
                                 </input> */}
-                                <button type="button" className="btn_log">
+                                <button type="button" className="btn_log bg-info">
                                     <Link to= "/register" className="nav-link">Register</Link>
                                 </button>
                             </div>
@@ -99,27 +99,27 @@ export const Welcome = () => {
                 <div className="container_banner2" > 
                     <img src="./images/homepage/banner/banner2.png" alt="" className='banner2' />
                     <div className="container_form_1">
-                        <h1>Uber For Business</h1>
+                        <h1>Ridewizard For Business</h1>
                         <p>Transform the way your company moves and feeds its people.</p>
                         <input type="button" value="See Now" className='btn_log'/>
                     </div>
                 </div>
                 <div className="focus_on_safety">
-                    <h2>Focus on safety, Wherever you go</h2>
+                    <h2 className="text-light">Focus on safety, Wherever you go</h2>
                     <div className="container_commitment">
                         <div className='commitment'>
                             <img src="./images/homepage/commitment.png" alt="" />
                             <div>
-                            <h3>Our Commitment to your safety</h3>
-                            <p>With every safety feature and every standard in our Community Guidelines,
+                            <h3 className="text-light">Our Commitment to your safety</h3>
+                            <p  className="text-light">With every safety feature and every standard in our Community Guidelines,
                                 we're committed to helping to create a safe environment for our users.</p>
                             </div>
                         </div>
                         <div className='commitment'>
                             <img src="./images/homepage/commitment.png" alt="" />
                             <div>
-                                <h3>Setting 10,000+ cities in motion</h3>
-                                <p>The app is available in thousands of cities worldwide,
+                                <h3  className="text-light">Setting 10,000+ cities in motion</h3>
+                                <p  className="text-light">The app is available in thousands of cities worldwide,
                                     so you can request a ride even when you’re far from home.</p>
                             </div>
                         </div>

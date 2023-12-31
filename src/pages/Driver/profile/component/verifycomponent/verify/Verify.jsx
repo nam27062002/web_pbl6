@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-
+import util from "../../../../../../util";
 const Verify = ({ verify }) => {
   const [isShow, setIsShow] = useState(false);
   const [photoVerify, setPhotoVerify] = useState(verify);
 
-  const handleBorder = (status) => {
+  const handleBorder = (status, image) => {
+    if (!image) {
+      return "border-not-upload";
+    }
     if (status.includes("Approved")) {
       return "border-approved";
-    } else if (status.includes("Deny")) {
+    } else if (status.includes("Denied")) {
       return "border-deny";
     } else if (status.includes("Pending")) {
       return "border-pendding";
@@ -23,7 +26,7 @@ const Verify = ({ verify }) => {
   return (
     <>
       <div
-        className="container_accordion shadow pb-4 my-2 text-light"
+        className="container_accordion shadow my-2 text-light"
         id="accordionExample">
         <div className="">
           <h2 className="accordion-header " id="headingOne">
@@ -45,15 +48,15 @@ const Verify = ({ verify }) => {
             className={`accordion-collapse collapse ${isShow ? "show" : ""}`}>
             {photoVerify.items.map((item) => (
               <>
-                <div className="accordion-body p-4 underline container_body">
+                <div className="accordion-body p-4 border-top container_body">
                   <img
-                    src={item.image ? item.image : "./images/avatar/avt.png"}
+                    src={item.image ? item.image : "./images/avatar/no-image.png"}
                     alt=""
-                    className={`image-verify ${handleBorder(item.status)} `}
+                    className={`image-verify ${handleBorder(item.status,item.image)} `}
                   />
                   <div className="mx-4">
                     <h3>{item.type}</h3>
-                    <span>{item.status}</span>
+                    <span>{item.image?item.status:"Not upload"}</span>
                   </div>
                 </div>
               </>

@@ -12,7 +12,6 @@
 
 .helpDesk__tableContainer {
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
 
@@ -24,7 +23,7 @@
 
 .helpDesk__tableHeaderCell,
 .helpDesk__tableCell {
-    border: 1px solid #ddd;
+    border: none;
     padding: 12px;
     text-align: left;
 }

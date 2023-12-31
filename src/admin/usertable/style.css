@@ -18,9 +18,13 @@
     border-radius: 12px;
     background: #1b2430;
 }
+.avatar-user{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
 .background-table td,th {
     padding:15px;
-    vertical-align: top;
 }
 .form-item-history{
     border-radius: 8px;
@@ -36,30 +40,4 @@
     margin-top: 6px;
     margin-bottom: 12px;
     color: rgb(248,249,250);
-}
-.text-max-width{
-    max-width: 350px;
-}
-.table-scroll{
-    width: 100%;
-    overflow-x: auto;
-}
-.overflow-hidden {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -webkit-line-clamp: 3; /* Số dòng tối đa bạn muốn hiển thị */
-  }
-@media screen and (max-width: 1024px){
-    .container-history{
-        width: 100%;
-        margin-left: 12px;
-        margin-top: 12px;
-        padding-bottom: 12px;
-    }
-    .filter-container{
-        display: none;
-    } 
-    .table-scroll{
-    }
 }

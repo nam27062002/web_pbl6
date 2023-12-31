@@ -8,7 +8,7 @@ import moment from 'moment';
 import Spinner from "../components/spinner/Spinner";
 import SidebarDriver from "../components/header/sidebar/SidebarDriver";
 import NoInternet from "../components/no_internet/NoInternet";
-
+import util from '../util';
 
 export const Home = (props) => {
   const history = useHistory();

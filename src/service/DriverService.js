@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import util from '../util';
 const DriverService = {
   getVerify: async (token, driverId) => {
     try {
@@ -13,8 +13,12 @@ const DriverService = {
           },
         }
       );
+      if (!(response.statusCode === 200)) {
+        util.showToastWarning(response.data.message);
+      }
       return response;
     } catch (error) {
+      util.showToastWarning(error.message);
       return null;
     }
   },

@@ -5,7 +5,9 @@
     padding-bottom: 12px;
     
 }
-
+.w-device{
+    width: 50% !important;
+}
 .content-statistics{
     width: 50%;
     background:#1b2430;
@@ -22,4 +24,23 @@
 }
 .selected{
     background: #179CAE !important;
+}
+@media screen and (max-width: 1024px){
+    .container-statistics{
+        width: calc(100% );
+        margin-left: 0px;
+        margin-top: 12px;
+        padding-bottom: 12px;
+        padding-right: 36px;
+    }
+    .content-statistics{
+        width: 100%;
+        background:#1b2430;
+        padding: 12px;
+        border-radius: 8px;
+        margin: 0px 24px;
+    }
+    .w-device{
+        width: 100% !important;
+    }
 }

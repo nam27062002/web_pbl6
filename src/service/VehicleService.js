@@ -1,6 +1,5 @@
-
-
 import axios from 'axios';
+import util from '../util';
 
 const VehicleService = {
     getVehicleColor: async () => {
@@ -13,10 +12,13 @@ const VehicleService = {
                 }
                 
             })
-            // console.log(response.status);
+            if (response.status !== 200) {
+                util.showToastWarning(response.data.message)
+            }
             return response;
             
         } catch (e) {
+            util.showToastWarning('Fail call API')
             console.log(e);
         }
         

@@ -1,7 +1,6 @@
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Admin } from "./pages/admin";
-import { Home } from "./pages/home";
 import { Welcome } from "./pages/Welcome";
 import Contacts from "./pages/Contacts/Contacts";
 import Terms from "./pages/Terms/Terms";
@@ -11,18 +10,15 @@ import MethodRegister from "./pages/RegisterMethod/MethodRegister";
 import HeaderLogin from "./components/header/HeaderLogin";
 import ColorVehicle from "./pages/ModelVehicle/ColorVehicle";
 import ModelVehicle from "./pages/ModelVehicle/ModelVehicle";
-import NoInternet from "./components/no_internet/NoInternet";
-import DriverHome from "./pages/DriverHome/DriverHome";
-import HomeContainer from "./home/HomeContainer";
-import DriverContainer from "./dirver/DriverContainer";
 import HistoryTrip from "./pages/Driver/historytrip/HistoryTrip";
 import Statistics from "./pages/Driver/statistics/Statistics";
-import Profile from "./pages/Driver/profile/Profile";
 import ProfileText from "./pages/Driver/profile/ProfileTest";
 import SidebarDriver from "./components/header/sidebar/SidebarDriver";
 // import Verify from "./pages/Driver/profile/verify/Verify";
 import React, { useState, useEffect } from "react";
 import "./index.css";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
 
@@ -74,7 +70,6 @@ const App = () => {
         <Route path="/policy-privacy" component={Privacy}></Route>
         <Route path="/register-method" component={MethodRegister}></Route>
         <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
         {/* admin */}
 
         <Route path="/admin" component={Admin}></Route>
@@ -91,6 +86,18 @@ const App = () => {
           {/* <Route path="/verify" component={Verify}></Route> */}
         </div>
       </Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme="colored"
+      />
     </div>
   );
 };

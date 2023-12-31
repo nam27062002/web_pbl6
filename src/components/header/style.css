@@ -1,6 +1,9 @@
 .avatar{
     width: 50px;
 }
+.show-phone-screen{
+    display: none !important;
+}
 .container-avatar{
     display: flex;
     align-items: center;
@@ -25,3 +28,19 @@
 .bg-nav{
     background: #2A3443;
 }
+@media screen and (max-width: 1024px){
+    .logo_png{
+        display: none;
+    }
+    .container-avatar p {
+        display: none;
+    }
+    .dropdown-position{
+        position: absolute !important;
+        left: -100px;
+    }
+    .show-phone-screen{
+        display: block !important;
+    }
+}
+

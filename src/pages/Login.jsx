@@ -1,6 +1,6 @@
 import HeaderLogin from "../components/header/HeaderLogin"
 import { Redirect } from "react-router-dom";
-
+import util from "../util";
 import '../styles/Pages/Login.css';
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
@@ -138,6 +138,8 @@ export const Login = () => {
                 if (!response.ok) {
                     const errorData = await response.json();
                     setError(errorData.message);
+                    util.showToastWarning('Fail call API');
+
                     throw new Error('Login failed');
                 }
 
@@ -182,6 +184,7 @@ export const Login = () => {
 
 
             } catch (error) {
+                util.showToastWarning('Fail call API');
                 console.error('Error calling API:', error.message);
 
             } finally {
@@ -281,7 +284,7 @@ export const Login = () => {
             ) : (
                 <div className='content1'>
                     <NoInternet />
-
+                    {util.showToastWarning('No internet')}
                 </div>
             )}
 
