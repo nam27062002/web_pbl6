@@ -14,7 +14,7 @@ import {
   TextField,
   Snackbar,
 } from "@mui/material";
-import "../styles/Components/HelpDesk.css";
+import "../../styles/Components/HelpDesk.css";
 
 const HelpDesk = () => {
   const [issues, setIssues] = useState([]);
@@ -130,8 +130,8 @@ const HelpDesk = () => {
   return (
     <div className="helpDesk">
       <h1 className="helpDesk__title text-light">Issue List</h1>
-      <TableContainer component={Paper} className="helpDesk__tableContainer">
-        <Table className="helpDesk__table">
+      <TableContainer component={Paper} className="table-container">
+        <Table className="w-100 background-table text-light">
           <TableHead>
             <TableRow className="text-light">
               <TableCell className="helpDesk__tableCell helpDesk__tableHeaderCell ">

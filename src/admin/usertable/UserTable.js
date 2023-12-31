@@ -9,7 +9,7 @@ const UserTable = ({ index, getCurrentPageData, selectedField, searchText, handl
     return (
         <div className="table-container w-100  pb-2 px-4">
             <table className="w-100 background-table text-light">
-                <thead className="border-bottom">
+                <thead className="">
                     <tr>
                         <th>ID</th>
                         <th>Avatar</th>
@@ -23,7 +23,7 @@ const UserTable = ({ index, getCurrentPageData, selectedField, searchText, handl
                 </thead>
                 <tbody>
                     {getCurrentPageData().map(user => (
-                        <tr key={user.id} className="border-bottom py-5 text-light">
+                        <tr key={user.id} className="border-top py-5 text-light">
                             <td>
                                 {(selectedField === "All" || selectedField === "id") && searchText && user.id.toString().includes(searchText) ? (
                                     <span dangerouslySetInnerHTML={{ __html: highlightText(user.id.toString(), searchText) }} />

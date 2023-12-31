@@ -1,11 +1,16 @@
 import React from 'react';
 import Modal from 'react-modal';
-const PendingApprovalModal = ({ isModalOpen, closeModal, listPhotoVerify, handleApprove, handleDeny, currentImageIndex, setCurrentImageIndex, currentPage }) => {
+const PendingApprovalModal = ({ isModalOpen, closeModal,Backdrop, listPhotoVerify, handleApprove, handleDeny, currentImageIndex, setCurrentImageIndex, currentPage }) => {
     return (
         <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        contentLabel="Pending Approval Modal"
+            contentLabel="Pending Approval Modal"
+            closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
     >
         <div className="modal-header">
             <div className="title-container">

@@ -8,7 +8,7 @@ import Modal from 'react-modal';
 import PendingApprovalModal from '../admin/PendingApprovalModal';
 import UserTable from '../admin/usertable/UserTable';
 import Sidebar from '../admin/Sidebar/Sidebar'
-import HelpDesk from '../admin/HelpDesk';
+import HelpDesk from '../admin/helpdesk/HelpDesk';
 import Promo from '../admin/promo/Promo';
 export const Admin = () => {
     const [userData, setUserData] = useState([]);

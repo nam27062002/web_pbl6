@@ -88,39 +88,39 @@ const HistoryTrip = () => {
               </label>
             </div>
             {trips.length > 0 ? (
-                <div className="table-container w-100  pb-3">
-                  <div className="mx-3">
-                    <table className="w-100 background-table text-light">
+              <div className="table-container w-100  pb-3">
+                <div className="mx-3">
+                  <table className="w-100 background-table text-light">
                 
-                  <thead className="border-bottom">
-                    <tr >
-                      <th>ID</th>
-                      <th>Pickup Address</th>
-                      <th>Destination Address</th>
-                      <th>Status</th>
-                      <th>Created At</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                              
-                    {trips.map((trip) => (
-                      <tr key={trip.id} className={trip.status === 'completed' ? 'completed border-bottom' : 'canceled border-bottom'}>
-                        <td>{trip.id}</td>
-                        <td>{trip.pickupAddress}</td>
-                        <td>{trip.destinationAddress}</td>
-                        <td className="status">{trip.status}</td>
-                        <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                    <thead className="">
+                      <tr >
+                        <th>ID</th>
+                        <th>Pickup Address</th>
+                        <th>Destination Address</th>
+                        <th>Status</th>
+                        <th>Created At</th>
                       </tr>
-                    ))}
+                    </thead>
+                    <tbody>
+                              
+                      {trips.map((trip) => (
+                        <tr key={trip.id} className={trip.status === 'completed' ? 'completed border-top' : 'canceled border-top'}>
+                          <td>{trip.id}</td>
+                          <td>{trip.pickupAddress}</td>
+                          <td>{trip.destinationAddress}</td>
+                          <td className="status">{trip.status}</td>
+                          <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                        </tr>
+                      ))}
                                           
-                  </tbody>
-                </table>
-                  </div>
+                    </tbody>
+                  </table>
+                </div>
                 
               </div>
               
             ) : (
-                  <div className="d-flex flex-column align-items-center">
+              <div className="d-flex flex-column align-items-center">
                 <h3 className="text-light">No trip</h3>
                 <Lottie animationData={groovyWalkAnimation} loop={true} className='lottie' />
               </div>

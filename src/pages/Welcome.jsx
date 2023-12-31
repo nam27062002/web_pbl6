@@ -54,11 +54,11 @@ export const Welcome = () => {
             <div className="container1">
                 <div>
                     <div  className="container_banner">
-                        <img src="./images/homepage/banner/banner.png" alt="" className="banner" />
+                        <img src="./images/homepage/banner/software.png" alt="" className="banner" />
                         {/* <Lottie animationData={groovyWalkAnimation} loop={true} className='banner' /> */}
                         <div className="container_form">
                             <h1 className="title">Get in the driver's seat and get paid</h1>
-                            <p>Drive on the platform with the largest network of active riders.</p>
+                            <p className="text-light">Drive on the platform with the largest network of active riders.</p>
                             <div className="container_btn_sign">
                                 <Popup 
                                     trigger={
@@ -86,7 +86,7 @@ export const Welcome = () => {
                                     onClick={handleButtonClick}
                                 >
                                 </input> */}
-                                <button type="button" className="btn_log">
+                                <button type="button" className="btn_log bg-info">
                                     <Link to= "/register" className="nav-link">Register</Link>
                                 </button>
                             </div>
