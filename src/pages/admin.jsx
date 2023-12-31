@@ -9,7 +9,7 @@ import PendingApprovalModal from '../admin/PendingApprovalModal';
 import UserTable from '../admin/usertable/UserTable';
 import Sidebar from '../admin/Sidebar/Sidebar'
 import HelpDesk from '../admin/HelpDesk';
-import Promo from '../admin/Promo';
+import Promo from '../admin/promo/Promo';
 export const Admin = () => {
     const [userData, setUserData] = useState([]);
     const [index, setIndex] = useState(0);
