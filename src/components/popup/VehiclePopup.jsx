@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import VehicleService from '../../service/VehicleService';
+import util from '../../util';
 const VehiclePopup = ({vehicle, callback }) => {
     const [colorText, setColorText] = useState("")
     const [colorDes,setColorDes]  = useState("")
@@ -17,7 +18,8 @@ const VehiclePopup = ({vehicle, callback }) => {
         }
     }
     const handleAddColor = async () => {
-        const res = await VehicleService.addVehicleColor(colorText, colorDes)
+        try {
+            const res = await VehicleService.addVehicleColor(colorText, colorDes)
         console.log(res);
         if (res.data.success) {
             let newData = {
@@ -25,7 +27,14 @@ const VehiclePopup = ({vehicle, callback }) => {
                 des: colorDes
             }
             callback(newData)
+            util.showToastSuccess(res.data.data.message);
+        } else {
+            util.showToastWarning(res.data.data.message);
         }
+        } catch (error) {
+            util.showToastWarning(error.message);
+        }
+        
     }
 
     useEffect(() => {

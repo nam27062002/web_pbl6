@@ -10,6 +10,8 @@ import UserTable from '../admin/usertable/UserTable';
 import Sidebar from '../admin/Sidebar/Sidebar'
 import HelpDesk from '../admin/helpdesk/HelpDesk';
 import Promo from '../admin/promo/Promo';
+import ColorVehicle from './ModelVehicle/colorvehicle/ColorVehicle';
+import ModelVehicle from './ModelVehicle/modelvhhicle/ModelVehicle';
 import util from '../util';
 
 
@@ -111,6 +113,10 @@ export const Admin = () => {
         }
         else if (itemName === "Create Promo") {
             setIndex(3);
+        }else if (itemName === "Color Vehicle") {
+            setIndex(4);
+        }else if (itemName === "Model Vehicle") {
+            setIndex(5);
         }
 
     };
@@ -373,6 +379,12 @@ export const Admin = () => {
                     {index === 3 && (
                         <Promo />
                     )}
+                    {
+                        index === 4 && (<ColorVehicle/>)
+                    }
+{
+                        index === 5 && (<ModelVehicle/>)
+                    }
 
                 </div>
             </div>

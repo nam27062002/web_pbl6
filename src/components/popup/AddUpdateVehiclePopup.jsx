@@ -3,6 +3,8 @@ import VehicleService from '../../service/VehicleService';
 import VehiclePopup from '../../components/popup/VehiclePopup';
 import Popup from 'reactjs-popup';
 import { motion } from 'framer-motion';
+import util from '../../util';
+
 const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [model, setModel] = useState(null)
@@ -58,30 +60,45 @@ const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => 
         },[])
 
         const updateData = async () => {
-            const res = await VehicleService.updateVehicleModel(vehicleModel.id, modelValue, type);
-            console.log(res);
-            if (res.data.success) {
-                let data = {
-                    id : vehicleModel.id,
-                    model: modelValue,
-                    type: type
-                };
-                
-                console.log(data);
-                setModel(data)
-                callback(data)
+            try {
+                const res = await VehicleService.updateVehicleModel(vehicleModel.id, modelValue, type);
+                console.log(res);
+                if (res.data.success) {
+                    let data = {
+                        id: vehicleModel.id,
+                        model: modelValue,
+                        type: type
+                    };
+                    util.showToastSuccess(res.data.data.message);
+                    console.log(data);
+                    setModel(data)
+                    callback(data)
+                } else {
+                    util.showToastWarning(res.data.data.message);
+                }
+            } catch (error) {
+                util.showToastWarning(error.message);
             }
             
-        }
+            
+        };
         const addData = async () => {
-            const res = await VehicleService.addVehicleModel(modelValue, type);
+            try {
+                const res = await VehicleService.addVehicleModel(modelValue, type);
             if (res.data.success) {
                 let data = {
                     model: modelValue,
                     type: type
                 };
+                util.showToastSuccess(res.data.data.message);
                 callback(data)
+            } else {
+                util.showToastWarning(res.data.data.message);
             }
+            } catch (error) {
+                util.showToastWarning(error.message);
+            }
+            
             
         }
         return (
