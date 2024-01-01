@@ -48,7 +48,7 @@ const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => 
             type: "motorcycles", name: "Motorcycles"
         },
     ]
-    const PopupView = () => {
+    const PopupView = ({close}) => {
         const [modelValue, setModelValue] = useState("")
         const [type, setType] = useState("")
         useEffect(() => {
@@ -161,7 +161,9 @@ const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => 
                         <button type="button" className="btn btn-primary" onClick={() => {
                             model ? updateData() : addData()
                         }}>{model ? "Update" : "Add"}</button>
-                        <button type="button" className="btn btn-danger">Cancel</button>
+                        <button type="button" className="btn btn-danger"
+                            onClick={close}
+                        >Cancel</button>
                     </div>
                     
                 </div>
@@ -188,7 +190,9 @@ const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => 
                             exit={{ opacity: 0, scale: 0.9 }}
                             transition={{ duration: 0.5 }}
                         >
-                            {<PopupView/>}
+                            {<PopupView
+                                close = {close}
+                            />}
                         </motion.div>                        
                     )
                 }

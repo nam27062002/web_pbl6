@@ -124,6 +124,7 @@ export default function ColorVehicle() {
                           callback={handleUpdateItem}
                           className={"btn btn-primary"}
                           value={"Update"}
+                          
                         />{" "}
                       </td>
                       <td>

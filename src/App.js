@@ -32,7 +32,17 @@ const App = () => {
   const [isAdmin, setIsAdmin] = useState(() => {
     return user ? user.user.role.some((item) => item.role === "admin") : false;
   });
+  useEffect(() => {
 
+    try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+
+    catch (e) {
+
+    }
+
+},[]);
   window.addEventListener("message", (event) => {
     // Kiểm tra xem thông điệp có phải là loại removeItem không
     if (event.data && event.data.action === "removeItem") {
@@ -100,6 +110,17 @@ const App = () => {
         pauseOnHover={false}
         theme="colored"
       />
+      {/* <div className="float-end">
+        <amp-ad width="200" height="320"
+        type="adsense"
+        data-ad-client="ca-pub-3318138252286831"
+        data-ad-slot="1910127243"
+        data-auto-format="mcrspv"
+        data-full-width="">
+        <div overflow=""> helooo</div>
+      </amp-ad> */}
+      {/* </div> */}
+      
     </div>
   );
 };

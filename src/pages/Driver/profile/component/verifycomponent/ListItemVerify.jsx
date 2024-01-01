@@ -149,13 +149,23 @@ const ListItemVerify = () => {
     }
 
     const initVerify = async () => {
-        const res = await axios.get(`http://ridewizard.pro:9000/api/v1/drivers/identification/${user.user.id}`, {
+        try {
+            const res = await axios.get(`http://ridewizard.pro:9000/api/v1/drivers/identification/${user.user.id}`, {
             headers: {
                 Authorization: `Bearer ${user.accessToken}`,
               },
         })
-        setListVerify(res.data.data)
-        verifyItem(res.data.data)
+            if (res.data.status === 200) {
+                setListVerify(res.data.data)
+                verifyItem(res.data.data)
+            } else {
+                setItems([])
+            }
+        
+        } catch (error) {
+            setItems([])
+        }
+        
     }
 
 
@@ -168,7 +178,7 @@ const ListItemVerify = () => {
     return (
         <>
             <div className="list-item-container w-100   py-2 px-2">
-                {items.map((item) => (
+                {items.length>0 && items.map((item) => (
                     <Verify
                         verify={item}
                     ></Verify>

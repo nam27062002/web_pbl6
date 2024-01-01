@@ -128,7 +128,7 @@ export default function ModelVehicle() {
               <tbody>
                 {currentItems.map((vehicle, index) => {
                   return (
-                    <tr key={index}>
+                    <tr key={index} className="border-top">
                       <th scope="row">{vehicle.id}</th>
                       <td>{vehicle.model}</td>
                       <td>{vehicle.type}</td>

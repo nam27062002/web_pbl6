@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import VehicleService from '../../service/VehicleService';
 import util from '../../util';
-const VehiclePopup = ({vehicle, callback }) => {
+const VehiclePopup = ({vehicle, callback,close }) => {
     const [colorText, setColorText] = useState("")
     const [colorDes,setColorDes]  = useState("")
     const handleClickUpdateColor = async () => {
@@ -67,7 +67,9 @@ const VehiclePopup = ({vehicle, callback }) => {
                     <button type="button" className="btn btn-primary" onClick={() => {
                         vehicle?handleClickUpdateColor():handleAddColor()
                     }}>{vehicle?"Update":"Add"}</button>
-                    <button type="button" className="btn btn-danger">Cancel</button>
+                    <button type="button" className="btn btn-danger"
+                        onClick={close}
+                    >Cancel</button>
                 </div>
                 
             </div>

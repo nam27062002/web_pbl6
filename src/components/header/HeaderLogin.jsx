@@ -62,14 +62,18 @@ const HeaderLogin = () => {
 
     <nav className="navbar navbar-expand-lg fixed-top bg-nav">
       <div className="container-fluid">
-        <div className="d-flex">
-          <img className="logo_png" src="./images/logo.png" alt="Logo" />
-        <h1 className="logo_text">RideWizard</h1>
-        </div>
+        <Link to={user?(isAdmin?"/admin":"/history"):"/"} className="text-decoration-none">
+          <div className="d-flex">
+            <img className="logo_png" src="./images/logo.png" alt="Logo" />
+            <h1 className="logo_text ">RideWizard</h1>
+          </div>
+        </Link>
+        
         
         {
           user ? (
             <DriverContentHeader
+              isAdmin={isAdmin}
             ></DriverContentHeader>
           ) : (
               <WelcomeContentHeader></WelcomeContentHeader>
