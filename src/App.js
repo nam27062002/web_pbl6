@@ -32,17 +32,7 @@ const App = () => {
   const [isAdmin, setIsAdmin] = useState(() => {
     return user ? user.user.role.some((item) => item.role === "admin") : false;
   });
-  useEffect(() => {
 
-    try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }
-
-    catch (e) {
-
-    }
-
-},[]);
   window.addEventListener("message", (event) => {
     // Kiểm tra xem thông điệp có phải là loại removeItem không
     if (event.data && event.data.action === "removeItem") {

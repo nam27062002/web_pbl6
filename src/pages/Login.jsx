@@ -147,7 +147,12 @@ export const Login = () => {
                 console.log(data);
                 setToken(data.data.accessToken);
                 setPhoneNumber(data.data.user.phNo);
-                localStorage.setItem('user', JSON.stringify(data.data));
+                if (data.data.user.phone_verified !== 0) {
+                            
+                    localStorage.setItem('user', JSON.stringify(data.data));
+                    window.postMessage({ action: 'checkLocalStorage', key: 'user' }, '*');
+                    
+                        }
                 const isAdmin = data.data.user.role.some(item => item.role === "admin")
                 if (data.data.user.driverStatus === "You are not a driver" && !isAdmin) {
                     openPopup();
@@ -179,7 +184,6 @@ export const Login = () => {
                     
 
 
-                    window.postMessage({ action: 'checkLocalStorage', key: 'user' }, '*');
                 }
 
 
