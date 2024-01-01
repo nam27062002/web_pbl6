@@ -19,6 +19,10 @@ import "../../styles/Components/HelpDesk.css";
 import util from "../../util";
 
 const HelpDesk = () => {
+  const [user, setUser] = useState(() => {
+    const localData = JSON.parse(localStorage.getItem('user'));
+    return localData || null
+  });
   const [issues, setIssues] = useState([]);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [replyText, setReplyText] = useState("");
@@ -77,8 +81,7 @@ const HelpDesk = () => {
           {
             method: "GET",
             headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug",
+              Authorization: `Bearer ${user.accessToken}`
             },
           }
         );
@@ -122,8 +125,7 @@ const HelpDesk = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "Bearer 1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug",
+            Authorization: `Bearer ${user.accessToken}`,
           },
           body: JSON.stringify({
             resolution: replyText,
@@ -152,7 +154,7 @@ const HelpDesk = () => {
         method: "GET",
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug",
+            `Bearer ${user.accessToken}` ,
         },
       });
 

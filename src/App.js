@@ -100,6 +100,17 @@ const App = () => {
         pauseOnHover={false}
         theme="colored"
       />
+      {/* <div className="float-end">
+        <amp-ad width="200" height="320"
+        type="adsense"
+        data-ad-client="ca-pub-3318138252286831"
+        data-ad-slot="1910127243"
+        data-auto-format="mcrspv"
+        data-full-width="">
+        <div overflow=""> helooo</div>
+      </amp-ad> */}
+      {/* </div> */}
+      
     </div>
   );
 };

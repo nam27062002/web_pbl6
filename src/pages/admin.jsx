@@ -10,11 +10,17 @@ import UserTable from '../admin/usertable/UserTable';
 import Sidebar from '../admin/Sidebar/Sidebar'
 import HelpDesk from '../admin/helpdesk/HelpDesk';
 import Promo from '../admin/promo/Promo';
+import ColorVehicle from './ModelVehicle/colorvehicle/ColorVehicle';
+import ModelVehicle from './ModelVehicle/modelvhhicle/ModelVehicle';
 import util from '../util';
 
 
 
 export const Admin = () => {
+    const [user, setUser] = useState(() => {
+        const localData = JSON.parse(localStorage.getItem('user'));
+        return localData || null
+    });
     const [userData, setUserData] = useState([]);
     const [index, setIndex] = useState(0);
     const [searchText, setSearchText] = useState("");
@@ -77,7 +83,7 @@ export const Admin = () => {
     };
     const uploadTable = async (index) => {
         const headers = {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
+            Authorization: `Bearer ${user.accessToken}` ,
         };
         const url = 'http://ridewizard.pro:9000/api/v1/users';
         if (index === 0) {
@@ -111,6 +117,10 @@ export const Admin = () => {
         }
         else if (itemName === "Create Promo") {
             setIndex(3);
+        }else if (itemName === "Color Vehicle") {
+            setIndex(4);
+        }else if (itemName === "Model Vehicle") {
+            setIndex(5);
         }
 
     };
@@ -224,7 +234,7 @@ export const Admin = () => {
             const response = await fetch(`http://ridewizard.pro:9000/api/v1/drivers/driver/approve?user_id=${selectedItemId}&type=${currentImageIndex + 1}`, {
                 method: 'PUT',
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug',
+                    Authorization: `Bearer ${user.accessToken} `,
                 },
             });
 
@@ -373,6 +383,12 @@ export const Admin = () => {
                     {index === 3 && (
                         <Promo />
                     )}
+                    {
+                        index === 4 && (<ColorVehicle/>)
+                    }
+{
+                        index === 5 && (<ModelVehicle/>)
+                    }
 
                 </div>
             </div>

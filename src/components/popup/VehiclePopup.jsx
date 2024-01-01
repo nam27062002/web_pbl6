@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import VehicleService from '../../service/VehicleService';
-const VehiclePopup = ({vehicle, callback }) => {
+import util from '../../util';
+const VehiclePopup = ({vehicle, callback,close }) => {
     const [colorText, setColorText] = useState("")
     const [colorDes,setColorDes]  = useState("")
     const handleClickUpdateColor = async () => {
@@ -17,7 +18,8 @@ const VehiclePopup = ({vehicle, callback }) => {
         }
     }
     const handleAddColor = async () => {
-        const res = await VehicleService.addVehicleColor(colorText, colorDes)
+        try {
+            const res = await VehicleService.addVehicleColor(colorText, colorDes)
         console.log(res);
         if (res.data.success) {
             let newData = {
@@ -25,7 +27,14 @@ const VehiclePopup = ({vehicle, callback }) => {
                 des: colorDes
             }
             callback(newData)
+            util.showToastSuccess(res.data.data.message);
+        } else {
+            util.showToastWarning(res.data.data.message);
         }
+        } catch (error) {
+            util.showToastWarning(error.message);
+        }
+        
     }
 
     useEffect(() => {
@@ -58,7 +67,9 @@ const VehiclePopup = ({vehicle, callback }) => {
                     <button type="button" className="btn btn-primary" onClick={() => {
                         vehicle?handleClickUpdateColor():handleAddColor()
                     }}>{vehicle?"Update":"Add"}</button>
-                    <button type="button" className="btn btn-danger">Cancel</button>
+                    <button type="button" className="btn btn-danger"
+                        onClick={close}
+                    >Cancel</button>
                 </div>
                 
             </div>

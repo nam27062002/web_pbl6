@@ -64,7 +64,8 @@ const UpdateColorPopup = ({ vehicle, callback, className, value }) => {
                         >
                             <VehiclePopup
                                 vehicle={veh}
-                                callback={vehicle?updateData:addData}
+                                callback={vehicle ? updateData : addData}
+                                close= {close}
                             />
                         </motion.div>                        
                     )

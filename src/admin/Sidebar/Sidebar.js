@@ -29,6 +29,18 @@ const Sidebar = ({ activeItem, handleItemClick }) => {
                         <span className="text-light">Create Promo</span> 
                     </a>
                 </li>
+                <li>
+                    <a href="#" className={activeItem === 'Color Vehicle' ? 'active_item sidebar-link text-white ' : 'sidebar-link text-white '} onClick={() => handleItemClick('Color Vehicle')}>
+                        <img src="images/voucher.png" className="sidebar-icon" />
+                        <span className="text-light">Color Vehicle</span> 
+                    </a>
+                </li>
+                <li>
+                    <a href="#" className={activeItem === 'Model Vehicle' ? 'active_item sidebar-link text-white ' : 'sidebar-link text-white '} onClick={() => handleItemClick('Model Vehicle')}>
+                        <img src="images/voucher.png" className="sidebar-icon" />
+                        <span className="text-light">Model Vehicle</span> 
+                    </a>
+                </li>
             </ul>
         </div>
     );
