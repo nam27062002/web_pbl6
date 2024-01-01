@@ -3,6 +3,7 @@ import "./style.css";
 import React, { useEffect, useState } from "react";
 import { Modal, Backdrop, Fade } from "@mui/material";
 import moment from "moment";
+import ReactPaginate from "react-paginate";
 const UserTable = ({
   index,
   getCurrentPageData,
@@ -102,6 +103,17 @@ const UserTable = ({
       setSelectAll(false);
       closeModal();
     }
+  };
+  const [currentPagePromo, setCurrentPagePromo] = useState(1);
+  const rowsPerPagePromo = 8;
+  const totalPagesPromo = Math.ceil(promos.length / rowsPerPagePromo);
+  const getCurrentPromoPageData = () => {
+    const startIndex = (currentPagePromo - 1) * rowsPerPagePromo;
+    const endIndex = startIndex + rowsPerPagePromo;
+    return promos.slice(startIndex, endIndex);
+  };
+  const handlePagePromoChange = (newPage) => {
+    setCurrentPagePromo(newPage);
   };
   return (
     <div className="table-container w-100  pb-2 px-4">
@@ -268,7 +280,7 @@ const UserTable = ({
                 </tr>
               </thead>
               <tbody>
-                {promos.map((promo) => (
+                {getCurrentPromoPageData().map((promo) => (
                   <tr
                     key={promo.id}
                     onClick={() => handlePromoSelection(promo)}
@@ -285,6 +297,23 @@ const UserTable = ({
                 ))}
               </tbody>
             </table>
+            <div className="pagination-buttons">
+              <button
+                disabled={currentPagePromo === 1}
+                onClick={() => handlePagePromoChange(currentPagePromo - 1)}
+              >
+                Previous
+              </button>
+
+              <span>{`Page ${currentPagePromo} of ${totalPagesPromo}`}</span>
+
+              <button
+                disabled={currentPagePromo === totalPagesPromo}
+                onClick={() => handlePagePromoChange(currentPagePromo + 1)}
+              >
+                Next
+              </button>
+            </div>
           </div>
         </Fade>
       </Modal>
