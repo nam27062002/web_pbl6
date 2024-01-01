@@ -59,6 +59,7 @@ export const Admin = () => {
         try {
             const response = await axios.get(url, { headers });
             const users = response.data.data.users.filter(filterFunction);
+            console.log(users);
             return users.map(user => ({
                 id: user.id,
                 avatar: user.avatar || "/images/avatar/avt.png",
@@ -67,7 +68,7 @@ export const Admin = () => {
                 phone: user.phNo || "",
                 email: user.email || "",
                 driverStatus: user.driverStatus || "",
-                avgRate: 4,
+                avgRate: user.rating || 0,
             }));
         } catch (error) {
             console.error(error);
@@ -331,28 +332,28 @@ export const Admin = () => {
                             </div>
                             <div className="px-4">
                                 <UserTable
-                                index={index}
-                                getCurrentPageData={getCurrentPageData}
-                                selectedField={selectedField}
-                                searchText={searchText}
-                                handleCheckboxChange={handleCheckboxChange}
-                                getStatusColor={getStatusColor}
-                                handlePendingApprovalClick={handlePendingApprovalClick}
-                                handleApprove={handleApprove}
-                                handleDeny={handleDeny}
-                                selectedRows={selectedRows}
-                                currentImageIndex={currentImageIndex}
-                                totalPages={totalPages}
-                                currentPage={currentPage}
-                                handlePageChange={handlePageChange}
-                                selectAll={selectAll}
-                                setSelectAll={setSelectAll}
-                                handleSelectAllChange={handleSelectAllChange}
-                                selectedUsers={selectedUsers}
-                                setSelectedUsers={setSelectedUsers}
-                            />
+                                    index={index}
+                                    getCurrentPageData={getCurrentPageData}
+                                    selectedField={selectedField}
+                                    searchText={searchText}
+                                    handleCheckboxChange={handleCheckboxChange}
+                                    getStatusColor={getStatusColor}
+                                    handlePendingApprovalClick={handlePendingApprovalClick}
+                                    handleApprove={handleApprove}
+                                    handleDeny={handleDeny}
+                                    selectedRows={selectedRows}
+                                    currentImageIndex={currentImageIndex}
+                                    totalPages={totalPages}
+                                    currentPage={currentPage}
+                                    handlePageChange={handlePageChange}
+                                    selectAll={selectAll}
+                                    setSelectAll={setSelectAll}
+                                    handleSelectAllChange={handleSelectAllChange}
+                                    selectedUsers={selectedUsers}
+                                    setSelectedUsers={setSelectedUsers}
+                                />
                             </div>
-                            
+
                             <div className="pagination-buttons">
                                 <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
                                     Previous
