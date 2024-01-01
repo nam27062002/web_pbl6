@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import {
   Table,
   TableBody,
@@ -21,6 +22,7 @@ const HelpDesk = () => {
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [replyText, setReplyText] = useState("");
   const [open, setOpen] = useState(false);
+  const [openResolved, setOpenResolved] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,6 +101,13 @@ const HelpDesk = () => {
     setOpen(true);
   };
 
+  const handleOpenResolved = (issue) => {
+    setSelectedIssue(issue);
+    setOpenResolved(true);
+  };
+  const handleCloseResolved = () => {
+    setOpenResolved(false);
+  };
   const handleClose = () => {
     setOpen(false);
     setReplyText("");
@@ -250,7 +259,9 @@ const HelpDesk = () => {
                   issue.status === "Resolved" ? "resolved" : ""
                 } ${issue.status === "InProgress" ? "inProgress" : ""}`}
                 onClick={() =>
-                  issue.status === "InProgress" ? handleOpen(issue) : null
+                  issue.status === "InProgress"
+                    ? handleOpen(issue)
+                    : handleOpenResolved(issue)
                 }
               >
                 <TableCell className="helpDesk__tableCell">
@@ -289,7 +300,7 @@ const HelpDesk = () => {
                   {issue.status}
                 </TableCell>
                 <TableCell className="helpDesk__tableCell">
-                  {issue.createdAt}
+                  {moment(issue.createdAt).format("DD/MM/YYYY HH:mm")}
                 </TableCell>
               </TableRow>
             ))}
@@ -349,6 +360,40 @@ const HelpDesk = () => {
                 Send
               </Button>
             </div>
+          </div>
+        </Fade>
+      </Modal>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openResolved}
+        onClose={handleCloseResolved}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openResolved}>
+          <div className="popup">
+            <h2 id="transition-modal-title">Issue has been answered</h2>
+            <p id="transition-modal-description">
+              <strong>ID:</strong> {selectedIssue?.id}
+            </p>
+            <p id="transition-modal-description">
+              <strong>Description:</strong> {selectedIssue?.description}
+            </p>
+            <p id="transition-modal-description">
+              <strong>Resolution:</strong> {selectedIssue?.resolution}
+            </p>
+            <p id="transition-modal-description">
+              <strong>Date of issue submission</strong>{" "}
+              {moment(selectedIssue?.createdAt).format("DD/MM/YYYY HH:mm")}
+            </p>
+            <p id="transition-modal-description">
+              <strong>Date of issue resolution:</strong>{" "}
+              {moment(selectedIssue?.updatedAt).format("DD/MM/YYYY HH:mm")}
+            </p>
           </div>
         </Fade>
       </Modal>
