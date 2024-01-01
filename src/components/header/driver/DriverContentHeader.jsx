@@ -5,7 +5,7 @@ import '../style.css'
 import '../../../styles/Header/HeaderLogin.css';
 
 
-const DriverContentHeader = () => {
+const DriverContentHeader = ({isAdmin}) => {
   const [user, setUser] = useState(() => {
     const localData = JSON.parse(localStorage.getItem('user'));
     console.log(localData);
@@ -38,14 +38,22 @@ const DriverContentHeader = () => {
                   alt="" srcset="" />
               </div>
               <ul className={`dropdown-menu dropdown-menu-dark dropdown-position ${showDropdown ? "show" : ""}`} aria-labelledby="navbarDarkDropdownMenuLink">
-                <li>
+                {isAdmin ? (
+                <></>
+                ) : (
+                    <li>
                   <Link to='/profile' className="dropdown-item">Profie</Link>
                 </li>
+                )}
+                
                 <li>
                   <Link to='/history' className="dropdown-item show-phone-screen">Trip History</Link>
                 </li>
                 <li>
                   <Link to='/statistics' className="dropdown-item show-phone-screen">Statistics</Link>
+                </li>
+                <li>
+                  <Link to='/issue' className="dropdown-item show-phone-screen">Issues</Link>
                 </li>
                 <li>
                   <Link to="/" onClick={handleLogOut} className="dropdown-item">Log out </Link>

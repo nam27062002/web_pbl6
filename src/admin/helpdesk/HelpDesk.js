@@ -180,13 +180,13 @@ const HelpDesk = () => {
   };
   return (
     <div className="helpDesk">
-      <h1 className="helpDesk__title">Issue List</h1>
+      <h1 className="helpDesk__title text-light me-3">Issue List</h1>
 
       <div className={"filter-container"}>
-        <label className="filter-label">
+        <label className="filter-label text-light me-3">
           Field:
           <select
-            className="filter-dropdown"
+            className="filter-dropdown form-item-history ms-3"
             value={selectedField}
             onChange={(e) => setSelectedField(e.target.value)}
           >
@@ -196,10 +196,10 @@ const HelpDesk = () => {
           </select>
         </label>
 
-        <label className="filter-label">
+        <label className="filter-label text-light me-3">
           Search:
           <input
-            className="search-input"
+            className="search-input form-item-history ms-3"
             type="text"
             placeholder="Search..."
             value={searchText}
@@ -207,10 +207,10 @@ const HelpDesk = () => {
           />
         </label>
 
-        <label className="filter-label">
+        <label className="filter-label text-light me-3">
           Status:
           <select
-            className="filter-dropdown"
+            className="filter-dropdown form-item-history ms-3"
             value={selectedIssueStatus}
             onChange={(e) => setSelectedIssueStatus(e.target.value)}
           >
@@ -220,7 +220,7 @@ const HelpDesk = () => {
           </select>
         </label>
 
-        <label className="filter-label">
+        <label className="filter-label text-light me-3">
           Exact Match:
           <input
             className="exact-match-checkbox"

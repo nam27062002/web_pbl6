@@ -8,17 +8,18 @@ import About from "./pages/About/About";
 import Privacy from "./pages/Privacy/Privacy";
 import MethodRegister from "./pages/RegisterMethod/MethodRegister";
 import HeaderLogin from "./components/header/HeaderLogin";
-import ColorVehicle from "./pages/ModelVehicle/ColorVehicle";
-import ModelVehicle from "./pages/ModelVehicle/ModelVehicle";
+import ColorVehicle from "./pages/ModelVehicle/colorvehicle/ColorVehicle";
+import ModelVehicle from "./pages/ModelVehicle/modelvhhicle/ModelVehicle";
 import HistoryTrip from "./pages/Driver/historytrip/HistoryTrip";
 import Statistics from "./pages/Driver/statistics/Statistics";
 import ProfileText from "./pages/Driver/profile/ProfileTest";
 import SidebarDriver from "./components/header/sidebar/SidebarDriver";
+import Issues from "./pages/Driver/issue/Issues";
 // import Verify from "./pages/Driver/profile/verify/Verify";
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
 
@@ -75,6 +76,7 @@ const App = () => {
         <Route path="/admin" component={Admin}></Route>
         <Route path="/colorVehical" component={ColorVehicle}></Route>
         <Route path="/modelVehical" component={ModelVehicle}></Route>
+        <Route path="/issue" component={Issues}></Route>
         {/* <Route path="/nointernet" component={NoInternet}></Route> */}
         {/* driver */}
         <div className="driver">

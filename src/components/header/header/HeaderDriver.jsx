@@ -10,6 +10,9 @@ const HeaderDriver = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+
   const handleSelectedItem = (item) => {
     setSelectedItem(item)
   }
@@ -17,7 +20,12 @@ const HeaderDriver = () => {
     const localData = localStorage.getItem('user');
     if (localData) {
       setUser(JSON.parse(localData))
+      setIsAdmin(() => {
+          const localData = JSON.parse(localStorage.getItem('user'));
+          return localData.user.role.some((item) => item.role === "admin");
+      })
     }
+
   }, [])
   
   const handleOnclickAvatar = () => {
@@ -34,7 +42,7 @@ const HeaderDriver = () => {
         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
           
           {user && (
-            <button className="container-avatar" id="navbarNavDarkDropdown" onClick= {handleOnclickAvatar}>
+            <button className="container-avatar" id="navbarNavDarkDropdown" onClick={handleOnclickAvatar}>
               <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                   <div class="container-avatar text-white">
@@ -45,11 +53,15 @@ const HeaderDriver = () => {
                       className='rounded-circle avatar'
                       alt="" srcset="" />
                   </div>
-                  <ul className={`dropdown-menu dropdown-menu-dark ${showDropdown?"show":""}`} aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li>
-                      <Link to='/driver/profile' className="dropdown-item">Profie</Link>
-                      {/* <a className="dropdown-item" href="#">Profie</a> */}
-                    </li>
+                  <ul className={`dropdown-menu dropdown-menu-dark ${showDropdown ? "show" : ""}`} aria-labelledby="navbarDarkDropdownMenuLink">
+                    {isAdmin ? (
+                      <></>
+                    ) : (
+                      <li>
+                        <Link to='/driver/profile' className="dropdown-item">Profie</Link>
+                      </li>
+                    )}
+                    
                     <li><a className="dropdown-item" href="#">Log out</a></li>
                     {/* <li><a className="dropdown-item" href="#">Something else here</a></li> */}
                   </ul>
