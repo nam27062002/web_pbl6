@@ -16,6 +16,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import "../../styles/Components/HelpDesk.css";
+import util from "../../util";
 
 const HelpDesk = () => {
   const [issues, setIssues] = useState([]);
@@ -122,7 +123,7 @@ const HelpDesk = () => {
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug",
+              "Bearer 1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQ3LCJlbWFpbCI6ImFkbWluIiwicm9sZXMiOlt7ImlkIjoxLCJyb2xlIjoicGFzc2VuZ2VyIn0seyJpZCI6Mywicm9sZSI6ImFkbWluIn1dLCJpYXQiOjE3MDI1NDczMDMsImV4cCI6MTcwNTEzOTMwM30.d8eYVYBYE71TAb7OmZ_aPci4YNbBw3-G1lOu7g-l0Ug",
           },
           body: JSON.stringify({
             resolution: replyText,
@@ -131,20 +132,16 @@ const HelpDesk = () => {
       );
 
       if (response.ok) {
-        setSuccessMessage("Issue resolved successfully");
-        setSnackbarOpen(true);
+        util.showToastSuccess("Issue resolved successfully");
         const updatedIssues = await fetchUpdatedIssues();
         setIssues(updatedIssues);
       } else {
         const errorMessage = await response.text();
-        setSuccessMessage(`Failed to resolve issue: ${errorMessage}`);
-        setSnackbarOpen(true);
-        console.error(`Failed to resolve issue: ${errorMessage}`);
+        console.log(errorMessage);
+        util.showToastWarning(`Failed to resolve issue: ${errorMessage}`);
       }
     } catch (error) {
-      setSuccessMessage(`Error while resolving issue: ${error.message}`);
-      setSnackbarOpen(true);
-      console.error("Error while resolving issue:", error);
+      util.showToastWarning(`Error while resolving issue: ${error.message}`);
     } finally {
       handleClose();
     }
@@ -397,16 +394,6 @@ const HelpDesk = () => {
           </div>
         </Fade>
       </Modal>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        open={snackbarOpen}
-        autoHideDuration={7000}
-        onClose={handleSnackbarClose}
-        message={successMessage}
-      />
     </div>
   );
 };
