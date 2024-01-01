@@ -242,7 +242,7 @@ export const Register = (props) => {
 
   const handleClicContinueButton = () => {
     if (!firstName || !lastName || !gender || !dob || !email || !password) {
-      setError("Vui lòng nhập đầy đủ thông tin.");
+      setError("Please enter complete information");
       return;
     }
     const birthDate = new Date(dob);
@@ -250,18 +250,18 @@ export const Register = (props) => {
     const age = today.getFullYear() - birthDate.getFullYear();
 
     if (age < 18) {
-      setError("Bạn phải đủ 18 tuổi trở lên để đăng ký.");
+      setError("You must be 18 years or older to register.");
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setError("Vui lòng nhập email hợp lệ.");
+      setError("Please enter a valid email.");
       return;
     }
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(.{8,})$/;
     if (!passwordRegex.test(password)) {
       setError(
-        "Mật khẩu phải có ít nhất 8 kí tự, 1 chữ cái in hoa và 1 kí tự đặc biệt."
+        "Password must have at least 8 characters, 1 capital letter and 1 special character."
       );
       return;
     }
@@ -300,7 +300,7 @@ export const Register = (props) => {
         const data = await response.json();
         console.log(data);
         updateProfile(data);
-        becomeToDriver(data.data.accessToken);
+        // becomeToDriver(data.data.accessToken);
         requestOTP(data.data.accessToken);
         setToken(data.data.accessToken);
         setContentType("confirmOTP");
@@ -329,7 +329,7 @@ export const Register = (props) => {
 
   const handleClickContinueButton = async () => {
     if (!selectedModelId || !selectedColorId || !licensePlate) {
-      setError("Vui lòng nhập đầy đủ thông tin");
+      setError("Please enter complete information");
     } else {
       setError("");
       if (navigator.onLine) {
@@ -355,7 +355,7 @@ export const Register = (props) => {
           console.log("API Response:", response.data);
           setPopupOpen(true);
         } catch (error) {
-          setError("Lỗi không thể đăng kí");
+          setError("Error unable to register");
           console.error("Error calling API:", error);
         } finally {
           setLoading(false);
@@ -416,7 +416,7 @@ export const Register = (props) => {
         setError("");
         setContentType("vehicleInformation");
       } catch (error) {
-        setError("Mã OTP không chính xác");
+        setError("OTP code is incorrect");
         console.error("Error verifying OTP:", error);
       } finally {
         setLoading(false);
@@ -440,12 +440,12 @@ export const Register = (props) => {
     if (contentType === "verify") {
       return (
         <div className="content_left ">
-          <div className="C_T_1">ĐĂNG KÝ</div>
-          <div className="C_T_2">HÃY BẮT ĐẦU KIẾM THU NHẬP TỪ HÔM NAY</div>
+          <div className="C_T_1">REGISTER</div>
+          <div className="C_T_2">START EARN INCOME TODAY</div>
           <div className="C_T_3">
-            Không cần đến văn phòng hay nói chuyện với nhân viên. Sau khi điền
-            đơn, bạn sẽ nhận được tên đăng nhập và mật khẩu để đăng nhập vào ứng
-            dụng. Và đã có thể bắt đầu kiếm tiền!
+            No need to go to the office or talk to staff. After filling
+            application, you will receive a username and password to log in to the application
+            use. And can already start making money!
           </div>
           <select
             class="selection_province-register "
@@ -463,7 +463,7 @@ export const Register = (props) => {
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="Số điện thoại"
+            placeholder="Phone number"
           />
           <div className="error">{error}</div>
           <div className="form_button">
@@ -480,18 +480,18 @@ export const Register = (props) => {
     if (contentType === "personalInfo") {
       return (
         <div className="content_left">
-          <div className="form_title_1">THÔNG TIN CÁ NHÂN</div>
+          <div className="form_title_1">PERSONAL INFORMATION</div>
           <input
             className="input_phonenumber"
             type="text"
-            placeholder="Họ"
+            placeholder="First name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
           <input
             className="input_phonenumber"
             type="text"
-            placeholder="Tên"
+            placeholder="Last name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -500,15 +500,15 @@ export const Register = (props) => {
             onChange={handleGenderChange}
             value={gender}>
             <option value="" disabled hidden>
-              Giới tính
+              Gender
             </option>
-            <option value="male">Nam</option>
-            <option value="female">Nữ</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
           </select>
           <input
             className="input_phonenumber"
             type="date"
-            placeholder="Ngày sinh"
+            placeholder="Birthday"
             value={dob}
             onChange={(e) => setDob(e.target.value)}
           />
@@ -547,10 +547,10 @@ export const Register = (props) => {
               setContentType("verify");
             }}>
             <div className="arrow_left">&lt;</div>
-            <div className="text_btn">QUAY LẠI</div>
+            <div className="text_btn">BACK</div>
           </div>
           <div className="A1">
-            Tin nhắn chứa mã đã được gửi đến số điện thoại
+            The message containing the code has been sent to email
           </div>
           <div className="A2">
             +84 {inputValue.slice(1, 4)} {inputValue.slice(4, 7)}{" "}
@@ -568,10 +568,9 @@ export const Register = (props) => {
 
           <div className="countdown">
             {countdown > 0
-              ? `Bạn có thể yêu cầu gửi lại mã sau 0:${
-                  countdown < 10 ? `0${countdown}` : countdown
-                }`
-              : "Yêu cầu gửi lại mã"}
+              ? `You can request to resend the code after 0:${countdown < 10 ? `0${countdown}` : countdown
+              }`
+              : "Request to resend the code"}
           </div>
         </div>
       );
@@ -579,16 +578,16 @@ export const Register = (props) => {
     if (contentType === "vehicleInformation") {
       return (
         <div className="content_left">
-          <div>THÔNG TIN PHƯƠNG TIỆN</div>
+          <div>TRANSPORTATION INFORMATION</div>
           <select
             className="selection_province-register "
             onChange={handleTypeChange}>
             <option disabled hidden selected>
               Loại
             </option>
-            <option value="Car">Xe ô tô</option>
-            <option value="truck">Xe tải</option>
-            <option value="Motorcycles">Xe máy</option>
+            <option value="Car">Car</option>
+            <option value="truck">Truck</option>
+            <option value="Motorcycles">Motorcycles</option>
           </select>
           <select
             className="selection_province-register "
@@ -598,17 +597,17 @@ export const Register = (props) => {
             </option>
             {selectedType
               ? models
-                  .filter((model) => model.type === selectedType)
-                  .map((model) => (
-                    <option key={model.id} value={model.model}>
-                      {model.model}
-                    </option>
-                  ))
-              : models.map((model) => (
+                .filter((model) => model.type === selectedType)
+                .map((model) => (
                   <option key={model.id} value={model.model}>
                     {model.model}
                   </option>
-                ))}
+                ))
+              : models.map((model) => (
+                <option key={model.id} value={model.model}>
+                  {model.model}
+                </option>
+              ))}
           </select>
           <select
             className="selection_province-register "
@@ -635,7 +634,7 @@ export const Register = (props) => {
           <input
             className="input_phonenumber"
             type="text"
-            placeholder="Biển số xe. Ví dụ: 43A12345"
+            placeholder="License plates. For example: 43A12345"
             value={licensePlate}
             onChange={(e) => setLicensePlate(e.target.value)}
           />
@@ -686,8 +685,8 @@ export const Register = (props) => {
         </div>
       ) : (
         <div className="content-register">
-            <NoInternet />
-            {util.showToastWarning("Check your connection")}
+          <NoInternet />
+          {util.showToastWarning("Check your connection")}
         </div>
       )}
 
@@ -695,10 +694,10 @@ export const Register = (props) => {
         {isPopupOpen && (
           <div className="popup-overlay">
             <div className="popup">
-              <p>Đăng kí thành công, vui lòng đăng nhập để sử dụng dịch vụ</p>
+              <p>Registration successful, please log in to use the service</p>
               <div className="button-container">
                 <button onClick={handleConfirm} className="btn_confirm">
-                  Xác nhận
+                  CONFIRM
                 </button>
               </div>
             </div>

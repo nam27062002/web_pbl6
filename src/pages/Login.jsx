@@ -176,7 +176,7 @@ export const Login = () => {
                     } else {
                         history.push('/admin')
                     }
-                    
+
 
 
                     window.postMessage({ action: 'checkLocalStorage', key: 'user' }, '*');
@@ -270,10 +270,10 @@ export const Login = () => {
                                     <span className="close" onClick={closePopup}>
                                         &times;
                                     </span>
-                                    <p>Bạn có muốn trở thành tài xế?</p>
+                                    <p>Do you want to become a driver?</p>
                                     <div className="button-container">
-                                        <button onClick={handleConfirm} className="btn_confirm">Xác nhận</button>
-                                        <button onClick={handleCancel} className="btn_cancel">Hủy</button>
+                                        <button onClick={handleConfirm} className="btn_confirm">Confirm</button>
+                                        <button onClick={handleCancel} className="btn_cancel">Cancel</button>
                                     </div>
                                 </div>
                             </div>
