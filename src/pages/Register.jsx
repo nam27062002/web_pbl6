@@ -468,10 +468,10 @@ export const Register = (props) => {
           <div className="error">{error}</div>
           <div className="form_button">
             <button className="back-btn" onClick={handleClickBackButton1}>
-              QUAY LẠI
+              BACK
             </button>
             <button className="signup-btn" onClick={handleClicContinueButton1}>
-              TIẾP THEO
+              CONTINUE
             </button>
           </div>
         </div>
@@ -593,7 +593,7 @@ export const Register = (props) => {
             className="selection_province-register "
             onChange={handleModelChange}>
             <option disabled hidden selected>
-              Hãng
+              Brand
             </option>
             {selectedType
               ? models
@@ -613,7 +613,7 @@ export const Register = (props) => {
             className="selection_province-register "
             onChange={(e) => setSelectedYear(e.target.value)}>
             <option disabled hidden selected>
-              Năm sản xuất
+              Year of manufacture
             </option>
             {years.map((year) => (
               <option key={year}>{year}</option>
@@ -623,7 +623,7 @@ export const Register = (props) => {
             className="selection_province-register "
             onChange={handleColorChange}>
             <option disabled hidden selected>
-              Màu
+              Color
             </option>
             {colors.map((color) => (
               <option key={color.id} value={color.color}>
