@@ -468,10 +468,10 @@ export const Register = (props) => {
           <div className="error">{error}</div>
           <div className="form_button">
             <button className="back-btn" onClick={handleClickBackButton1}>
-              QUAY LẠI
+              Back
             </button>
             <button className="signup-btn" onClick={handleClicContinueButton1}>
-              TIẾP THEO
+            Continute
             </button>
           </div>
         </div>
@@ -529,10 +529,10 @@ export const Register = (props) => {
           <div className="error">{error}</div>
           <div className="form_button">
             <button className="back-btn" onClick={handleClickBackButton}>
-              QUAY LẠI
+              Back
             </button>
             <button className="signup-btn" onClick={handleClicContinueButton}>
-              TIẾP THEO
+            Continute
             </button>
           </div>
         </div>
@@ -641,10 +641,10 @@ export const Register = (props) => {
           <div className="error">{error}</div>
           <div className="form_button">
             <button className="back-btn" onClick={handleClickBackButton2}>
-              QUAY LẠI
+              Back
             </button>
             <button className="signup-btn" onClick={handleClickContinueButton}>
-              TIẾP THEO
+              Continute
             </button>
           </div>
         </div>

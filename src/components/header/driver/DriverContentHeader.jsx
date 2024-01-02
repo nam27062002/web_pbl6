@@ -38,13 +38,10 @@ const DriverContentHeader = ({isAdmin}) => {
                   alt="" srcset="" />
               </div>
               <ul className={`dropdown-menu dropdown-menu-dark dropdown-position ${showDropdown ? "show" : ""}`} aria-labelledby="navbarDarkDropdownMenuLink">
-                {isAdmin ? (
-                <></>
-                ) : (
-                    <li>
-                  <Link to='/profile' className="dropdown-item">Profie</Link>
+
+                <li>
+                  <Link to='/profile' className="dropdown-item show-phone-screen">Profie</Link>
                 </li>
-                )}
                 
                 <li>
                   <Link to='/history' className="dropdown-item show-phone-screen">Trip History</Link>
