@@ -674,7 +674,7 @@ export const Register = (props) => {
             </div>
           )}
           {renderContent()}
-          <div className="content_right d-flex justify-content-center">
+          <div className="content_right  justify-content-center">
             {/* <img className="background" src="./images/register/background.png" alt="background"/> */}
             <Lottie
               animationData={groovyWalkAnimation}
