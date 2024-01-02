@@ -217,15 +217,15 @@ export const Admin = () => {
     function getStatusColor(driverStatus) {
         switch (driverStatus) {
             case "Insufficient verification information":
-                return "#ff0000"; // Red
+                return "#FFA500";
             case "Insufficient authentication information":
-                return "#ffa500"; // Orange
+                return "#FFD700";
             case "Pending approval":
-                return "#007acc"; // Yellow
+                return "#007acc";
             case "Approved":
-                return "#008000"; // Green
+                return "#008000";
             default:
-                return "#ffffff";
+                return "#ff0000";
         }
     }
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
