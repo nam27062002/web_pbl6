@@ -83,7 +83,7 @@ export const Admin = () => {
     };
     const uploadTable = async (index) => {
         const headers = {
-            Authorization: `Bearer ${user.accessToken}` ,
+            Authorization: `Bearer ${user.accessToken}`,
         };
         const url = 'http://ridewizard.pro:9000/api/v1/users';
         if (index === 0) {
@@ -117,9 +117,9 @@ export const Admin = () => {
         }
         else if (itemName === "Create Promo") {
             setIndex(3);
-        }else if (itemName === "Color Vehicle") {
+        } else if (itemName === "Color Vehicle") {
             setIndex(4);
-        }else if (itemName === "Model Vehicle") {
+        } else if (itemName === "Model Vehicle") {
             setIndex(5);
         }
 
@@ -217,15 +217,15 @@ export const Admin = () => {
     function getStatusColor(driverStatus) {
         switch (driverStatus) {
             case "Insufficient verification information":
-                return "#ff0000"; // Red
+                return "#FFA500";
             case "Insufficient authentication information":
-                return "#ffa500"; // Orange
+                return "#FFD700";
             case "Pending approval":
-                return "#007acc"; // Yellow
+                return "#007acc";
             case "Approved":
-                return "#008000"; // Green
+                return "#008000";
             default:
-                return "#000000"; // Black (or any default color)
+                return "#ff0000";
         }
     }
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -384,10 +384,10 @@ export const Admin = () => {
                         <Promo />
                     )}
                     {
-                        index === 4 && (<ColorVehicle/>)
+                        index === 4 && (<ColorVehicle />)
                     }
-{
-                        index === 5 && (<ModelVehicle/>)
+                    {
+                        index === 5 && (<ModelVehicle />)
                     }
 
                 </div>

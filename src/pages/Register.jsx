@@ -162,7 +162,12 @@ export const Register = (props) => {
         try {
           setLoading(true);
           const modelsResponse = await axios.get(
-            "http://ridewizard.pro:9000/api/v1/vehicle/models"
+            "http://ridewizard.pro:9000/api/v1/vehicle/models",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
           const colorsResponse = await axios.get(
             "http://ridewizard.pro:9000/api/v1/vehicle/colors"
@@ -583,11 +588,10 @@ export const Register = (props) => {
             className="selection_province-register "
             onChange={handleTypeChange}>
             <option disabled hidden selected>
-              Loại
+              Type of vehicle
             </option>
-            <option value="Car">Car</option>
-            <option value="truck">Truck</option>
-            <option value="Motorcycles">Motorcycles</option>
+            <option value="car">Car</option>
+            <option value="motorcycles">Motorcycles</option>
           </select>
           <select
             className="selection_province-register "
