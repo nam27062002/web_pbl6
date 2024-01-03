@@ -39,9 +39,6 @@ const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => 
     
     const types = [
         {
-            type: "car7", name: "Car 7"
-        },
-        {
             type: "car", name: "Car"
         },
         {
@@ -69,10 +66,10 @@ const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => 
                         model: modelValue,
                         type: type
                     };
-                    util.showToastSuccess(res.data.data.message);
-                    console.log(data);
+                    util.showToastSuccess("Update successful");
                     setModel(data)
                     callback(data)
+                    close();
                 } else {
                     util.showToastWarning(res.data.data.message);
                 }
@@ -85,12 +82,13 @@ const AddUpdateVehiclePopup = ({ vehicleModel, callback, className, value }) => 
         const addData = async () => {
             try {
                 const res = await VehicleService.addVehicleModel(modelValue, type);
+                console.log(res)
             if (res.data.success) {
                 let data = {
                     model: modelValue,
                     type: type
                 };
-                util.showToastSuccess(res.data.data.message);
+                util.showToastSuccess("Add successfully");
                 callback(data)
             } else {
                 util.showToastWarning(res.data.data.message);

@@ -13,11 +13,14 @@ import './style.css'
 export default function ColorVehicle() {
   const [vehicles, setVehicles] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   const itemsPerPage = 5;
-
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+  
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
@@ -79,10 +82,10 @@ export default function ColorVehicle() {
   const addItem = (newRow) => {
     getVehicleColor();
   };
-  const pageCount = Math.ceil(vehicles.length / itemsPerPage);
+  const totalPages = Math.ceil(vehicles.length / itemsPerPage);
   const currentItems = vehicles.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
+    (currentPage - 1)* itemsPerPage,
+    (currentPage) * itemsPerPage
   );
   return (
     <div>
@@ -137,26 +140,17 @@ export default function ColorVehicle() {
                 })}
               </tbody>
             </table>
-            {vehicles.length > itemsPerPage && (
-              <div className="d-flex flex-row justify-content-center">
-                <ReactPaginate
-                  pageCount={pageCount}
-                  pageRangeDisplayed={3}
-                  marginPagesDisplayed={2}
-                  onPageChange={handlePageClick}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                  containerClassName={"pagination"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  activeClassName={"active"}
-                />
-              </div>
-            )}
+            <div className="pagination-buttons">
+              <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                Previous
+              </button>
+
+              <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+              <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                Next
+              </button>
+            </div>
           </div>
         </div>
       ) : (

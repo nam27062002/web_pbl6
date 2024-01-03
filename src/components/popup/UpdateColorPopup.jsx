@@ -3,7 +3,7 @@ import VehicleService from '../../service/VehicleService';
 import VehiclePopup from '../../components/popup/VehiclePopup';
 import Popup from 'reactjs-popup';
 import { motion } from 'framer-motion';
-
+import util from '../../util';
 
 const UpdateColorPopup = ({ vehicle, callback, className, value }) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -38,9 +38,12 @@ const UpdateColorPopup = ({ vehicle, callback, className, value }) => {
     const updateData = (data) => {
         setVeh(data)
         callback(data)
+        util.showToastSuccess("Update successful");
+
     }
     const addData = (data) => {
         callback(data)
+        util.showToastSuccess("Add successful");
     }
 
 

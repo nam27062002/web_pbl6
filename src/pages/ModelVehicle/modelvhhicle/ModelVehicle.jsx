@@ -11,15 +11,17 @@ import './style.css'
 export default function ModelVehicle() {
   const [vehicles, setVehicles] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(true);
   const itemsPerPage = 6;
-  const pageCount = Math.ceil(vehicles.length / itemsPerPage);
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
-  // const [types,setTypes] = useState([]);
+  const totalPages = Math.ceil(vehicles.length / itemsPerPage);
   const getVehicleModels = async () => {
     if (navigator.onLine) {
       setIsOnline(true);
@@ -46,8 +48,8 @@ export default function ModelVehicle() {
     getVehicleModels();
   }, []);
   const currentItems = vehicles.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
+    (currentPage - 1) * itemsPerPage,
+    (currentPage) * itemsPerPage
   );
 
   const handleResize = () => {
@@ -71,8 +73,6 @@ export default function ModelVehicle() {
   const handleUpdateItem = (newRow) => {
     setVehicles((data) =>
       data.map((row) => {
-        // console.log(row);
-        // row.id === newRow.id ? newRow : row
         if (row.id === newRow.id) {
           console.log(newRow);
           return newRow;
@@ -86,10 +86,6 @@ export default function ModelVehicle() {
   };
   const types = [
     {
-      type: "car7",
-      name: "Car 7",
-    },
-    {
       type: "car",
       name: "Car",
     },
@@ -98,7 +94,6 @@ export default function ModelVehicle() {
       name: "Motorcycles",
     },
   ];
-
   return (
     <div>
       {isOnline ? (
@@ -150,10 +145,21 @@ export default function ModelVehicle() {
                 })}
               </tbody>
             </table>
-            {vehicles.length > itemsPerPage && (
+            <div className="pagination-buttons">
+              <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+                Previous
+              </button>
+
+              <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+              <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+                Next
+              </button>
+            </div>
+            {/* {vehicles.length > itemsPerPage && (
               <div className="d-flex flex-row justify-content-center">
                 <ReactPaginate
-                  pageCount={pageCount}
+                  pageCount={totalPages}
                   pageRangeDisplayed={3}
                   marginPagesDisplayed={2}
                   onPageChange={handlePageClick}
@@ -169,7 +175,7 @@ export default function ModelVehicle() {
                   activeClassName={"active"}
                 />
               </div>
-            )}
+            )} */}
           </div>
         </div>
       ) : (
