@@ -12,14 +12,14 @@ import { BiSolidMessage } from "react-icons/bi";
 
 
 
-const HistoryTripAdmin = ({driverId,isDriver}) => {
-    const [trips, setTrips] = useState([]);
-    const [loading1, setLoading1] = useState(true);
-    const [localData, setLocalData] = useState(() => {
-        const localData = JSON.parse(localStorage.getItem('user')); 
-        console.log(localData);
-        return localData || null
-    });
+const HistoryTripAdmin = ({ driverId, isDriver }) => {
+  const [trips, setTrips] = useState([]);
+  const [loading1, setLoading1] = useState(true);
+  const [localData, setLocalData] = useState(() => {
+    const localData = JSON.parse(localStorage.getItem('user'));
+    console.log(localData);
+    return localData || null
+  });
   const [accessToken, setAccessToken] = useState(localData.accessToken);
   const [userId, setUserId] = useState(driverId);
   const [address, setAddress] = useState("");
@@ -29,7 +29,7 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
-};
+  };
   const getTrips = async () => {
     if (navigator.onLine) {
       let res;
@@ -47,31 +47,34 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
     } else {
       util.showToastWarning("Check your connection")
     }
-        
-  }
-    useEffect(() => {
-      getTrips()
-      window.addEventListener('resize', handleResize);
-      return () => {
-          window.removeEventListener('resize', handleResize);
-      };
-    }, [])
 
-    const popupContentStyle = {
-      width: windowWidth < 768 ? '85%' : '50%', 
-      height: 'auto',
-      padding: '0px',
-      background: "rgba(255, 255, 255, 0)",
-      borderRadius: '12px',
-      boxShadow: "none"
+  }
+  useEffect(() => {
+    getTrips()
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [])
+
+  const popupContentStyle = {
+    width: windowWidth < 768 ? '85%' : '50%',
+    height: 'auto',
+    padding: '0px',
+    background: "rgba(255, 255, 255, 0)",
+    borderRadius: '12px',
+    boxShadow: "none"
   };
   const handleSearch = (address) => {
     setAddress(address)
-    setSearchData(() => {
-      return trips.filter(item => item.pickupAddress.includes(address)||item.destinationAddress.includes(address))
-    })
-    console.log(searchData);
   }
+  const highlightText = (text, search) => {
+    const regex = new RegExp(`(${search})`, "gi");
+    return text.replace(
+      regex,
+      (match) => `<span class="highlight1">${match}</span>`
+    );
+  };
   const handleDateChange = (event) => {
     const newDateValue = event.target.value;
     setSelectedDate(newDateValue);
@@ -84,11 +87,31 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
     console.log(searchData);
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const issuesPerPage = 4;
+  const totalPages = Math.ceil(trips.length / issuesPerPage);
+  const startIndex = (currentPage - 1) * issuesPerPage;
+  const endIndex = startIndex + issuesPerPage;
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+  const currentHistoryTrips = () => {
+    const filteredData = trips.filter((trip) => {
+      const isMatchingaddress = trip.id.toString().includes(address) ||
+        trip.destinationAddress.toLowerCase().includes(address.toLowerCase()) ||
+        trip.pickupAddress.toLowerCase().includes(address.toLowerCase()) ||
+        trip.status.toLowerCase().includes(address.toLowerCase()) ||
+        moment(trip.createdAt).format("DD/MM/YYYY HH:mm").toLowerCase().includes(address.toLowerCase());
+      return isMatchingaddress;
+    });
+    return filteredData.slice(startIndex, endIndex);
+  };
+
   return (
     <div className="container-history ">
-        
+
       <div className="container-content-history">
-      <h3 className="mx-3 my-2 text-light">Trip History</h3>
+        <h3 className="mx-3 my-2 text-light">Trip History</h3>
 
         {loading1 ? (
           <p>Loading...</p>
@@ -97,7 +120,7 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
             <div className={`filter-container `}>
 
               <label className="text-light mx-3">
-                Address:
+                Search:
                 <input
                   className="form-item-history text-light ms-3 "
                   type="text"
@@ -106,24 +129,16 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
                   onChange={(event) => handleSearch(event.target.value)}
                 />
               </label>
-                
 
-                
-              <label className="filter-label text-light">
-                Time:
-                <input
-                  className=" text-light form-item-history ms-3"
-                  type="date"
-                  checked={selectedDate}
-                  onChange={handleDateChange}
-                />
-              </label>
+
+
+
             </div>
             {trips.length > 0 ? (
               <div className="table-container  pb-3">
                 <div className="px-3 table-scroll">
                   <table className=" background-table text-light  ">
-                
+
                     <thead className="">
                       <tr >
                         <th>ID</th>
@@ -134,14 +149,76 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
                       </tr>
                     </thead>
                     <tbody>
-                              
-                      {trips.map((trip) => (
+
+                      {currentHistoryTrips().map((trip) => (
                         <tr className={trip.status === 'completed' ? 'completed border-top' : 'canceled border-top'}>
-                          <td>{trip.id}</td>
-                          <td >{trip.pickupAddress}</td>
-                          <td>{trip.destinationAddress}</td>
-                          <td className="status">{trip.status}</td>
-                          <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                          <td>
+                            {address &&
+                              trip.id.toString().includes(address) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.id.toString(), address),
+                                }}
+                              />
+                            ) : (
+                              trip.id
+                            )}
+                          </td>
+                          <td >
+                            {address &&
+                              trip.pickupAddress
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.pickupAddress, address),
+                                }}
+                              />
+                            ) : (
+                              trip.pickupAddress
+                            )}
+                          </td>
+                          <td>
+                            {address &&
+                              trip.destinationAddress
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.destinationAddress, address),
+                                }}
+                              />
+                            ) : (
+                              trip.destinationAddress
+                            )}</td>
+                          <td className="status">
+                            {address &&
+                              trip.status
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.status, address),
+                                }}
+                              />
+                            ) : (
+                              trip.status
+                            )}
+                          </td>
+                          <td>
+                            {address &&
+                              moment(trip.createdAt).format("DD/MM/YYYY HH:mm")
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(moment(trip.createdAt).format("DD/MM/YYYY HH:mm"), address),
+                                }}
+                              />
+                            ) : (
+                              moment(trip.createdAt).format("DD/MM/YYYY HH:mm")
+                            )}
+                          </td>
                           {/* <td ><PopupIssue
                             id={trip.id}
                             pickUpPoint={trip.pickupAddress}
@@ -150,13 +227,30 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
                           ></PopupIssue></td> */}
                         </tr>
                       ))}
-                                          
+
                     </tbody>
                   </table>
+                  <div className="pagination-buttons">
+                    <button
+                      disabled={currentPage === 1}
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      Previous
+                    </button>
+
+                    <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+                    <button
+                      disabled={currentPage === totalPages}
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
-                
+
               </div>
-              
+
             ) : (
               <div className="d-flex flex-column align-items-center">
                 <h3 className="text-light">No trip</h3>
@@ -164,15 +258,15 @@ const HistoryTripAdmin = ({driverId,isDriver}) => {
               </div>
             )
             }
-                        
+
           </>
-                    
-            
+
+
         )}
       </div>
 
-          
-    </div>
+
+    </div >
   );
 }
 
