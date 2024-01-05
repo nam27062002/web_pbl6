@@ -12,7 +12,7 @@ import { BiSolidMessage } from "react-icons/bi";
 
 
 
-const HistoryTripAdmin = ({driverId}) => {
+const HistoryTripAdmin = ({driverId,isDriver}) => {
     const [trips, setTrips] = useState([]);
     const [loading1, setLoading1] = useState(true);
     const [localData, setLocalData] = useState(() => {
@@ -32,7 +32,12 @@ const HistoryTripAdmin = ({driverId}) => {
 };
   const getTrips = async () => {
     if (navigator.onLine) {
-      const res = await TripService.getHistoryTrip(accessToken, userId);
+      let res;
+      if (isDriver) {
+        res = await TripService.getHistoryDriverTrip(accessToken, userId);
+      } else {
+        res = await TripService.getHistoryPassengerTrip(accessToken, userId);
+      }
       console.log(res);
       if (res) {
         setTrips(res.data.data)

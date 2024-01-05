@@ -83,10 +83,15 @@ const App = () => {
         {/* driver */}
         <div className="driver">
           {console.log(isAdmin)}
-          {user && !isAdmin && <SidebarDriver></SidebarDriver>}
-          <Route path="/history" component={HistoryTrip}></Route>
+          {(user && !isAdmin) ? (
+            <>
+            <SidebarDriver></SidebarDriver>
+            <Route path="/history" component={HistoryTrip}></Route>
           <Route path="/profile" component={ProfileText}></Route>
           <Route path="/statistics" component={Statistics}></Route>
+            </>
+          ):(<></>) }
+          
           {/* <Route path="/verify" component={Verify}></Route> */}
         </div>
       </Router>

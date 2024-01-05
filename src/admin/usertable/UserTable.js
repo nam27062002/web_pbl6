@@ -176,8 +176,8 @@ const UserTable = ({
               )}
               <td>
                 {(selectedField === "All" || selectedField === "id") &&
-                searchText &&
-                user.id.toString().includes(searchText) ? (
+                  searchText &&
+                  user.id.toString().includes(searchText) ? (
                   <span
                     dangerouslySetInnerHTML={{
                       __html: highlightText(user.id.toString(), searchText),
@@ -192,8 +192,8 @@ const UserTable = ({
               </td>
               <td>
                 {(selectedField === "All" || selectedField === "name") &&
-                searchText &&
-                user.name.toLowerCase().includes(searchText.toLowerCase()) ? (
+                  searchText &&
+                  user.name.toLowerCase().includes(searchText.toLowerCase()) ? (
                   <span
                     dangerouslySetInnerHTML={{
                       __html: highlightText(user.name, searchText),
@@ -206,8 +206,8 @@ const UserTable = ({
               <td>{user.status}</td>
               <td>
                 {(selectedField === "All" || selectedField === "phone") &&
-                searchText &&
-                user.phone.toLowerCase().includes(searchText.toLowerCase()) ? (
+                  searchText &&
+                  user.phone.toLowerCase().includes(searchText.toLowerCase()) ? (
                   <span
                     dangerouslySetInnerHTML={{
                       __html: highlightText(user.phone, searchText),
@@ -219,8 +219,8 @@ const UserTable = ({
               </td>
               <td>
                 {(selectedField === "All" || selectedField === "email") &&
-                searchText &&
-                user.email.toLowerCase().includes(searchText.toLowerCase()) ? (
+                  searchText &&
+                  user.email.toLowerCase().includes(searchText.toLowerCase()) ? (
                   <span
                     dangerouslySetInnerHTML={{
                       __html: highlightText(user.email, searchText),
@@ -262,27 +262,28 @@ const UserTable = ({
                 </td>
               )}
               <td>
-              <Popup
-                              trigger={
-                                <button
-                    className="button-style text-light px-5"> Detail
-                </button>
+                <Popup
+                  trigger={
+                    <button
+                      className="button-style text-light px-5"> Detail
+                    </button>
                                         
-                              }
-                              modal nested
-                              contentStyle={popupContentStyle}
-                            >
-                              {
-                                close => (
-                                  <>
-                                    <HistoryTripAdmin
-                                      driverId={user.id}
-                                    ></HistoryTripAdmin>
-                                  </>
-                                )
-                              }
+                  }
+                  modal nested
+                  contentStyle={popupContentStyle}
+                >
+                  {
+                    close => (
+                      <>
+                        <HistoryTripAdmin
+                          driverId={user.id}
+                          isDriver={index === 1 ? true : false}
+                        ></HistoryTripAdmin>
+                      </>
+                    )
+                  }
                                
-                            </Popup>
+                </Popup>
               </td>
             </tr>
           ))}
