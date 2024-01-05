@@ -617,7 +617,7 @@ export const Register = (props) => {
             className="selection_province-register "
             onChange={(e) => setSelectedYear(e.target.value)}>
             <option disabled hidden selected>
-              Year of manufacture
+                
             </option>
             {years.map((year) => (
               <option key={year}>{year}</option>

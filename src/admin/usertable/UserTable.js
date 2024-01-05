@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Modal, Backdrop, Fade } from "@mui/material";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
+import Popup from 'reactjs-popup';
+import HistoryTripAdmin from "../History_trip/HistoryTripAdmin";
 const UserTable = ({
   index,
   getCurrentPageData,
@@ -32,7 +34,25 @@ const UserTable = ({
       (match) => `<span class="highlight">${match}</span>`
     );
   };
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+  }, [])
 
+  const popupContentStyle = {
+    width: windowWidth < 768 ? '85%' : '85%', 
+    height: 'auto',
+    padding: '0px',
+    background: "rgba(255, 255, 255, 0)",
+    borderRadius: '12px',
+    boxShadow: "none"
+};
   function handleCheckboxChange(userId) {
     console.log(selectedUsers);
     setSelectedUsers((prevSelectedUsers) => {
@@ -138,6 +158,7 @@ const UserTable = ({
             <th>Email</th>
             {index === 1 && <th>Driver Status</th>}
             {index === 1 && <th>AVG Rate</th>}
+            <th>Trips</th>
           </tr>
         </thead>
         <tbody>
@@ -240,6 +261,29 @@ const UserTable = ({
                   </div>
                 </td>
               )}
+              <td>
+              <Popup
+                              trigger={
+                                <button
+                    className="button-style text-light px-5"> Detail
+                </button>
+                                        
+                              }
+                              modal nested
+                              contentStyle={popupContentStyle}
+                            >
+                              {
+                                close => (
+                                  <>
+                                    <HistoryTripAdmin
+                                      driverId={user.id}
+                                    ></HistoryTripAdmin>
+                                  </>
+                                )
+                              }
+                               
+                            </Popup>
+              </td>
             </tr>
           ))}
         </tbody>
