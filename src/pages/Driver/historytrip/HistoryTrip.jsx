@@ -27,6 +27,29 @@ const HistoryTrip = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [isOnline, setIsOnline] = useState(true);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [currentPage, setCurrentPage] = useState(1);
+  const issuesPerPage = 5;
+  const totalPages = Math.ceil(trips.length / issuesPerPage);
+  const startIndex = (currentPage - 1) * issuesPerPage;
+  const endIndex = startIndex + issuesPerPage;
+  const currentHistoryTrips = () => {
+    const filteredData = trips.filter((trip) => {
+      const isMatchingaddress = trip.id.toString().includes(address) ||
+        trip.destinationAddress.toLowerCase().includes(address.toLowerCase()) ||
+        trip.pickupAddress.toLowerCase().includes(address.toLowerCase()) ||
+        trip.status.toLowerCase().includes(address.toLowerCase()) ||
+        moment(trip.createdAt).format("DD/MM/YYYY HH:mm").toLowerCase().includes(address.toLowerCase());
+      return isMatchingaddress;
+    });
+    return filteredData.slice(startIndex, endIndex);
+  };
+  const highlightText = (text, search) => {
+    const regex = new RegExp(`(${search})`, "gi");
+    return text.replace(
+      regex,
+      (match) => `<span class="highlight1">${match}</span>`
+    );
+  };
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
 };
@@ -60,12 +83,11 @@ const HistoryTrip = () => {
       borderRadius: '12px',
       boxShadow: "none"
   };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   const handleSearch = (address) => {
     setAddress(address)
-    setSearchData(() => {
-      return trips.filter(item => item.pickupAddress.includes(address)||item.destinationAddress.includes(address))
-    })
-    console.log(searchData);
   }
   const handleDateChange = (event) => {
     const newDateValue = event.target.value;
@@ -100,18 +122,6 @@ const HistoryTrip = () => {
                   onChange={(event) => handleSearch(event.target.value)}
                 />
               </label>
-                
-
-                
-              <label className="filter-label text-light">
-                Time:
-                <input
-                  className=" text-light form-item-history ms-3"
-                  type="date"
-                  checked={selectedDate}
-                  onChange={handleDateChange}
-                />
-              </label>
             </div>
             {trips.length > 0 ? (
               <div className="table-container  pb-3">
@@ -130,48 +140,103 @@ const HistoryTrip = () => {
                     </thead>
                     <tbody>
                               
-                      {trips.map((trip) => (
+                    {currentHistoryTrips().map((trip) => (
                         <tr className={trip.status === 'completed' ? 'completed border-top' : 'canceled border-top'}>
-                          <td>{trip.id}</td>
-                          <td >{trip.pickupAddress}</td>
-                          <td>{trip.destinationAddress}</td>
-                          <td className="status">{trip.status}</td>
-                          <td>{moment(trip.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                          <td>
+                            {address &&
+                              trip.id.toString().includes(address) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.id.toString(), address),
+                                }}
+                              />
+                            ) : (
+                              trip.id
+                            )}
+                          </td>
+                          <td >
+                            {address &&
+                              trip.pickupAddress
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.pickupAddress, address),
+                                }}
+                              />
+                            ) : (
+                              trip.pickupAddress
+                            )}
+                          </td>
+                          <td>
+                            {address &&
+                              trip.destinationAddress
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.destinationAddress, address),
+                                }}
+                              />
+                            ) : (
+                              trip.destinationAddress
+                            )}</td>
+                          <td className="status">
+                            {address &&
+                              trip.status
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(trip.status, address),
+                                }}
+                              />
+                            ) : (
+                              trip.status
+                            )}
+                          </td>
+                          <td>
+                            {address &&
+                              moment(trip.createdAt).format("DD/MM/YYYY HH:mm")
+                                .toLowerCase()
+                                .includes(address.toLowerCase()) ? (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(moment(trip.createdAt).format("DD/MM/YYYY HH:mm"), address),
+                                }}
+                              />
+                            ) : (
+                              moment(trip.createdAt).format("DD/MM/YYYY HH:mm")
+                            )}
+                          </td>
                           {/* <td ><PopupIssue
                             id={trip.id}
                             pickUpPoint={trip.pickupAddress}
                             destinationPoint={trip.destinationAddress}
                             token={accessToken}
                           ></PopupIssue></td> */}
-                          <td>
-                            <Popup
-                              trigger={
-                                <BiSolidMessage></BiSolidMessage>
-                                        
-                              }
-                              modal nested
-                              contentStyle={popupContentStyle}
-                            >
-                              {
-                                close => (
-                                  <>
-                                    <PopupIssue
-                                      id={trip.id}
-                                      pickUpPoint={trip.pickupAddress}
-                                      destinationPoint={trip.destinationAddress}
-                                      close={close}
-                                    ></PopupIssue>
-                                  </>
-                                )
-                              }
-                               
-                            </Popup>
-                          </td>
                         </tr>
                       ))}
                                           
                     </tbody>
-                  </table>
+                    </table>
+                    <div className="pagination-buttons">
+                    <button
+                      disabled={currentPage === 1}
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      Previous
+                    </button>
+
+                    <span>{`Page ${currentPage} of ${totalPages}`}</span>
+
+                    <button
+                      disabled={currentPage === totalPages}
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
                 
               </div>

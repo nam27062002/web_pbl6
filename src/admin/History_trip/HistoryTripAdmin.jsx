@@ -111,13 +111,13 @@ const HistoryTripAdmin = ({ driverId, isDriver }) => {
     <div className="container-history ">
 
       <div className="container-content-history">
-        <h3 className="mx-3 my-2 text-light">Trip History</h3>
 
         {loading1 ? (
           <p>Loading...</p>
         ) : (
           <>
-            <div className={`filter-container `}>
+            <div className={`filter-container justify-content-between`}>
+              <h3 className="mx-3 my-2 text-light">Trip History</h3>
 
               <label className="text-light mx-3">
                 Search:
