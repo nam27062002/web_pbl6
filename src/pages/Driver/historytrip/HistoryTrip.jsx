@@ -208,6 +208,30 @@ const HistoryTrip = () => {
                             ) : (
                               moment(trip.createdAt).format("DD/MM/YYYY HH:mm")
                             )}
+                        </td>
+                        <td>
+                            <Popup
+                              trigger={
+                                <BiSolidMessage></BiSolidMessage>
+
+                              }
+                              modal nested
+                              contentStyle={popupContentStyle}
+                            >
+                              {
+                                close => (
+                                  <>
+                                    <PopupIssue
+                                      id={trip.id}
+                                      pickUpPoint={trip.pickupAddress}
+                                      destinationPoint={trip.destinationAddress}
+                                      close={close}
+                                    ></PopupIssue>
+                                  </>
+                                )
+                              }
+
+                            </Popup>
                           </td>
                           {/* <td ><PopupIssue
                             id={trip.id}

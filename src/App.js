@@ -79,6 +79,8 @@ const App = () => {
         <Route path="/modelVehical" component={ModelVehicle}></Route>
         <Route path="/issue" component={Issues}></Route>
         <Route path="/admin/historytrip" component={HistoryTripAdmin}></Route>
+        <Route path="/statistics" component={Statistics}></Route>
+
         {/* <Route path="/nointernet" component={NoInternet}></Route> */}
         {/* driver */}
         <div className="driver">
@@ -88,7 +90,6 @@ const App = () => {
             <SidebarDriver></SidebarDriver>
             <Route path="/history" component={HistoryTrip}></Route>
           <Route path="/profile" component={ProfileText}></Route>
-          <Route path="/statistics" component={Statistics}></Route>
             </>
           ):(<></>) }
           
