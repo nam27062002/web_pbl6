@@ -11,8 +11,8 @@ export const Login = () => {
     const history = useHistory();
     const [isEmailFocused, setIsEmailFocused] = useState(false);
     const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-    const [email, setEmail] = useState('driver5@gmail.com');
-    const [password, setPassword] = useState('Driver@12121212');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [token, setToken] = useState('');
